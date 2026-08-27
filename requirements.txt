@@ -1,0 +1,7 @@
+anthropic==0.87.0
+fastapi==0.133.1
+uvicorn==0.41.0
+pydantic==2.13.4
+numpy==2.4.3
+sentence-transformers==5.6.1
+torch==2.13.0

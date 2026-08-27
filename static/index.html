@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Vault RAG Assistant</title>
+<style>
+  :root { color-scheme: light dark; }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+    background: #f5f4f0; color: #1f1e1c; height: 100vh; display: flex; flex-direction: column;
+  }
+  header {
+    padding: 12px 20px; background: #2c2a26; color: #f5f4f0;
+    display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  }
+  header h1 { margin: 0; font-size: 17px; font-weight: 600; }
+  #mode-badge {
+    font-size: 12px; padding: 2px 10px; border-radius: 99px;
+    background: #6b8f71; color: #fff;
+  }
+  #mode-badge.extractive { background: #a8843c; }
+  #mode-badge.refused { background: #8f6b6b; }
+  main { flex: 1; overflow-y: auto; padding: 20px; }
+  #chat { max-width: 780px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+  .msg { padding: 12px 16px; border-radius: 12px; white-space: pre-wrap; line-height: 1.5; }
+  .user { background: #2c2a26; color: #f5f4f0; align-self: flex-end; max-width: 85%; }
+  .assistant { background: #fff; border: 1px solid #e0ded8; max-width: 95%; }
+  .assistant.error { border-color: #b3402e; color: #8c2f1d; }
+  .sources { margin-top: 10px; border-top: 1px solid #e0ded8; padding-top: 8px; }
+  .sources summary { cursor: pointer; font-size: 13px; color: #6b675f; }
+  .source { margin: 6px 0 0 0; font-size: 13px; }
+  .source .path { font-family: ui-monospace, monospace; color: #2c5f2d; }
+  .source .score { color: #8a867d; margin-left: 6px; }
+  .source details { margin-top: 2px; }
+  .source details pre {
+    white-space: pre-wrap; font-size: 12px; background: #f5f4f0;
+    padding: 8px; border-radius: 6px; margin: 4px 0;
+  }
+  .tool-trace { font-size: 12px; color: #6b675f; font-family: ui-monospace, monospace;
+    background: #f5f4f0; padding: 6px 10px; border-radius: 6px; margin-top: 8px; }
+  form { display: flex; gap: 8px; padding: 14px 20px; background: #ecebe6; }
+  #input { flex: 1; padding: 12px 14px; border: 1px solid #c9c6bd; border-radius: 10px;
+    font: inherit; background: #fff; color: inherit; resize: none; }
+  button {
+    padding: 12px 22px; border: 0; border-radius: 10px; background: #2c2a26;
+    color: #f5f4f0; font: inherit; cursor: pointer;
+  }
+  button:disabled { opacity: 0.5; cursor: default; }
+  .modes { display: flex; gap: 6px; align-items: center; }
+  .modes button { padding: 8px 14px; background: #4a4741; }
+  .modes button.active { background: #6b8f71; }
+  .spinner { display: inline-block; width: 14px; height: 14px; border: 2px solid #c9c6bd;
+    border-top-color: #2c2a26; border-radius: 50%; animation: spin 0.8s linear infinite; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  @media (prefers-color-scheme: dark) {
+    body { background: #171614; color: #e8e6e1; }
+    .assistant { background: #211f1c; border-color: #38352f; }
+    .user { background: #41403b; color: #f5f4f0; }
+    .sources { border-color: #38352f; }
+    .sources summary { color: #a5a196; }
+    .source .path { color: #8fbf90; }
+    form { background: #1d1c19; }
+    #input { background: #211f1c; border-color: #38352f; color: inherit; }
+    .spinner { border-color: #38352f; border-top-color: #e8e6e1; }
+  }
+</style>
+</head>
+<body>
+<header>
+  <h1>Vault RAG Assistant</h1>
+  <span id="mode-badge">checking…</span>
+  <div class="modes" style="margin-left:auto">
+    <button id="btn-ask" class="active">Ask</button>
+    <button id="btn-agent">Agent</button>
+  </div>
+</header>
+<main><div id="chat"></div></main>
+<form id="form">
+  <textarea id="input" rows="1" placeholder="Ask your vault…" autofocus></textarea>
+  <button id="send">Send</button>
+</form>
+<script>
+const chat = document.getElementById("chat");
+const form = document.getElementById("form");
+const input = document.getElementById("input");
+const send = document.getElementById("send");
+const badge = document.getElementById("mode-badge");
+let mode = "ask";
+
+document.getElementById("btn-ask").onclick = () => setMode("ask");
+document.getElementById("btn-agent").onclick = () => setMode("agent");
+function setMode(m) {
+  mode = m;
+  document.getElementById("btn-ask").classList.toggle("active", m === "ask");
+  document.getElementById("btn-agent").classList.toggle("active", m === "agent");
+  input.placeholder = m === "ask" ? "Ask your vault…" : "Ask your vault (agent: multi-step tools)";
+}
+
+fetch("/healthz").then(r => r.json()).then(h => {
+  badge.textContent = h.mode + (h.api ? ` · api ${h.api}` : "");
+  badge.className = h.mode === "live" ? "" : "extractive";
+}).catch(() => { badge.textContent = "offline"; badge.className = "refused"; });
+
+input.addEventListener("keydown", e => {
+  if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
+});
+
+function el(tag, cls, text) {
+  const n = document.createElement(tag);
+  if (cls) n.className = cls;
+  if (text !== undefined) n.textContent = text;
+  return n;
+}
+
+function addSources(msg, sources) {
+  if (!sources || !sources.length) return;
+  const box = el("div", "sources");
+  box.append(el("summary", null, `sources (${sources.length})`));
+  for (const s of sources) {
+    const row = el("div", "source");
+    row.append(el("span", "path", s.path + (s.heading ? " :: " + s.heading : "")));
+    row.append(el("span", "score", s.score.toFixed ? "sim " + s.score.toFixed(2) : ""));
+    const det = el("details");
+    det.append(el("summary", null, "excerpt"));
+    det.append(el("pre", null, s.excerpt || ""));
+    row.append(det);
+    box.append(row);
+  }
+  msg.append(box);
+}
+
+function addTrace(msg, trace) {
+  if (!trace || !trace.length) return;
+  const t = el("div", "tool-trace", trace.join("\n"));
+  msg.append(t);
+}
+
+form.onsubmit = async e => {
+  e.preventDefault();
+  const q = input.value.trim();
+  if (!q) return;
+  input.value = "";
+  chat.append(el("div", "msg user", q));
+  const pending = el("div", "msg assistant");
+  pending.append(el("span", "spinner"));
+  chat.append(pending);
+  send.disabled = true;
+  chat.scrollTop = chat.scrollHeight;
+  try {
+    const r = await fetch("/" + mode, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ question: q }),
+    });
+    const data = await r.json();
+    pending.textContent = r.ok ? data.answer : (data.detail || `HTTP ${r.status}`);
+    if (!r.ok) pending.classList.add("error");
+    if (r.ok) { addSources(pending, data.sources); addTrace(pending, data.tool_trace); }
+  } catch (err) {
+    pending.textContent = "network error: " + err;
+    pending.classList.add("error");
+  }
+  send.disabled = false;
+  chat.scrollTop = chat.scrollHeight;
+};
+</script>
+</body>
+</html>

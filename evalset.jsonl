@@ -1,0 +1,30 @@
+{"q": "How large should my chunks be and how much overlap?", "expect_note": "rag/chunking-strategies.md", "expect_contains": ["200", "overlap"]}
+{"q": "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?", "expect_note": "rag/embedding-models.md", "expect_contains": ["384"]}
+{"q": "What does PARA stand for?", "expect_note": "productivity/para-method.md", "expect_contains": ["Projects", "Areas", "Resources", "Archives"]}
+{"q": "What is the two-minute rule from GTD?", "expect_note": "books/getting-things-done.md", "expect_contains": ["two minutes"]}
+{"q": "How do BM25 and dense retrieval combine in hybrid search?", "expect_note": "rag/hybrid-search-bm25.md", "expect_contains": ["reciprocal rank"]}
+{"q": "What are the three kinds of notes in the Zettelkasten method?", "expect_note": "obsidian/zettelkasten.md", "expect_contains": ["fleeting", "literature", "permanent"]}
+{"q": "Which metrics should I use to evaluate a RAG system?", "expect_note": "rag/evaluating-rag-systems.md", "expect_contains": ["recall"]}
+{"q": "What is the difference between cosine similarity and dot product?", "expect_note": "rag/vector-similarity-search.md", "expect_contains": ["normalized"]}
+{"q": "How do backlinks work in Obsidian?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "expect_contains": ["backlinks"]}
+{"q": "What does the Dataview plugin do?", "expect_note": "obsidian/dataview-plugin.md", "expect_contains": ["query"]}
+{"q": "Who coined the term deep work and how long is a useful block?", "expect_note": "productivity/deep-work.md", "expect_contains": ["Newport"]}
+{"q": "What is the difference between System 1 and System 2 thinking?", "expect_note": "books/thinking-fast-and-slow.md", "expect_contains": ["System 1"]}
+{"q": "In what order should the parts of a prompt go?", "expect_note": "prompting/prompt-structure.md", "expect_contains": ["role"]}
+{"q": "Why should the system prompt come first for caching?", "expect_note": "prompting/system-prompts.md", "expect_contains": ["prefix"]}
+{"q": "What is the main risk of few-shot prompting?", "expect_note": "prompting/few-shot-prompting.md", "expect_contains": ["leak"]}
+{"q": "What is inbox zero actually about?", "expect_note": "productivity/inbox-zero.md", "expect_contains": ["undecided"]}
+{"q": "What are the four steps of my weekly review?", "expect_note": "productivity/weekly-review.md", "expect_contains": ["inbox"]}
+{"q": "How should I divide work between folders, tags and links?", "expect_note": "obsidian/vault-organization.md", "expect_contains": ["folders"]}
+{"q": "What is retrieval augmented generation?", "expect_note": "rag/what-is-rag.md", "expect_contains": ["retrieval"]}
+{"q": "How do I stop an LLM from making things up?", "expect_note": "rag/hallucination-and-grounding.md", "expect_contains": ["grounding"]}
+{"q": "Which decisions were made on the vault RAG assistant project?", "expect_note": "projects/decision-log.md", "expect_contains": ["MiniLM"]}
+{"q": "How do native citations work in the Claude API?", "expect_note": "rag/citation-patterns.md", "expect_contains": ["document"]}
+{"q": "What books are on my reading list to read next?", "expect_note": "projects/reading-list.md", "expect_contains": ["Timeless"]}
+{"q": "What is the architecture of the vault RAG assistant?", "expect_note": "projects/project-rag-assistant.md", "expect_contains": ["FastAPI"]}
+{"q": "How should I evaluate changes to a prompt?", "expect_note": "prompting/evals-for-prompts.md", "expect_contains": ["regression"]}
+{"q": "What is the recipe for banana bread?", "unanswerable": true}
+{"q": "When did the Roman Empire fall?", "unanswerable": true}
+{"q": "What is the melting point of aluminum?", "unanswerable": true}
+{"q": "How do I change a car's engine oil?", "unanswerable": true}
+{"q": "What is my WiFi password?", "unanswerable": true}
