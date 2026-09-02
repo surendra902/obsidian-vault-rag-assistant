@@ -38,6 +38,8 @@
     white-space: pre-wrap; font-size: 12px; background: #f5f4f0;
     padding: 8px; border-radius: 6px; margin: 4px 0;
   }
+  .msg code { font-family: ui-monospace, monospace; background: #ece9e1;
+    padding: 1px 5px; border-radius: 4px; font-size: 0.92em; }
   .tool-trace { font-size: 12px; color: #6b675f; font-family: ui-monospace, monospace;
     background: #f5f4f0; padding: 6px 10px; border-radius: 6px; margin-top: 8px; }
   .answered-by { font-size: 11px; color: #8a867d; margin-top: 8px; font-family: ui-monospace, monospace; }
@@ -60,6 +62,7 @@
     .assistant { background: #211f1c; border-color: #38352f; }
     .user { background: #41403b; color: #f5f4f0; }
     .sources { border-color: #38352f; }
+    .msg code { background: #2b2825; }
     .sources summary { color: #a5a196; }
     .source .path { color: #8fbf90; }
     form { background: #1d1c19; }
@@ -117,6 +120,19 @@ function el(tag, cls, text) {
   return n;
 }
 
+// Answers come back as markdown. The model's text is untrusted, so escape
+// first and only then apply a fixed set of inline rules -- never the reverse.
+// Bullets become a character rather than <ul>/<li>: white-space: pre-wrap
+// already handles the line breaks, and block elements fight it.
+function mdHtml(text) {
+  return text
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/【(\d+)】/g, "[$1]")      // NVIDIA gpt-oss cites fullwidth
+    .replace(/^\s*[*-] /gm, "• ")
+    .replace(/`([^`\n]+)`/g, "<code>$1</code>")
+    .replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+}
+
 function addSources(msg, sources) {
   if (!sources || !sources.length) return;
   const box = el("div", "sources");
@@ -164,7 +180,8 @@ form.onsubmit = async e => {
       body: JSON.stringify({ question: q }),
     });
     const data = await r.json();
-    pending.textContent = r.ok ? data.answer : (data.detail || `HTTP ${r.status}`);
+    if (r.ok) pending.innerHTML = mdHtml(data.answer);
+    else pending.textContent = (data.detail || `HTTP ${r.status}`);
     if (!r.ok) pending.classList.add("error");
     if (r.ok) { addSources(pending, data.sources); addTrace(pending, data.tool_trace); addModel(pending, data.model); }
   } catch (err) {

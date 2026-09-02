@@ -164,6 +164,12 @@ OpenAI-compatible loop after it was added, including an agent instructed to read
 `../.env` (the file holding the live API key) and an absolute Windows path —
 both returned `error: path escapes vault: …` with no content leaked.
 
+The UI is the other direction of the same boundary: answers are markdown, and
+the model's text is untrusted, so `mdHtml()` HTML-escapes **first** and only then
+applies five inline rules (bold, inline code, bullets, fullwidth citations).
+Verified in-browser against `<script>` and `<img onerror=>` payloads: escaped,
+not executed.
+
 ## Limitations
 
 - Dense retrieval only. Exact-identifier queries ("r45", "nc.py") underperform;
@@ -184,7 +190,21 @@ both returned `error: path escapes vault: …` with no content leaked.
 
 ## Screenshots
 
-*(add: chat UI in live mode with citations expanded; agent mode tool trace)*
+**Ask mode** — the answer, then every retrieved chunk expanded. Each `[n]` in the
+text resolves to one of the sources listed below it; the footer names the model
+that actually answered, which the fallback chain makes variable.
+
+![Ask mode with citations expanded](docs/ui-ask.png)
+
+**Agent mode** — same UI, tool loop instead of one-shot retrieval. The trace at
+the bottom is the two-hop run the model chose on its own:
+`list_by_tag('obsidian') -> 5 notes`, then `read_note('obsidian/zettelkasten.md')`.
+
+![Agent mode with tool trace](docs/ui-agent.png)
+
+Both captured against NVIDIA Build (`openai/gpt-oss-120b`) because OpenRouter's
+free tier was rate-limited at capture time — the 429 behaviour described above,
+in practice.
 
 ## Files
 
@@ -197,5 +217,6 @@ test_citations.py   9 checks: citation bounds, bracket styles, fallback chain
 evalset.jsonl       25 answerable + 5 unanswerable questions
 demo_vault/         sanitized 27-note Obsidian corpus (frontmatter, tags, wikilinks)
 static/             the entire UI, one HTML file
+docs/               README screenshots
 .env.example        both provider options, commented
 ```
