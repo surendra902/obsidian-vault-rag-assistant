@@ -9,6 +9,7 @@ from typing import Dict, List, Tuple
 
 from rag import Hit
 from search import HybridIndex
+from rerank import CrossEncoderReranker
 
 
 class QueryClassifier:
@@ -38,14 +39,21 @@ class QueryClassifier:
 class AdaptiveRouter:
     def __init__(self, hybrid_index: HybridIndex):
         self.idx = hybrid_index
+        self._reranker = None
+
+    @property
+    def reranker(self):
+        if self._reranker is None:
+            self._reranker = CrossEncoderReranker()
+        return self._reranker
 
     def route_and_search(self, query: str, k: int = 5) -> Tuple[List[Hit], str]:
         """Classify query, execute tailored strategy, and return (hits, strategy_id)."""
         q_class = QueryClassifier.classify(query)
 
         if q_class == "exact_identifier":
-            # Biased toward BM25 lexical precision
-            hits = self.idx.search(query, k=k, mode="hybrid")
+            # Biased toward BM25 lexical precision (alpha=0.2 gives 80% weight to BM25)
+            hits = self.idx.search(query, k=k, mode="hybrid", alpha=0.2)
             return hits, "exact_bm25_heavy"
 
         elif q_class == "multi_part":
@@ -65,6 +73,14 @@ class AdaptiveRouter:
                 return all_hits[:k], "decomposed_union"
             else:
                 return self.idx.search(query, k=k, mode="hybrid"), "standard_hybrid"
+
+        elif q_class == "conceptual_semantic":
+            # Retrieve candidates and rerank top-15 with neural cross-encoder
+            raw_hits = self.idx.search(query, k=15, mode="hybrid")
+            if raw_hits:
+                reranked_hits = self.reranker.rerank(query, raw_hits, top_k=k)
+                return reranked_hits, "reranked_cross_encoder"
+            return [], "reranked_cross_encoder"
 
         else:
             # Standard tuned hybrid
@@ -96,8 +112,13 @@ def run_self_test():
     print(f"Routed strategy: {strategy_multi} -> Hits count: {len(hits_multi)}")
     assert strategy_multi == "decomposed_union"
 
+    hits_conc, strategy_conc = router.route_and_search("How does externalizing open loops create psychological clarity?", k=3)
+    print(f"Routed strategy: {strategy_conc} -> Top hit: {hits_conc[0].path}")
+    assert strategy_conc == "reranked_cross_encoder"
+    assert len(hits_conc) > 0
+
     print("Adaptive routing execution verified: PASS")
-    print("=== AdaptiveRouter Self-Test Passed Successfully ===")
+    print("=== QueryClassifier & AdaptiveRouter Self-Test Passed Successfully ===")
 
 
 if __name__ == "__main__":

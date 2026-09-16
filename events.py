@@ -6,6 +6,7 @@ to correct for presentation bias (Joachims et al. 2016), cited sources, and feed
 
 import json
 import sqlite3
+import threading
 import uuid
 from datetime import datetime, timezone
 from pathlib import Path
@@ -20,6 +21,8 @@ def get_events_db(db_path: str = EVENTS_DB_PATH) -> sqlite3.Connection:
     """Connect to and initialize the events database."""
     Path(db_path).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path, check_same_thread=False)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA busy_timeout=5000;")
     cur = conn.cursor()
     cur.execute(
         """
@@ -60,6 +63,7 @@ def get_events_db(db_path: str = EVENTS_DB_PATH) -> sqlite3.Connection:
 class EventLogger:
     def __init__(self, db_path: str = EVENTS_DB_PATH):
         self.db_path = db_path
+        self._lock = threading.Lock()
         self.conn = get_events_db(db_path)
 
     def log_query_event(
@@ -80,36 +84,39 @@ class EventLogger:
         now = datetime.now(timezone.utc).isoformat()
         cited_set = set(cited_paths or [])
 
-        cur = self.conn.cursor()
-        cur.execute(
-            """
-            INSERT INTO queries (query_id, query, timestamp, strategy_id, params_version, refused, response_text, explicit_feedback)
-            VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
-            """,
-            (qid, query, now, strategy_id, params_version, 1 if refused else 0, response_text)
-        )
-
-        for pos, hit in enumerate(displayed_hits):
-            is_cited = 1 if hit.path in cited_set else 0
-            dense_s = getattr(hit, "score", 0.0)
-            fused_s = getattr(hit, "rrf_score", dense_s)
+        with self._lock:
+            cur = self.conn.cursor()
             cur.execute(
                 """
-                INSERT INTO displayed_rankings (query_id, position, path, heading, dense_score, bm25_score, fused_score, cited)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                INSERT INTO queries (query_id, query, timestamp, strategy_id, params_version, refused, response_text, explicit_feedback)
+                VALUES (?, ?, ?, ?, ?, ?, ?, NULL)
                 """,
-                (qid, pos, hit.path, hit.heading, dense_s, 0.0, fused_s, is_cited)
+                (qid, query, now, strategy_id, params_version, 1 if refused else 0, response_text)
             )
 
-        self.conn.commit()
+            for pos, hit in enumerate(displayed_hits):
+                is_cited = 1 if hit.path in cited_set else 0
+                dense_s = getattr(hit, "dense_score", hit.score)
+                fused_s = getattr(hit, "score", dense_s)
+                bm25_s = getattr(hit, "bm25_score", 0.0)
+                cur.execute(
+                    """
+                    INSERT INTO displayed_rankings (query_id, position, path, heading, dense_score, bm25_score, fused_score, cited)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (qid, pos, hit.path, hit.heading, dense_s, bm25_s, fused_s, is_cited)
+                )
+
+            self.conn.commit()
         return qid
 
     def record_feedback(self, query_id: str, feedback: int) -> bool:
         """Record explicit user feedback (+1 for 👍, -1 for 👎)."""
-        cur = self.conn.cursor()
-        cur.execute("UPDATE queries SET explicit_feedback = ? WHERE query_id = ?", (feedback, query_id))
-        self.conn.commit()
-        return cur.rowcount > 0
+        with self._lock:
+            cur = self.conn.cursor()
+            cur.execute("UPDATE queries SET explicit_feedback = ? WHERE query_id = ?", (feedback, query_id))
+            self.conn.commit()
+            return cur.rowcount > 0
 
     def get_query_event(self, query_id: str) -> Optional[Dict]:
         """Fetch a full query event with its displayed rankings."""

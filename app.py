@@ -31,6 +31,7 @@ import re
 
 import anthropic
 import openai
+from typing import Dict, List, Optional
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
@@ -40,6 +41,7 @@ from search import HybridIndex
 from route import AdaptiveRouter
 from events import EventLogger
 from frontier import FrontierManager
+from memory import MemoryManager
 
 
 def _load_dotenv(path=".env"):
@@ -57,24 +59,18 @@ def _load_dotenv(path=".env"):
 
 _load_dotenv()
 
-ANTHROPIC_MODEL = "claude-opus-5"
-ANTHROPIC_KEY = os.environ.get("MY_ANTHROPIC_KEY")
-
-LLM_KEY = os.environ.get("LLM_API_KEY") or os.environ.get("OPENROUTER_API_KEY")
+ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("MY_ANTHROPIC_KEY")
+ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
+LLM_KEY = os.environ.get("LLM_API_KEY")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://openrouter.ai/api/v1")
-# Fallback chain, tried in order. Free tiers return 429 unpredictably and each
-# model fails differently, so more than one entry is what makes them usable.
-# Measured 2026-09-02 over ~30 calls:
-#   nemotron  reliable (9/9), cites correctly, tightest tool loop -> primary
-#   poolside  cleanest prose but 429s upstream on ~3 of 4 calls
-#   liquid    fastest and good at driving tools, but emits training-data
-#             artifacts when asked to answer from inline documents -> last
-LLM_MODELS = [m.strip() for m in os.environ.get(
-    "LLM_MODELS",
-    "nvidia/nemotron-3.5-lightning:free,"
-    "poolside/laguna-s-2.1:free,"
-    "liquid/lfm-2.5-2.6b:free",
-).split(",") if m.strip()]
+LLM_MODELS = [
+    m.strip()
+    for m in os.environ.get(
+        "LLM_MODELS",
+        "anthropic/claude-haiku-4-5-20251001,deepseek/deepseek-chat,meta-llama/llama-3.3-70b-instruct",
+    ).split(",")
+    if m.strip()
+]
 
 client = oai = None
 if ANTHROPIC_KEY:
@@ -93,11 +89,13 @@ try:
     router = AdaptiveRouter(index)
     event_logger = EventLogger("vectors/events.db")
     frontier_mgr = FrontierManager("vectors/frontier.db")
+    memory_mgr = MemoryManager("vectors", "demo_vault")
 except Exception as e:  # no index built yet -- serve healthz, refuse the rest
     index = None
     router = None
     event_logger = None
     frontier_mgr = None
+    memory_mgr = None
     _index_error = str(e)
 
 ASK_SYSTEM = """You answer questions about a personal Obsidian vault.
@@ -245,10 +243,33 @@ class FeedbackRequest(BaseModel):
     feedback: int  # +1 for up, -1 for down
 
 
+class RememberRequest(BaseModel):
+    question: str
+    answer: str
+    citations: List[str]
+
+
+@app.post("/remember")
+def remember(req: RememberRequest):
+    if memory_mgr is None:
+        return JSONResponse(status_code=503, content={"detail": "memory manager not initialized"})
+    rec = memory_mgr.save_derived_answer(req.question, req.answer, req.citations)
+    if rec is None:
+        return JSONResponse(status_code=400, content={"detail": "Rejected by sole citation guard: must cite primary source notes"})
+    return {"status": "saved", "path": rec["path"]}
+
+
 @app.post("/feedback")
 def feedback(req: FeedbackRequest):
     if event_logger:
         ok = event_logger.record_feedback(req.query_id, req.feedback)
+        if ok and req.feedback == 1 and memory_mgr:
+            # Check if query had cited sources to write back verified memory
+            q_info = event_logger.get_query_event(req.query_id)
+            if q_info and not q_info.get("refused") and q_info.get("response_text"):
+                cited = [d["path"] for d in q_info.get("displayed", []) if d.get("cited")]
+                if cited:
+                    memory_mgr.save_derived_answer(q_info["query"], q_info["response_text"], cited)
         return {"status": "recorded" if ok else "not_found"}
     return {"status": "no_logger"}
 
@@ -266,7 +287,10 @@ def ask(req: AskRequest):
         strategy_id = "standard_hybrid"
 
     refuse_thresh = getattr(index, "threshold", REFUSE_THRESHOLD)
-    if not hits or hits[0].score < refuse_thresh:
+    top_conf = max((getattr(h, "dense_score", h.score) for h in hits), default=0.0) if hits else 0.0
+    is_exact = strategy_id == "exact_bm25_heavy" and hits and getattr(hits[0], "bm25_score", 0.0) > 0.0
+
+    if not hits or (top_conf < refuse_thresh and not is_exact):
         if frontier_mgr:
             frontier_mgr.enqueue_gap(req.question)
         qid = event_logger.log_query_event(req.question, hits, strategy_id=strategy_id, refused=True) if event_logger else None
@@ -289,13 +313,20 @@ def ask(req: AskRequest):
             "query_id": qid,
         }
 
+    mode = "live"
     try:
         if PROVIDER == "anthropic":
             answer, sources, model = _live_answer(req.question, hits)
         else:
             answer, sources, model = _openai_answer(req.question, hits)
     except (anthropic.AuthenticationError, openai.AuthenticationError):
-        return JSONResponse(status_code=503, content={"detail": f"{PROVIDER} API rejected the key"})
+        excerpts = "\n\n---\n\n".join(
+            f"[{h.path}{' :: ' + h.heading if h.heading else ''}]\n{h.text}" for h in hits[:3]
+        )
+        answer = ("(extractive fallback mode: API key rejected or invalid)\n\n" + excerpts)
+        sources = _sources(hits)
+        model = "local-extractive"
+        mode = "extractive"
     except (anthropic.APIStatusError, openai.APIStatusError) as e:
         return JSONResponse(status_code=502, content={"detail": f"{PROVIDER} API error {e.status_code}"})
     except RuntimeError as e:  # whole fallback chain exhausted
@@ -313,7 +344,7 @@ def ask(req: AskRequest):
     return {
         "answer": answer,
         "sources": sources or _sources(hits),
-        "mode": "live",
+        "mode": mode,
         "model": model,
         "strategy": strategy_id,
         "query_id": qid,

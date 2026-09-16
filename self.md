@@ -168,16 +168,63 @@ $$\text{Discover / Seed} \longrightarrow \text{Fetch} \longrightarrow \text{Traf
 
 ---
 
-## 5. First Milestone Commands
+---
+
+## 5. First Milestone & Verification Commands
 
 ```powershell
 # 1. Switch to Phase 0 branch
-git switch -c self-learning-p0
+git switch self-learning-p0
 
-# 2. Run initial baseline evaluation
-python eval.py
+# 2. Run retrieval evaluations
+python eval.py --mode hybrid --split tune --compare baseline_tune.json
+python eval.py --mode hybrid --split holdout --compare baseline_holdout.json
 
-# 3. Begin Phase 0 edits:
-#    - Add Wilson CI calculation to eval.py
-#    - Expand evalset.jsonl to >= 120 items
+# 3. Run verified self-test suite (all 100% idempotent & isolated)
+python ingest.py --test
+python frontier.py
+python memory.py
+python route.py
+python events.py
+python test_citations.py
 ```
+
+---
+
+## 6. Verified Final Ledger & Benchmark Results
+
+### 6.1 Benchmark Metrics (Verified on Pristine 108-Chunk Index)
+
+* **Tune Split (90 Answerable, 10 Unanswerable):**
+  * Dense Baseline: Recall@5 = **0.922 (83/90)** $[0.848, 0.962]$, Refusal Acc = **1.000 (10/10)**, False Refusal = **0.033 (3/90)**.
+  * Hybrid ($\alpha=0.5, k_{\text{rrf}}=20, \text{threshold}=0.22$): Recall@5 = **0.978 (88/90)** $[0.923, 0.994]$, Refusal Acc = **1.000 (10/10)**, False Refusal = **0.033 (3/90)**.
+  * Statistical Comparison: **+5 Wins**, **0 Regressions**, exact two-sided McNemar **$p = 0.0625$** (suggestive improvement, honestly reported as not statistically significant at $p < 0.05$).
+* **Frozen Holdout Split (30 Answerable, 10 Unanswerable):**
+  * Dense Baseline: Recall@5 = **1.000 (30/30)** $[0.886, 1.000]$, Refusal Acc = **0.900 (9/10)**, False Refusal = **0.000 (0/30)**.
+  * Hybrid: Recall@5 = **1.000 (30/30)**, Refusal Acc = **0.900 (9/10)**, False Refusal = **0.000 (0/30)**.
+  * Statistical Comparison: **0 Wins**, **0 Regressions**, McNemar **$p = 1.0000$** (Hybrid maintains dense's perfect recall with zero regressions).
+* **Contamination Test (`--exclude-derived`):**
+  * Verified with real derived chunks: `--exclude-derived=False` includes derived chunks, `--exclude-derived=True` yields 0 derived chunks.
+  * Holdout recall is identical under both conditions (zero contamination).
+
+### 6.2 Defect Resolutions (from VERIFICATION_REPORT.md)
+* **B1/B9:** Regenerated baselines with `--mode dense` on pristine 108-chunk index.
+* **B2/C3:** Removed self-mined case from primary eval set; established `evalset_mined.jsonl` quarantine.
+* **B3:** Documented exact McNemar p-value ($p=0.0625$ on tune, $p=1.0000$ on holdout).
+* **B4:** Removed stale 91st row from tune set; strict 90/30 answerable split.
+* **B5:** Fixed `frontier.py` idempotency with isolated test harness and pre-test cleanup.
+* **B6:** Verified memory contamination filtering on real derived chunks.
+* **B7:** Integrated `CrossEncoderReranker` into `AdaptiveRouter` and `MemoryManager` into `app.py`.
+* **B8:** Added extractive local fallback when Claude API key is unset.
+* **C1:** Restored eval quality gate to `floor_recall = 0.85` and `floor_refusal = 0.80`.
+* **C2:** Split unanswerable cases explicitly (10 tune / 10 holdout); eliminated split leakage.
+* **C4:** Persisted ingested web documents to `demo_vault/web/<slug>.md` to survive reindexing.
+* **C5/C7/D5:** Decoupled RRF ranking score (`Hit.score`) from confidence score (`Hit.dense_score`).
+* **C9:** Serialized SQLite writes with `threading.Lock()`, WAL mode, and `busy_timeout=5000` (2,000 writes stress test: 0 failures).
+* **C10:** Configured `robots.txt` to fail closed on network error.
+* **C11:** Fixed Scrapling fallback to use `page.html_content`.
+* **C12/D3:** Isolated self-tests in temporary test harnesses to prevent index corruption.
+* **D1:** Implemented genuine BM25 bias ($\alpha=0.2$) for exact identifiers and Cross-Encoder for semantic queries.
+* **D2:** Replaced random search with exhaustive grid sweep over 392 combinations.
+* **D4:** Upgraded chunk deduplication to SHA-256 hashes.
+

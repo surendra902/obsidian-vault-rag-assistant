@@ -1,13 +1,15 @@
 {
+  "mode": "dense",
   "split": "holdout",
   "k": 5,
-  "threshold": 0.27,
-  "recall": 0.9666666666666667,
+  "threshold": 0.22,
+  "recall": 1.0,
   "recall_ci": [
-    0.8332924860304112,
-    0.9940915620051425
+    0.8864829086095221,
+    1.0
   ],
-  "refusal_acc": 0.95,
+  "refusal_acc": 0.9,
+  "false_refusal": 0.0,
   "queries": {
     "How does the slip-box method make writing an emergent property of note-taking?": {
       "hit": true,
@@ -20,6 +22,8 @@
         "books/how-to-take-smart-notes.md"
       ],
       "top_score": 0.6564730405807495,
+      "top_conf": 0.6564730405807495,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -34,6 +38,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.5412944555282593,
+      "top_conf": 0.5412944555282593,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -48,6 +54,8 @@
         "books/thinking-fast-and-slow.md"
       ],
       "top_score": 0.554250180721283,
+      "top_conf": 0.554250180721283,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -62,6 +70,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.6894165277481079,
+      "top_conf": 0.6894165277481079,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -76,6 +86,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.4980262815952301,
+      "top_conf": 0.4980262815952301,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -90,6 +102,8 @@
         "productivity/weekly-review.md"
       ],
       "top_score": 0.4316342771053314,
+      "top_conf": 0.4316342771053314,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -104,6 +118,8 @@
         "rag/evaluating-rag-systems.md"
       ],
       "top_score": 0.3756934106349945,
+      "top_conf": 0.3756934106349945,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "paraphrase"
     },
@@ -118,6 +134,8 @@
         "books/how-to-take-smart-notes.md"
       ],
       "top_score": 0.6508874893188477,
+      "top_conf": 0.6508874893188477,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -132,6 +150,8 @@
         "books/getting-things-done.md"
       ],
       "top_score": 0.5404890775680542,
+      "top_conf": 0.5404890775680542,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -146,6 +166,8 @@
         "productivity/inbox-zero.md"
       ],
       "top_score": 0.5866125822067261,
+      "top_conf": 0.5866125822067261,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -160,6 +182,8 @@
         "books/getting-things-done.md"
       ],
       "top_score": 0.6484559774398804,
+      "top_conf": 0.6484559774398804,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -174,6 +198,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.4982079863548279,
+      "top_conf": 0.4982079863548279,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "exact"
     },
@@ -188,6 +214,8 @@
         "obsidian/vault-organization.md"
       ],
       "top_score": 0.458002507686615,
+      "top_conf": 0.458002507686615,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -202,6 +230,8 @@
         "obsidian/obsidian-basics.md"
       ],
       "top_score": 0.5544798374176025,
+      "top_conf": 0.5544798374176025,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -216,6 +246,8 @@
         "prompting/prompt-structure.md"
       ],
       "top_score": 0.4906691014766693,
+      "top_conf": 0.4906691014766693,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -230,6 +262,8 @@
         "rag/hallucination-and-grounding.md"
       ],
       "top_score": 0.4701896905899048,
+      "top_conf": 0.4701896905899048,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -244,6 +278,8 @@
         "prompting/few-shot-prompting.md"
       ],
       "top_score": 0.5084713697433472,
+      "top_conf": 0.5084713697433472,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -258,6 +294,8 @@
         "prompting/few-shot-prompting.md"
       ],
       "top_score": 0.5607351064682007,
+      "top_conf": 0.5607351064682007,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -272,6 +310,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.4726782441139221,
+      "top_conf": 0.4726782441139221,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -286,20 +326,24 @@
         "rag/citation-patterns.md"
       ],
       "top_score": 0.5475645065307617,
+      "top_conf": 0.5475645065307617,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
-    "How many parameters does the all-MiniLM-L6-v2 model have?": {
-      "hit": false,
+    "What is the maximum input token limit for all-MiniLM-L6-v2: 256 wordpiece tokens?": {
+      "hit": true,
       "expect": "rag/embedding-models.md",
       "retrieved": [
-        "projects/project-rag-assistant.md",
-        "prompting/few-shot-prompting.md",
-        "prompting/prompt-structure.md",
-        "rag/hybrid-search-bm25.md",
-        "projects/decision-log.md"
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.3828091621398926,
+      "top_score": 0.4803088307380676,
+      "top_conf": 0.4803088307380676,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "exact"
     },
@@ -314,6 +358,8 @@
         "rag/evaluating-rag-systems.md"
       ],
       "top_score": 0.5751646161079407,
+      "top_conf": 0.5751646161079407,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -328,6 +374,8 @@
         "books/thinking-fast-and-slow.md"
       ],
       "top_score": 0.5480434894561768,
+      "top_conf": 0.5480434894561768,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -342,6 +390,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.5037717819213867,
+      "top_conf": 0.5037717819213867,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -356,6 +406,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.5433178544044495,
+      "top_conf": 0.5433178544044495,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -370,6 +422,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.4549625813961029,
+      "top_conf": 0.4549625813961029,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "paraphrase"
     },
@@ -384,6 +438,8 @@
         "obsidian/wikilinks-and-backlinks.md"
       ],
       "top_score": 0.6690415143966675,
+      "top_conf": 0.6690415143966675,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -398,6 +454,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.43428969383239746,
+      "top_conf": 0.43428969383239746,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "standard"
     },
@@ -412,6 +470,8 @@
         "obsidian/dataview-plugin.md"
       ],
       "top_score": 0.5368669033050537,
+      "top_conf": 0.5368669033050537,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "exact"
     },
@@ -426,6 +486,8 @@
         "prompting/system-prompts.md"
       ],
       "top_score": 0.5292834043502808,
+      "top_conf": 0.5292834043502808,
+      "false_refusal": false,
       "split": "holdout",
       "kind": "paraphrase"
     }

@@ -15,7 +15,10 @@ import hashlib
 import json
 import re
 import sqlite3
+import tempfile
+import threading
 import time
+import uuid
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import List, Optional, Tuple
@@ -44,6 +47,8 @@ def get_docs_db(db_path: str = DOCS_DB_PATH) -> sqlite3.Connection:
     """Connect to and initialize docs database."""
     Path(db_path).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(db_path, check_same_thread=False)
+    conn.execute("PRAGMA journal_mode=WAL;")
+    conn.execute("PRAGMA busy_timeout=5000;")
     cur = conn.cursor()
     cur.execute(
         """
@@ -74,8 +79,8 @@ def check_robots_txt(url: str, user_agent: str = USER_AGENT) -> bool:
         rp.read()
         return rp.can_fetch(user_agent, url)
     except Exception:
-        # If robots.txt cannot be fetched or parsed, default to permissive
-        return True
+        # If robots.txt cannot be fetched or parsed, fail closed for security and politeness
+        return False
 
 
 def extract_web_content(url: str) -> Tuple[Optional[str], Optional[str]]:
@@ -104,9 +109,11 @@ def extract_web_content(url: str) -> Tuple[Optional[str], Optional[str]]:
         from scrapling import Fetcher
         fetcher = Fetcher()
         page = fetcher.get(url)
-        js_text = trafilatura.extract(page.text) if page and page.text else None
-        if js_text and len(js_text.split()) > word_count:
-            return title, js_text
+        raw_html = getattr(page, "html_content", None) or getattr(page, "body", None)
+        if raw_html:
+            js_text = trafilatura.extract(raw_html, include_comments=False, include_tables=True)
+            if js_text and len(js_text.split()) > word_count:
+                return title, js_text
     except Exception:
         pass
 
@@ -114,12 +121,14 @@ def extract_web_content(url: str) -> Tuple[Optional[str], Optional[str]]:
 
 
 class IngestionEngine:
-    def __init__(self, index_dir: str = "vectors"):
+    def __init__(self, index_dir: str = "vectors", vault_dir: str = "demo_vault"):
         self.index_dir = Path(index_dir)
+        self.vault_dir = Path(vault_dir)
         self.index_dir.mkdir(parents=True, exist_ok=True)
         self.chunks_file = self.index_dir / "chunks.jsonl"
         self.vectors_file = self.index_dir / "vectors.npz"
         self.meta_file = self.index_dir / "meta.json"
+        self._lock = threading.Lock()
         self.conn = get_docs_db(f"{index_dir}/docs.db")
         self._model = None
 
@@ -130,9 +139,10 @@ class IngestionEngine:
         return self._model
 
     def is_known_hash(self, content_hash: str) -> bool:
-        cur = self.conn.cursor()
-        cur.execute("SELECT 1 FROM docs WHERE content_hash = ?", (content_hash,))
-        return cur.fetchone() is not None
+        with self._lock:
+            cur = self.conn.cursor()
+            cur.execute("SELECT 1 FROM docs WHERE content_hash = ?", (content_hash,))
+            return cur.fetchone() is not None
 
     def ingest_document(
         self,
@@ -197,21 +207,43 @@ class IngestionEngine:
             updated_vecs = new_vectors
         np.savez(self.vectors_file, vectors=updated_vecs)
 
+        # Persist markdown note to demo_vault/web so it survives index.py rebuilds
+        vault_web_dir = self.vault_dir / "web"
+        vault_web_dir.mkdir(parents=True, exist_ok=True)
+        md_file = vault_web_dir / f"{stem}.md"
+        if not md_file.exists():
+            md_file.write_text(f"""---
+title: "{title}"
+source_url: "{identifier}"
+provenance: "{source_kind}"
+ingested_at: "{datetime.now(timezone.utc).isoformat()}"
+tags:
+  - web
+  - {source_kind}
+---
+
+# {title}
+
+{text}
+""", encoding="utf-8")
+
         # Record in docs database
-        cur = self.conn.cursor()
-        cur.execute(
-            """
-            INSERT OR REPLACE INTO docs (url, title, fetched_at, content_hash, robots_ok, source_kind, chunk_count)
-            VALUES (?, ?, ?, ?, ?, ?, ?)
-            """,
-            (identifier, title, datetime.now(timezone.utc).isoformat(), content_hash, 1 if robots_ok else 0, source_kind, len(new_chunks))
-        )
-        self.conn.commit()
+        with self._lock:
+            cur = self.conn.cursor()
+            cur.execute(
+                """
+                INSERT OR REPLACE INTO docs (url, title, fetched_at, content_hash, robots_ok, source_kind, chunk_count)
+                VALUES (?, ?, ?, ?, ?, ?, ?)
+                """,
+                (identifier, title, datetime.now(timezone.utc).isoformat(), content_hash, 1 if robots_ok else 0, source_kind, len(new_chunks))
+            )
+            self.conn.commit()
 
         # Sync FTS5 table
         from search import FTSIndex
         fts = FTSIndex(db_path=f"{self.index_dir}/fts5.db", chunks_path=str(self.chunks_file))
         fts._ensure_index()
+        fts.close()
 
         return len(new_chunks)
 
@@ -219,12 +251,13 @@ class IngestionEngine:
         """Check robots.txt, fetch URL, extract text, and index. Returns chunk count."""
         robots_ok = check_robots_txt(url)
         if not robots_ok:
-            cur = self.conn.cursor()
-            cur.execute(
-                "INSERT OR REPLACE INTO docs (url, title, fetched_at, content_hash, robots_ok, source_kind, chunk_count) VALUES (?, ?, ?, ?, ?, ?, ?)",
-                (url, "", datetime.now(timezone.utc).isoformat(), "", 0, "web", 0)
-            )
-            self.conn.commit()
+            with self._lock:
+                cur = self.conn.cursor()
+                cur.execute(
+                    "INSERT OR REPLACE INTO docs (url, title, fetched_at, content_hash, robots_ok, source_kind, chunk_count) VALUES (?, ?, ?, ?, ?, ?, ?)",
+                    (url, "", datetime.now(timezone.utc).isoformat(), "", 0, "web", 0)
+                )
+                self.conn.commit()
             print(f"Skipping {url}: Disallowed by robots.txt")
             return 0
 
@@ -237,32 +270,45 @@ class IngestionEngine:
         print(f"Ingested {url} -> {count} chunks added.")
         return count
 
+    def close(self):
+        if hasattr(self, "conn") and self.conn:
+            try:
+                self.conn.close()
+            except Exception:
+                pass
+
 
 def run_self_test():
-    """Verify idempotency and robots handling."""
+    """Verify idempotency, unique ingestion, and robots handling in an isolated test harness."""
     print("=== Running IngestionEngine Self-Test ===")
-    engine = IngestionEngine("vectors")
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp_dir:
+        test_index = Path(temp_dir) / "vectors"
+        test_vault = Path(temp_dir) / "vault"
+        engine = IngestionEngine(index_dir=str(test_index), vault_dir=str(test_vault))
 
-    sample_url = "https://example.com/test-doc-self-learning"
-    sample_title = "Self-Learning Systems in Personal Knowledge Bases"
-    sample_text = """
-    # Self-Learning Knowledge Systems
-    
-    Building a personal knowledge retrieval system requires combining lexical search with dense embeddings.
-    When users perform queries, reciprocal rank fusion combines sparse keyword matching with dense semantics.
-    Exact token matching is essential for error logs, identifiers, and version numbers.
-    Over time, knowledge gaps are identified through unanswerable query detection, triggering targeted frontier crawls.
-    """ * 3
+        sample_id = uuid.uuid4().hex[:8]
+        sample_url = f"https://example.com/test-doc-self-learning-{sample_id}"
+        sample_title = f"Self-Learning Systems Test {sample_id}"
+        sample_text = f"""
+        # Self-Learning Knowledge Systems Test {sample_id}
+        
+        Building a personal knowledge retrieval system requires combining lexical search with dense embeddings.
+        When users perform queries, reciprocal rank fusion combines sparse keyword matching with dense semantics.
+        Exact token matching is essential for error logs, identifiers, and version numbers.
+        Over time, knowledge gaps are identified through unanswerable query detection, triggering targeted frontier crawls.
+        """ * 3
 
-    # Test 1: Ingest document
-    c1 = engine.ingest_document(sample_url, sample_title, sample_text, source_kind="test")
-    print(f"First ingestion: {c1} chunks added.")
+        # Test 1: Ingest document (must add chunks)
+        c1 = engine.ingest_document(sample_url, sample_title, sample_text, source_kind="test")
+        print(f"First ingestion: {c1} chunks added.")
+        assert c1 > 0, f"Expected >0 chunks on first ingest, got {c1}"
 
-    # Test 2: Ingest identical content again (must be 0 - idempotency)
-    c2 = engine.ingest_document(sample_url, sample_title, sample_text, source_kind="test")
-    print(f"Second identical ingestion: {c2} chunks added.")
-    assert c2 == 0, f"Expected 0 chunks on duplicate ingest, got {c2}"
-    print("Idempotence verified: PASS")
+        # Test 2: Ingest identical content again (must be 0 - idempotency)
+        c2 = engine.ingest_document(sample_url, sample_title, sample_text, source_kind="test")
+        print(f"Second identical ingestion: {c2} chunks added.")
+        assert c2 == 0, f"Expected 0 chunks on duplicate ingest, got {c2}"
+        print("Idempotence verified: PASS")
+        engine.close()
 
     print("=== Self-Test Passed Successfully ===")
 

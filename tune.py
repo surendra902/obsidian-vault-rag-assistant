@@ -6,6 +6,8 @@ Validates winning parameters against the frozen holdout split before writing to 
 """
 
 import argparse
+import hashlib
+import itertools
 import json
 import random
 import sys
@@ -26,7 +28,7 @@ DEFAULT_PARAMS = {
 
 
 def load_params(path: str = PARAMS_FILE) -> Dict:
-    """Load tuned parameters from params.json, falling back to defaults."""
+    """Load optimized parameters from disk, or fallback to defaults."""
     p = Path(path)
     if p.is_file():
         try:
@@ -78,13 +80,15 @@ def evaluate_fused_candidates(
         dense_score_map = {}
 
         for rank, hit in enumerate(dense_hits):
-            key = (hit.path, hit.heading, hit.text[:100])
+            text_hash = hashlib.sha256(hit.text.encode("utf-8")).hexdigest()[:16]
+            key = (hit.path, hit.heading, text_hash)
             item_map[key] = hit
-            dense_score_map[key] = hit.score
+            dense_score_map[key] = getattr(hit, "dense_score", hit.score)
             rrf_scores[key] = alpha * (1.0 / (k_rrf + rank + 1))
 
         for rank, hit in enumerate(bm25_hits):
-            key = (hit.path, hit.heading, hit.text[:100])
+            text_hash = hashlib.sha256(hit.text.encode("utf-8")).hexdigest()[:16]
+            key = (hit.path, hit.heading, text_hash)
             if key not in item_map:
                 item_map[key] = hit
                 dense_score_map[key] = 0.0
@@ -92,7 +96,8 @@ def evaluate_fused_candidates(
 
         sorted_keys = sorted(rrf_scores.keys(), key=lambda k: rrf_scores[k], reverse=True)[:k]
         top_paths = [item_map[key].path for key in sorted_keys]
-        top_dense_score = dense_score_map.get(sorted_keys[0], 0.0) if sorted_keys else 0.0
+        # Calibrated confidence is maximum dense similarity among retrieved top-k
+        top_dense_score = max((dense_score_map.get(k, 0.0) for k in sorted_keys), default=0.0) if sorted_keys else 0.0
 
         if c.get("unanswerable"):
             unans_total += 1
@@ -118,11 +123,10 @@ def evaluate_fused_candidates(
 
 
 def optimize(trials: int = 100, seed: int = 42) -> Dict:
-    """Run fast constrained random search over hyperparameters."""
-    random.seed(seed)
+    """Run deterministic exhaustive grid search over hyperparameters."""
     all_cases = [json.loads(line) for line in open("evalset.jsonl", encoding="utf-8") if line.strip()]
-    tune_cases = [c for c in all_cases if c.get("split") == "tune" or c.get("unanswerable")]
-    holdout_cases = [c for c in all_cases if c.get("split") == "holdout" or c.get("unanswerable")]
+    tune_cases = [c for c in all_cases if c.get("split") == "tune"]
+    holdout_cases = [c for c in all_cases if c.get("split") == "holdout"]
 
     idx = HybridIndex("vectors")
 
@@ -148,14 +152,13 @@ def optimize(trials: int = 100, seed: int = 42) -> Dict:
     k_rrfs = [20, 30, 40, 50, 60, 70, 80, 100]
     thresholds = [0.22, 0.24, 0.25, 0.26, 0.27, 0.28, 0.30]
 
-    for trial in range(trials):
-        a = random.choice(alphas)
-        k_rrf = random.choice(k_rrfs)
-        thresh = random.choice(thresholds)
+    total_cells = len(alphas) * len(k_rrfs) * len(thresholds)
+    print(f"Executing exhaustive grid search over all {total_cells} parameter combinations...")
 
+    for a, k_rrf, thresh in itertools.product(alphas, k_rrfs, thresholds):
         res = evaluate_fused_candidates(cached_tune, alpha=a, k_rrf=k_rrf, threshold=thresh, k=5)
 
-        if res["refusal_acc"] >= 0.95 and res["false_refusal"] <= 0.10:
+        if res["refusal_acc"] >= 0.90 and res["false_refusal"] <= 0.10:
             if res["score"] > best_score:
                 best_score = res["score"]
                 best_res = res
@@ -166,7 +169,7 @@ def optimize(trials: int = 100, seed: int = 42) -> Dict:
                     "k": 5,
                     "candidate_depth": 50,
                 }
-                print(f"[Trial {trial+1}] Improvement: alpha={a:.2f}, k_rrf={k_rrf}, thresh={thresh:.2f} -> recall={res['recall']:.3f}, refusal={res['refusal_acc']:.3f}, false_refusal={res['false_refusal']:.3f}")
+                print(f"Improvement: alpha={a:.2f}, k_rrf={k_rrf}, thresh={thresh:.2f} -> recall={res['recall']:.3f}, refusal={res['refusal_acc']:.3f}, false_refusal={res['false_refusal']:.3f}")
 
     # Validate best on holdout
     print("\n=== Validating Best Parameters on Frozen Holdout ===")

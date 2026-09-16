@@ -2,13 +2,14 @@
   "mode": "dense",
   "split": "tune",
   "k": 5,
-  "threshold": 0.27,
+  "threshold": 0.22,
   "recall": 0.9222222222222223,
   "recall_ci": [
     0.8480596940416417,
     0.9618156704022723
   ],
-  "refusal_acc": 0.95,
+  "refusal_acc": 1.0,
+  "false_refusal": 0.03333333333333333,
   "queries": {
     "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?": {
       "hit": true,
@@ -21,6 +22,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.49300456047058105,
+      "top_conf": 0.49300456047058105,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -35,6 +38,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.4815908670425415,
+      "top_conf": 0.4815908670425415,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -49,6 +54,8 @@
         "projects/decision-log.md"
       ],
       "top_score": 0.3831632137298584,
+      "top_conf": 0.3831632137298584,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -63,6 +70,8 @@
         "projects/decision-log.md"
       ],
       "top_score": 0.4447259306907654,
+      "top_conf": 0.4447259306907654,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -77,6 +86,8 @@
         "projects/reading-list.md"
       ],
       "top_score": 0.407390296459198,
+      "top_conf": 0.407390296459198,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -91,6 +102,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.5544231534004211,
+      "top_conf": 0.5544231534004211,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -105,6 +118,8 @@
         "prompting/few-shot-prompting.md"
       ],
       "top_score": 0.5087120532989502,
+      "top_conf": 0.5087120532989502,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -119,6 +134,8 @@
         "productivity/weekly-review.md"
       ],
       "top_score": 0.49726030230522156,
+      "top_conf": 0.49726030230522156,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -133,6 +150,8 @@
         "books/thinking-fast-and-slow.md"
       ],
       "top_score": 0.592968225479126,
+      "top_conf": 0.592968225479126,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -147,6 +166,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.662146806716919,
+      "top_conf": 0.662146806716919,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -161,6 +182,8 @@
         "projects/reading-list.md"
       ],
       "top_score": 0.5899838805198669,
+      "top_conf": 0.5899838805198669,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -175,6 +198,8 @@
         "books/how-to-take-smart-notes.md"
       ],
       "top_score": 0.3201902508735657,
+      "top_conf": 0.3201902508735657,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -189,6 +214,8 @@
         "productivity/weekly-review.md"
       ],
       "top_score": 0.6784170866012573,
+      "top_conf": 0.6784170866012573,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -203,6 +230,8 @@
         "books/getting-things-done.md"
       ],
       "top_score": 0.6787969470024109,
+      "top_conf": 0.6787969470024109,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -217,6 +246,8 @@
         "prompting/system-prompts.md"
       ],
       "top_score": 0.7633498311042786,
+      "top_conf": 0.7633498311042786,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -231,6 +262,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.5485223531723022,
+      "top_conf": 0.5485223531723022,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -245,6 +278,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.42128804326057434,
+      "top_conf": 0.42128804326057434,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -259,6 +294,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.5530630946159363,
+      "top_conf": 0.5530630946159363,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -273,6 +310,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.6225946545600891,
+      "top_conf": 0.6225946545600891,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -287,6 +326,8 @@
         "rag/evaluating-rag-systems.md"
       ],
       "top_score": 0.6201412081718445,
+      "top_conf": 0.6201412081718445,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -301,6 +342,8 @@
         "obsidian/obsidian-basics.md"
       ],
       "top_score": 0.6395919919013977,
+      "top_conf": 0.6395919919013977,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -315,6 +358,8 @@
         "obsidian/obsidian-basics.md"
       ],
       "top_score": 0.5166178345680237,
+      "top_conf": 0.5166178345680237,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -329,6 +374,8 @@
         "projects/reading-list.md"
       ],
       "top_score": 0.5613459944725037,
+      "top_conf": 0.5613459944725037,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -343,6 +390,8 @@
         "prompting/system-prompts.md"
       ],
       "top_score": 0.5511821508407593,
+      "top_conf": 0.5511821508407593,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -357,6 +406,8 @@
         "prompting/evals-for-prompts.md"
       ],
       "top_score": 0.6835892200469971,
+      "top_conf": 0.6835892200469971,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -371,6 +422,8 @@
         "prompting/prompt-structure.md"
       ],
       "top_score": 0.4173101782798767,
+      "top_conf": 0.4173101782798767,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -385,6 +438,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.7900787591934204,
+      "top_conf": 0.7900787591934204,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -399,6 +454,8 @@
         "projects/reading-list.md"
       ],
       "top_score": 0.6404081583023071,
+      "top_conf": 0.6404081583023071,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -413,6 +470,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.46559715270996094,
+      "top_conf": 0.46559715270996094,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -427,6 +486,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.5254050493240356,
+      "top_conf": 0.5254050493240356,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -441,6 +502,8 @@
         "prompting/prompt-structure.md"
       ],
       "top_score": 0.30767661333084106,
+      "top_conf": 0.30767661333084106,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -455,6 +518,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.5613023042678833,
+      "top_conf": 0.5613023042678833,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -469,6 +534,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.412462443113327,
+      "top_conf": 0.412462443113327,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -483,6 +550,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.5159363746643066,
+      "top_conf": 0.5159363746643066,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -497,6 +566,8 @@
         "prompting/system-prompts.md"
       ],
       "top_score": 0.6807312369346619,
+      "top_conf": 0.6807312369346619,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -511,6 +582,8 @@
         "projects/reading-list.md"
       ],
       "top_score": 0.7648860812187195,
+      "top_conf": 0.7648860812187195,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -525,6 +598,8 @@
         "obsidian/wikilinks-and-backlinks.md"
       ],
       "top_score": 0.49655479192733765,
+      "top_conf": 0.49655479192733765,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -539,6 +614,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.6668328046798706,
+      "top_conf": 0.6668328046798706,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -553,6 +630,8 @@
         "rag/hallucination-and-grounding.md"
       ],
       "top_score": 0.6099388003349304,
+      "top_conf": 0.6099388003349304,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -567,6 +646,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.661632776260376,
+      "top_conf": 0.661632776260376,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -581,6 +662,8 @@
         "obsidian/obsidian-basics.md"
       ],
       "top_score": 0.6802457571029663,
+      "top_conf": 0.6802457571029663,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -595,6 +678,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.5984046459197998,
+      "top_conf": 0.5984046459197998,
+      "false_refusal": false,
       "split": "tune",
       "kind": "standard"
     },
@@ -609,6 +694,8 @@
         "rag/citation-patterns.md"
       ],
       "top_score": 0.4221752882003784,
+      "top_conf": 0.4221752882003784,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -623,6 +710,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.3483414053916931,
+      "top_conf": 0.3483414053916931,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -637,6 +726,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.39522966742515564,
+      "top_conf": 0.39522966742515564,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -651,6 +742,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.5079555511474609,
+      "top_conf": 0.5079555511474609,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -665,6 +758,8 @@
         "books/thinking-fast-and-slow.md"
       ],
       "top_score": 0.4879336953163147,
+      "top_conf": 0.4879336953163147,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -679,6 +774,8 @@
         "books/how-to-take-smart-notes.md"
       ],
       "top_score": 0.6028417348861694,
+      "top_conf": 0.6028417348861694,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -693,6 +790,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.5432053804397583,
+      "top_conf": 0.5432053804397583,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -707,6 +806,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.37911415100097656,
+      "top_conf": 0.37911415100097656,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -721,6 +822,8 @@
         "prompting/few-shot-prompting.md"
       ],
       "top_score": 0.6078196167945862,
+      "top_conf": 0.6078196167945862,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -735,6 +838,8 @@
         "rag/citation-patterns.md"
       ],
       "top_score": 0.4097527861595154,
+      "top_conf": 0.4097527861595154,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -749,6 +854,8 @@
         "books/getting-things-done.md"
       ],
       "top_score": 0.5359808802604675,
+      "top_conf": 0.5359808802604675,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -763,6 +870,8 @@
         "rag/evaluating-rag-systems.md"
       ],
       "top_score": 0.3122637867927551,
+      "top_conf": 0.3122637867927551,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -777,6 +886,8 @@
         "books/getting-things-done.md"
       ],
       "top_score": 0.5228161215782166,
+      "top_conf": 0.5228161215782166,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -791,6 +902,8 @@
         "productivity/weekly-review.md"
       ],
       "top_score": 0.3971465826034546,
+      "top_conf": 0.3971465826034546,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -805,6 +918,8 @@
         "books/how-to-take-smart-notes.md"
       ],
       "top_score": 0.4355570673942566,
+      "top_conf": 0.4355570673942566,
+      "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
     },
@@ -819,6 +934,8 @@
         "obsidian/vault-organization.md"
       ],
       "top_score": 0.544263482093811,
+      "top_conf": 0.544263482093811,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -833,6 +950,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.6900241374969482,
+      "top_conf": 0.6900241374969482,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -847,6 +966,8 @@
         "productivity/para-method.md"
       ],
       "top_score": 0.5356199145317078,
+      "top_conf": 0.5356199145317078,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -861,6 +982,8 @@
         "rag/what-is-rag.md"
       ],
       "top_score": 0.6974123120307922,
+      "top_conf": 0.6974123120307922,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -875,6 +998,8 @@
         "rag/vector-similarity-search.md"
       ],
       "top_score": 0.6360341906547546,
+      "top_conf": 0.6360341906547546,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -889,6 +1014,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.5333192348480225,
+      "top_conf": 0.5333192348480225,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -903,6 +1030,8 @@
         "productivity/weekly-review.md"
       ],
       "top_score": 0.4734964966773987,
+      "top_conf": 0.4734964966773987,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -917,6 +1046,8 @@
         "productivity/para-method.md"
       ],
       "top_score": 0.48219841718673706,
+      "top_conf": 0.48219841718673706,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -931,6 +1062,8 @@
         "obsidian/wikilinks-and-backlinks.md"
       ],
       "top_score": 0.45322638750076294,
+      "top_conf": 0.45322638750076294,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -945,6 +1078,8 @@
         "obsidian/zettelkasten.md"
       ],
       "top_score": 0.5954538583755493,
+      "top_conf": 0.5954538583755493,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -959,6 +1094,8 @@
         "prompting/system-prompts.md"
       ],
       "top_score": 0.6657737493515015,
+      "top_conf": 0.6657737493515015,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -973,6 +1110,8 @@
         "rag/hallucination-and-grounding.md"
       ],
       "top_score": 0.6440191864967346,
+      "top_conf": 0.6440191864967346,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -987,6 +1126,8 @@
         "rag/hybrid-search-bm25.md"
       ],
       "top_score": 0.6329529881477356,
+      "top_conf": 0.6329529881477356,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -1001,6 +1142,8 @@
         "rag/hallucination-and-grounding.md"
       ],
       "top_score": 0.41723889112472534,
+      "top_conf": 0.41723889112472534,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -1015,6 +1158,8 @@
         "prompting/evals-for-prompts.md"
       ],
       "top_score": 0.5188171863555908,
+      "top_conf": 0.5188171863555908,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -1029,6 +1174,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.6007962226867676,
+      "top_conf": 0.6007962226867676,
+      "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
@@ -1043,6 +1190,8 @@
         "rag/hybrid-search-bm25.md"
       ],
       "top_score": 0.1428017020225525,
+      "top_conf": 0.1428017020225525,
+      "false_refusal": true,
       "split": "tune",
       "kind": "exact"
     },
@@ -1057,6 +1206,8 @@
         "prompting/few-shot-prompting.md"
       ],
       "top_score": 0.5013233423233032,
+      "top_conf": 0.5013233423233032,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1071,6 +1222,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.5440068244934082,
+      "top_conf": 0.5440068244934082,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1085,6 +1238,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.2761315703392029,
+      "top_conf": 0.2761315703392029,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1099,6 +1254,8 @@
         "rag/chunking-strategies.md"
       ],
       "top_score": 0.6069947481155396,
+      "top_conf": 0.6069947481155396,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1113,6 +1270,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.5267069339752197,
+      "top_conf": 0.5267069339752197,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1127,6 +1286,8 @@
         "productivity/para-method.md"
       ],
       "top_score": 0.4432889521121979,
+      "top_conf": 0.4432889521121979,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1141,6 +1302,8 @@
         "productivity/inbox-zero.md"
       ],
       "top_score": 0.15118122100830078,
+      "top_conf": 0.15118122100830078,
+      "false_refusal": true,
       "split": "tune",
       "kind": "exact"
     },
@@ -1155,6 +1318,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.14079350233078003,
+      "top_conf": 0.14079350233078003,
+      "false_refusal": true,
       "split": "tune",
       "kind": "exact"
     },
@@ -1169,6 +1334,8 @@
         "productivity/inbox-zero.md"
       ],
       "top_score": 0.6556359529495239,
+      "top_conf": 0.6556359529495239,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1183,6 +1350,8 @@
         "projects/project-rag-assistant.md"
       ],
       "top_score": 0.3184204697608948,
+      "top_conf": 0.3184204697608948,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1197,6 +1366,8 @@
         "prompting/prompt-structure.md"
       ],
       "top_score": 0.31644153594970703,
+      "top_conf": 0.31644153594970703,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1211,6 +1382,8 @@
         "productivity/para-method.md"
       ],
       "top_score": 0.31003814935684204,
+      "top_conf": 0.31003814935684204,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1225,6 +1398,8 @@
         "productivity/deep-work.md"
       ],
       "top_score": 0.34763485193252563,
+      "top_conf": 0.34763485193252563,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1239,6 +1414,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.43125325441360474,
+      "top_conf": 0.43125325441360474,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1253,6 +1430,8 @@
         "projects/decision-log.md"
       ],
       "top_score": 0.43218863010406494,
+      "top_conf": 0.43218863010406494,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
@@ -1267,6 +1446,8 @@
         "rag/embedding-models.md"
       ],
       "top_score": 0.5405168533325195,
+      "top_conf": 0.5405168533325195,
+      "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     }

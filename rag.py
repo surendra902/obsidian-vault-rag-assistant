@@ -4,6 +4,7 @@ import json
 import os
 from dataclasses import dataclass
 from pathlib import Path
+from typing import Optional
 
 import numpy as np
 
@@ -40,6 +41,8 @@ class Hit:
     text: str
     tags: list
     score: float
+    dense_score: Optional[float] = None
+    bm25_score: Optional[float] = None
     source_url: str = ""
     provenance: str = "primary"
     ingested_at: str = ""
@@ -71,12 +74,15 @@ class VaultIndex:
             chunk = self.chunks[i]
             if exclude_derived and chunk.get("provenance") == "derived":
                 continue
+            sc = float(scores[i])
             hit = Hit(
                 path=chunk.get("path", ""),
                 heading=chunk.get("heading", ""),
                 text=chunk.get("text", ""),
                 tags=chunk.get("tags", []),
-                score=float(scores[i]),
+                score=sc,
+                dense_score=sc,
+                bm25_score=0.0,
                 source_url=chunk.get("source_url", ""),
                 provenance=chunk.get("provenance", "primary"),
                 ingested_at=chunk.get("ingested_at", ""),

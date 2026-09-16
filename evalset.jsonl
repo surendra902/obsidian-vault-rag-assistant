@@ -83,7 +83,7 @@
 {"q": "What are the five actions in Merlin Mann inbox zero pipeline: Delete, Delegate, Respond, Defer, Archive?", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "exact"}
 {"q": "David Allen open loops", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "exact"}
 {"q": "System 1 silent substitution", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
-{"q": "Sönke Ahrens slip-box deposit", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "exact"}
+{"q": "S\u00f6nke Ahrens slip-box deposit", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "exact"}
 {"q": "Cal Newport fixed-schedule productivity", "expect_note": "productivity/deep-work.md", "split": "tune", "kind": "exact"}
 {"q": "HNSW graph indexing versus flat numpy dot product", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "exact"}
 {"q": "Reciprocal rank fusion constant k=60", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
@@ -118,24 +118,23 @@
 {"q": "Why should folders only answer 'where does this live' rather than topical tags?", "expect_note": "obsidian/vault-organization.md", "split": "holdout", "kind": "standard"}
 {"q": "What query language is used by Dataview inside fenced markdown code blocks?", "expect_note": "obsidian/dataview-plugin.md", "split": "holdout", "kind": "exact"}
 {"q": "Why local-first plain text storage guarantees software independence for personal vaults", "expect_note": "obsidian/obsidian-basics.md", "split": "holdout", "kind": "paraphrase"}
-{"q": "What is the recipe for banana bread?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "When did the Roman Empire fall?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is the melting point of aluminum?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do I change a car's engine oil?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is my WiFi password?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do I train a transformer model on 8 H100 GPUs using Megatron-LM?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is the current stock price of Apple?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "Who won the 2022 FIFA World Cup final in Qatar?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do I make sourdough bread from scratch with active starter?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is the capital city of Madagascar?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How to configure a Kubernetes ingress controller using Traefik and cert-manager?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What are the common medical symptoms of acute appendicitis?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do you replace front disc brake pads on a 2018 Honda Civic?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How does Shor's quantum algorithm factor large integers in polynomial time?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What are the secret chemical ingredients in Coca-Cola syrup?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What was the official census population of Tokyo in 2024?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do I finger and strum a D minor seventh chord on guitar?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What was the comprehensive movie plot and ending explanation of Inception?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "How do I register for VAT and file quarterly income taxes in Germany as an expat?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is the exact speed of light in a vacuum in meters per second?", "unanswerable": true, "kind": "unanswerable"}
-{"q": "What is the architecture of an asynchronous actor model in distributed systems?", "expect_note": "web/distributed-actor-model-architecture.md", "split": "tune", "source": "mined", "kind": "gap_closed", "mined_at": "2026-09-16T04:10:38.045947+00:00"}
+{"q": "What is the recipe for banana bread?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "When did the Roman Empire fall?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "What is the melting point of aluminum?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "How do I change a car's engine oil?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "What is my WiFi password?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "How do I train a transformer model on 8 H100 GPUs using Megatron-LM?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "What is the current stock price of Apple?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "Who won the 2022 FIFA World Cup final in Qatar?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "How do I make sourdough bread from scratch with active starter?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "What is the capital city of Madagascar?", "unanswerable": true, "kind": "unanswerable", "split": "tune"}
+{"q": "How to configure a Kubernetes ingress controller using Traefik and cert-manager?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "What are the common medical symptoms of acute appendicitis?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "How do you replace front disc brake pads on a 2018 Honda Civic?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "How does Shor's quantum algorithm factor large integers in polynomial time?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "What are the secret chemical ingredients in Coca-Cola syrup?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "What was the official census population of Tokyo in 2024?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "How do I finger and strum a D minor seventh chord on guitar?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "What was the comprehensive movie plot and ending explanation of Inception?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "How do I register for VAT and file quarterly income taxes in Germany as an expat?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}
+{"q": "What is the exact speed of light in a vacuum in meters per second?", "unanswerable": true, "kind": "unanswerable", "split": "holdout"}

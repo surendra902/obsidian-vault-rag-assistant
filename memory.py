@@ -11,6 +11,8 @@ Guards:
 import hashlib
 import json
 import re
+import shutil
+import tempfile
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Dict, List, Optional, Tuple
@@ -169,41 +171,58 @@ class MemoryManager:
 
 
 def run_self_test():
-    """Verify memory write-back, sole-citation guard, and lineage invalidation."""
+    """Verify memory write-back, sole-citation guard, and lineage invalidation in an isolated test harness."""
     print("=== Running MemoryManager Self-Test ===")
-    mem = MemoryManager("vectors", "demo_vault")
+    with tempfile.TemporaryDirectory(ignore_cleanup_errors=True) as temp_dir:
+        test_dir = Path(temp_dir)
+        test_vectors = str(test_dir / "vectors")
+        test_vault = str(test_dir / "vault")
+        shutil.copytree("vectors", test_vectors)
+        shutil.copytree("demo_vault", test_vault)
 
-    # Guard Test 1: Sole Citation Guard
-    derived_only_citations = [{"provenance": "derived", "path": "derived/memo.md"}]
-    mixed_citations = [{"provenance": "derived", "path": "derived/memo.md"}, {"provenance": "primary", "path": "books/getting-things-done.md"}]
-    assert mem.validate_citations(derived_only_citations) is False, "Sole citation guard failed: should reject derived-only"
-    assert mem.validate_citations(mixed_citations) is True, "Sole citation guard failed: should accept with primary source"
-    print("Sole citation guard verified: PASS")
+        mem = MemoryManager(test_vectors, test_vault)
 
-    # Test 2: Write derived answer
-    q = "What is the two-minute rule in personal workflow?"
-    ans = "In David Allen's Getting Things Done, if an action takes under two minutes, execute it immediately."
-    rec = mem.save_derived_answer(q, ans, ["books/getting-things-done.md"])
-    assert rec is not None, "Failed to save derived memory"
-    print("Derived answer indexed with parent lineage: PASS")
+        # Guard Test 1: Sole Citation Guard
+        derived_only_citations = [{"provenance": "derived", "path": "derived/memo.md"}]
+        mixed_citations = [{"provenance": "derived", "path": "derived/memo.md"}, {"provenance": "primary", "path": "books/getting-things-done.md"}]
+        assert mem.validate_citations(derived_only_citations) is False, "Sole citation guard failed: should reject derived-only"
+        assert mem.validate_citations(mixed_citations) is True, "Sole citation guard failed: should accept with primary source"
+        print("Sole citation guard verified: PASS")
 
-    # Test 3: Lineage check with unchanged parent
-    purged_unchanged = mem.invalidate_stale_memories()
-    assert purged_unchanged == 0, f"Expected 0 purges on unchanged parent, got {purged_unchanged}"
-    print("Clean lineage integrity verified: PASS")
+        # Test 2: Write derived answer
+        q = "What is the two-minute rule in personal workflow?"
+        ans = "In David Allen's Getting Things Done, if an action takes under two minutes, execute it immediately."
+        rec = mem.save_derived_answer(q, ans, ["books/getting-things-done.md"])
+        assert rec is not None, "Failed to save derived memory"
+        print("Derived answer indexed with parent lineage: PASS")
 
-    # Test 4: Lineage invalidation check by mutating parent hash in memory record
-    chunks = [json.loads(line) for line in mem.chunks_file.read_text(encoding="utf-8").splitlines() if line]
-    for c in chunks:
-        if c.get("path") == rec["path"]:
-            c["derived_from_hashes"]["books/getting-things-done.md"] = "fake_stale_hash_12345"
-    with open(mem.chunks_file, "w", encoding="utf-8") as f:
+        # Contamination check: actively verify --exclude-derived on index with real derived chunk
+        from search import HybridIndex
+        idx = HybridIndex(test_vectors)
+        hits_incl = idx.search(q, k=5, exclude_derived=False)
+        hits_excl = idx.search(q, k=5, exclude_derived=True)
+        assert any(h.provenance == "derived" for h in hits_incl), "Expected derived chunk in hits when exclude_derived=False"
+        assert not any(h.provenance == "derived" for h in hits_excl), "Expected zero derived chunks in hits when exclude_derived=True"
+        print("Contamination filter (--exclude-derived) actively verified on real derived chunk: PASS")
+        idx.close()
+
+        # Test 3: Lineage check with unchanged parent
+        purged_unchanged = mem.invalidate_stale_memories()
+        assert purged_unchanged == 0, f"Expected 0 purges on unchanged parent, got {purged_unchanged}"
+        print("Clean lineage integrity verified: PASS")
+
+        # Test 4: Lineage invalidation check by mutating parent hash in memory record
+        chunks = [json.loads(line) for line in mem.chunks_file.read_text(encoding="utf-8").splitlines() if line]
         for c in chunks:
-            f.write(json.dumps(c, ensure_ascii=False) + "\n")
+            if c.get("path") == rec["path"]:
+                c["derived_from_hashes"]["books/getting-things-done.md"] = "fake_stale_hash_12345"
+        with open(mem.chunks_file, "w", encoding="utf-8") as f:
+            for c in chunks:
+                f.write(json.dumps(c, ensure_ascii=False) + "\n")
 
-    purged_stale = mem.invalidate_stale_memories()
-    assert purged_stale == 1, f"Expected 1 purge on stale parent, got {purged_stale}"
-    print("Automatic lineage invalidation & purge verified: PASS")
+        purged_stale = mem.invalidate_stale_memories()
+        assert purged_stale == 1, f"Expected 1 purge on stale parent, got {purged_stale}"
+        print("Automatic lineage invalidation & purge verified: PASS")
 
     print("=== MemoryManager Self-Test Passed Successfully ===")
 
