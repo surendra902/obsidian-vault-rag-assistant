@@ -49,30 +49,30 @@ class FTSIndex:
         """Create and populate FTS5 table if missing or outdated."""
         with self._lock:
             cur = self.conn.cursor()
-        cur.execute(
-            """
-            CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts USING fts5(
-                chunk_id UNINDEXED,
-                path,
-                heading,
-                text,
-                tags,
-                tokenize = 'porter unicode61'
-            );
-            """
-        )
-        cur.execute("SELECT count(*) FROM chunks_fts")
-        count = cur.fetchone()[0]
+            cur.execute(
+                """
+                CREATE VIRTUAL TABLE IF NOT EXISTS chunks_fts USING fts5(
+                    chunk_id UNINDEXED,
+                    path,
+                    heading,
+                    text,
+                    tags,
+                    tokenize = 'porter unicode61'
+                );
+                """
+            )
+            cur.execute("SELECT count(*) FROM chunks_fts")
+            count = cur.fetchone()[0]
 
-        chunks = [json.loads(line) for line in self.chunks_path.read_text(encoding="utf-8").splitlines() if line]
-        if count != len(chunks):
-            cur.execute("DELETE FROM chunks_fts")
-            for idx, c in enumerate(chunks):
-                cur.execute(
-                    "INSERT INTO chunks_fts (chunk_id, path, heading, text, tags) VALUES (?, ?, ?, ?, ?)",
-                    (idx, c["path"], c["heading"], c["text"], " ".join(c.get("tags", [])))
-                )
-            self.conn.commit()
+            chunks = [json.loads(line) for line in self.chunks_path.read_text(encoding="utf-8").splitlines() if line]
+            if count != len(chunks):
+                cur.execute("DELETE FROM chunks_fts")
+                for idx, c in enumerate(chunks):
+                    cur.execute(
+                        "INSERT INTO chunks_fts (chunk_id, path, heading, text, tags) VALUES (?, ?, ?, ?, ?)",
+                        (idx, c["path"], c["heading"], c["text"], " ".join(c.get("tags", [])))
+                    )
+                self.conn.commit()
 
     def search(self, query: str, k: int = 50) -> List[Hit]:
         """Perform BM25 search over chunks."""

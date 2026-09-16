@@ -76,13 +76,13 @@ LLM_MODELS = [
 
 client = oai = None
 if LLM_PROVIDER in ("openrouter", "openai-compatible") and LLM_KEY:
-    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL)
+    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL, timeout=15.0)
     PROVIDER, MODEL = "openai-compatible", LLM_MODELS[0]
 elif ANTHROPIC_KEY and LLM_PROVIDER != "openrouter":
     client = anthropic.Anthropic(api_key=ANTHROPIC_KEY, base_url="https://api.anthropic.com")
     PROVIDER, MODEL = "anthropic", ANTHROPIC_MODEL
 elif LLM_KEY:
-    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL)
+    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL, timeout=15.0)
     PROVIDER, MODEL = "openai-compatible", LLM_MODELS[0]
 else:
     PROVIDER, MODEL = "none", None
@@ -173,8 +173,12 @@ def _chat(messages, tools=None, max_tokens=4000):
         if tools:
             kwargs["tools"] = tools
         try:
-            choice = oai.chat.completions.create(**kwargs).choices[0]
-        except openai.APIStatusError as e:
+            choice = oai.chat.completions.create(**kwargs, timeout=15.0).choices[0]
+        except (openai.APIStatusError, openai.APITimeoutError) as e:
+            if isinstance(e, openai.APITimeoutError):
+                last = f"{model}: timeout"
+                time.sleep(0.5)
+                continue
             if e.status_code in RETRY_STATUS:
                 last = f"{model}: HTTP {e.status_code}"
                 time.sleep(0.5)
@@ -530,7 +534,8 @@ def healthz():
         out["models"] = LLM_MODELS
         try:
             oai.chat.completions.create(model=LLM_MODELS[0], max_tokens=1,
-                                        messages=[{"role": "user", "content": "ping"}])
+                                        messages=[{"role": "user", "content": "ping"}],
+                                        timeout=5.0)
             out["api"] = "ok"
         except openai.APIError as e:
             out["api"] = f"error: {type(e).__name__}"

@@ -223,14 +223,15 @@ def main():
             old_vecs = np.load(vectors_file)["vectors"]
             if len(old) == len(old_vecs):
                 keep = [i for i, c in enumerate(old) if c.get("path") not in vault_paths]
-                kept_vecs, resplit = [], []
+                kept_chunks, kept_vecs = [], []
+                resplit = []
                 for i in keep:
                     c = old[i]
                     with _measure_tokens(tokenizer):
                         fits = len(tokenizer(embed_text(c))["input_ids"]) <= MAX_SEQ_TOKENS
                     if fits:
                         kept_vecs.append(old_vecs[i])
-                        chunks.append(c)
+                        kept_chunks.append(c)
                     else:
                         stem = Path(c["path"]).stem.replace("-", " ")
                         pieces = make_chunks(c["text"], c.get("tags", []), tokenizer, stem) or [c["text"]]
@@ -240,15 +241,16 @@ def main():
                             if len(pieces) > 1:
                                 rec["heading"] = f"{c['heading']} (part {j + 1}/{len(pieces)})"
                             resplit.append(rec)
+                if kept_vecs:
+                    chunks.extend(kept_chunks)
+                    vectors = np.vstack([vectors, np.array(kept_vecs, dtype=np.float32)])
+                    print(f"preserved {len(kept_vecs)} ingested/derived chunk(s) with no vault file")
                 if resplit:
+                    chunks.extend(resplit)
                     vectors = np.vstack([vectors, model.encode(
                         [embed_text(c) for c in resplit], normalize_embeddings=True,
                         batch_size=64, show_progress_bar=False).astype(np.float32)])
-                    chunks.extend(resplit)
                     print(f"re-split {len(resplit)} over-budget preserved chunk(s) into token-window pieces")
-                if kept_vecs:
-                    vectors = np.vstack([vectors, np.array(kept_vecs, dtype=np.float32)])
-                    print(f"preserved {len(kept_vecs)} ingested/derived chunk(s) with no vault file")
         except Exception as e:
             print(f"WARNING: could not preserve ingested chunks: {e}")
 

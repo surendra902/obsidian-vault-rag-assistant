@@ -126,8 +126,8 @@ def evaluate_fused_candidates(
     }
 
 
-def optimize(trials: int = 100, seed: int = 42) -> Dict:
-    """Run deterministic exhaustive grid search over hyperparameters."""
+def optimize() -> Dict:
+    """Run deterministic exhaustive grid search over all 392 hyperparameter combinations."""
     all_cases = [json.loads(line) for line in open("evalset.jsonl", encoding="utf-8") if line.strip()]
     tune_cases = [c for c in all_cases if c.get("split") == "tune"]
     holdout_cases = [c for c in all_cases if c.get("split") == "holdout"]
@@ -229,7 +229,6 @@ def optimize(trials: int = 100, seed: int = 42) -> Dict:
 
 
 if __name__ == "__main__":
-    ap = argparse.ArgumentParser(description="Tune search hyperparameters.")
-    ap.add_argument("--trials", type=int, default=100, help="Number of random search trials")
+    ap = argparse.ArgumentParser(description="Tune search hyperparameters via exhaustive grid search.")
     args = ap.parse_args()
-    optimize(trials=args.trials)
+    optimize()
