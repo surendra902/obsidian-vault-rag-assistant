@@ -78,34 +78,48 @@ class MemoryManager:
             return None
 
         stem = re.sub(r"[^\w\s-]", "", question).strip().replace(" ", "-").lower()[:40] or "memory"
-        chunk_record = {
-            "path": f"derived/{stem}.md",
-            "heading": f"Q: {question}",
-            "text": distilled_answer.strip(),
-            "tags": ["derived", "memory"],
-            "provenance": "derived",
-            "derived_from_hashes": parent_hashes,
-            "source_paths": primary_source_paths,
-            "created_at": datetime.now(timezone.utc).isoformat(),
-        }
 
-        # Encode new vector
-        new_vec = self.model.encode(
-            [embed_text(chunk_record)],
+        # A derived answer is arbitrary LLM output and can run past MiniLM's
+        # 256-token window. Split it with the same token-budget splitter as the
+        # vault indexer -- otherwise the embedding silently truncates mid-sentence
+        # and the memory is recalled by a prefix, not by what it actually says.
+        from index import make_chunks
+        answer = distilled_answer.strip()
+        # make_chunks drops fragments under MIN_CHUNK_WORDS, but a short answer
+        # still fits the token window in one piece -- keep it verbatim.
+        pieces = make_chunks(answer, [], self.model.tokenizer, stem) or [{"text": answer}]
+        chunk_records = []
+        for i, piece in enumerate(pieces):
+            suffix = f" (part {i + 1}/{len(pieces)})" if len(pieces) > 1 else ""
+            chunk_records.append({
+                "path": f"derived/{stem}.md",
+                "heading": f"Q: {question}{suffix}",
+                "text": piece.get("text", ""),
+                "tags": ["derived", "memory"],
+                "provenance": "derived",
+                "derived_from_hashes": parent_hashes,
+                "source_paths": primary_source_paths,
+                "created_at": datetime.now(timezone.utc).isoformat(),
+            })
+
+        # Encode new vectors (one per chunk, aligned row-to-line with the appends below)
+        new_vecs = self.model.encode(
+            [embed_text(c) for c in chunk_records],
             normalize_embeddings=True,
             show_progress_bar=False
         ).astype(np.float32)
 
         # Append to chunks.jsonl
         with open(self.chunks_file, "a", encoding="utf-8") as f:
-            f.write(json.dumps(chunk_record, ensure_ascii=False) + "\n")
+            for c in chunk_records:
+                f.write(json.dumps(c, ensure_ascii=False) + "\n")
 
         # Append to vectors.npz
         if self.vectors_file.is_file():
             existing = np.load(self.vectors_file)["vectors"]
-            updated = np.vstack([existing, new_vec])
+            updated = np.vstack([existing, new_vecs])
         else:
-            updated = new_vec
+            updated = new_vecs
         np.savez(self.vectors_file, vectors=updated)
 
         # Re-index FTS5
@@ -113,7 +127,7 @@ class MemoryManager:
         fts = FTSIndex(db_path=f"{self.index_dir}/fts5.db", chunks_path=str(self.chunks_file))
         fts._ensure_index()
 
-        return chunk_record
+        return chunk_records[0]
 
     def invalidate_stale_memories(self) -> int:
         """Scan derived chunks and purge any whose parent documents have changed or were deleted.

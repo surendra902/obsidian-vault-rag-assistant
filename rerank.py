@@ -23,7 +23,10 @@ class CrossEncoderReranker:
     def model(self):
         if self._model is None:
             from sentence_transformers import CrossEncoder
-            self._model = CrossEncoder(self.model_name)
+            # ms-marco-MiniLM-L6-v2 has a 256-token window. Without an explicit
+            # max_length, long chunks are tokenized past the limit and silently
+            # truncated mid-sequence -- the model scores a prefix, not the chunk.
+            self._model = CrossEncoder(self.model_name, max_length=256)
         return self._model
 
     def rerank(

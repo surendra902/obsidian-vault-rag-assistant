@@ -59,6 +59,21 @@ def main():
 
     all_cases = [json.loads(line) for line in open("evalset.jsonl", encoding="utf-8") if line.strip()]
 
+    # Contamination census: --exclude-derived must be a real test, not a
+    # vacuous one. If the index holds no derived chunks the flag excludes
+    # nothing and "zero contamination" would be trivially true -- say so.
+    # If any eval case's expected note IS a derived chunk, that is actual
+    # self-grading contamination and it must be reported loudly.
+    derived_paths = set()
+    chunks_path = Path("vectors/chunks.jsonl")
+    if chunks_path.is_file():
+        for line in chunks_path.read_text(encoding="utf-8").splitlines():
+            if line.strip():
+                c = json.loads(line)
+                if c.get("provenance") == "derived":
+                    derived_paths.add(c.get("path"))
+    contaminated = [c for c in all_cases if c.get("expect_note") in derived_paths]
+
     # Filter by split
     if args.split == "all":
         cases = all_cases
@@ -175,6 +190,19 @@ def main():
         }
         save_path.write_text(json.dumps(save_data, indent=2), encoding="utf-8")
         print(f"\nRun saved to: {save_path}")
+
+    # Contamination verdict: only meaningful when derived chunks exist.
+    if args.exclude_derived or contaminated:
+        print(f"\n=== Contamination Check ===")
+        print(f"derived chunks in index: {len(derived_paths)}")
+        if contaminated:
+            print(f"CONTAMINATION DETECTED: {len(contaminated)} eval case(s) expect a derived chunk:")
+            for c in contaminated[:5]:
+                print(f"  [{c.get('split')}] {c['q'][:70]} -> {c['expect_note']}")
+        elif not derived_paths:
+            print("NOT MEANINGFUL: no derived chunks in the index -- --exclude-derived excludes nothing.")
+        else:
+            print("PASS: derived chunks exist, no eval case expects one.")
 
     floor_recall = 0.85
     floor_refusal = 0.80

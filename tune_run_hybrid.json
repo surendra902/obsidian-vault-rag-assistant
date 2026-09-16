@@ -1,15 +1,15 @@
 {
-  "mode": "dense",
+  "mode": "hybrid",
   "split": "tune",
   "k": 5,
   "threshold": 0.27,
-  "recall": 0.9222222222222223,
+  "recall": 0.9777777777777777,
   "recall_ci": [
-    0.8480596940416417,
-    0.9618156704022723
+    0.9225532261919241,
+    0.9938846862051364
   ],
   "refusal_acc": 1.0,
-  "false_refusal": 0.03333333333333333,
+  "false_refusal": 0.044444444444444446,
   "queries": {
     "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?": {
       "hit": true,
@@ -21,7 +21,7 @@
         "rag/embedding-models.md",
         "rag/embedding-models.md"
       ],
-      "top_score": 0.49300456047058105,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.49300456047058105,
       "false_refusal": false,
       "split": "tune",
@@ -32,12 +32,12 @@
       "expect": "projects/decision-log.md",
       "retrieved": [
         "projects/decision-log.md",
-        "projects/reading-list.md",
+        "projects/decision-log.md",
         "rag/vector-similarity-search.md",
-        "rag/embedding-models.md",
-        "rag/vector-similarity-search.md"
+        "projects/reading-list.md",
+        "projects/decision-log.md"
       ],
-      "top_score": 0.4815908670425415,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.4815908670425415,
       "false_refusal": false,
       "split": "tune",
@@ -47,13 +47,13 @@
       "hit": true,
       "expect": "projects/decision-log.md",
       "retrieved": [
+        "projects/decision-log.md",
         "rag/chunking-strategies.md",
         "projects/decision-log.md",
         "rag/chunking-strategies.md",
-        "rag/evaluating-rag-systems.md",
-        "projects/decision-log.md"
+        "rag/chunking-strategies.md"
       ],
-      "top_score": 0.3831632137298584,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.3831632137298584,
       "false_refusal": false,
       "split": "tune",
@@ -66,10 +66,10 @@
         "projects/decision-log.md",
         "rag/chunking-strategies.md",
         "rag/hybrid-search-bm25.md",
-        "rag/chunking-strategies.md",
-        "projects/decision-log.md"
+        "rag/embedding-models.md",
+        "rag/embedding-models.md"
       ],
-      "top_score": 0.4447259306907654,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.4447259306907654,
       "false_refusal": false,
       "split": "tune",
@@ -79,14 +79,14 @@
       "hit": true,
       "expect": "rag/hybrid-search-bm25.md",
       "retrieved": [
-        "derived/what-is-reciprocal-rank-fusion.md",
+        "rag/hybrid-search-bm25.md",
         "rag/hybrid-search-bm25.md",
         "rag/vector-similarity-search.md",
-        "rag/vector-similarity-search.md",
-        "rag/hybrid-search-bm25.md"
+        "projects/project-rag-assistant.md",
+        "rag/what-is-rag.md"
       ],
-      "top_score": 0.4658011198043823,
-      "top_conf": 0.4658011198043823,
+      "top_score": 0.047619047619047616,
+      "top_conf": 0.407390296459198,
       "false_refusal": false,
       "split": "tune",
       "kind": "exact"
@@ -101,7 +101,7 @@
         "projects/reading-list.md",
         "rag/embedding-models.md"
       ],
-      "top_score": 0.5544231534004211,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5544231534004211,
       "false_refusal": false,
       "split": "tune",
@@ -113,11 +113,11 @@
       "retrieved": [
         "productivity/para-method.md",
         "books/getting-things-done.md",
-        "prompting/few-shot-prompting.md",
         "productivity/para-method.md",
-        "prompting/few-shot-prompting.md"
+        "productivity/para-method.md",
+        "productivity/para-method.md"
       ],
-      "top_score": 0.5087120532989502,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5087120532989502,
       "false_refusal": false,
       "split": "tune",
@@ -130,10 +130,10 @@
         "books/getting-things-done.md",
         "books/getting-things-done.md",
         "books/getting-things-done.md",
-        "productivity/para-method.md",
-        "productivity/weekly-review.md"
+        "productivity/weekly-review.md",
+        "projects/reading-list.md"
       ],
-      "top_score": 0.49726030230522156,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.49726030230522156,
       "false_refusal": false,
       "split": "tune",
@@ -147,9 +147,9 @@
         "projects/reading-list.md",
         "productivity/weekly-review.md",
         "productivity/weekly-review.md",
-        "books/thinking-fast-and-slow.md"
+        "books/getting-things-done.md"
       ],
-      "top_score": 0.592968225479126,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.592968225479126,
       "false_refusal": false,
       "split": "tune",
@@ -163,9 +163,9 @@
         "obsidian/zettelkasten.md",
         "books/how-to-take-smart-notes.md",
         "obsidian/obsidian-basics.md",
-        "obsidian/zettelkasten.md"
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.662146806716919,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.662146806716919,
       "false_refusal": false,
       "split": "tune",
@@ -179,9 +179,9 @@
         "books/how-to-take-smart-notes.md",
         "books/how-to-take-smart-notes.md",
         "books/how-to-take-smart-notes.md",
-        "projects/reading-list.md"
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.5899838805198669,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5899838805198669,
       "false_refusal": false,
       "split": "tune",
@@ -192,12 +192,12 @@
       "expect": "books/thinking-fast-and-slow.md",
       "retrieved": [
         "books/thinking-fast-and-slow.md",
-        "projects/reading-list.md",
-        "projects/reading-list.md",
         "prompting/few-shot-prompting.md",
-        "books/how-to-take-smart-notes.md"
+        "projects/reading-list.md",
+        "projects/reading-list.md",
+        "prompting/few-shot-prompting.md"
       ],
-      "top_score": 0.3201902508735657,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.3201902508735657,
       "false_refusal": false,
       "split": "tune",
@@ -210,10 +210,10 @@
         "obsidian/dataview-plugin.md",
         "obsidian/dataview-plugin.md",
         "obsidian/dataview-plugin.md",
-        "obsidian/dataview-plugin.md",
-        "productivity/weekly-review.md"
+        "obsidian/vault-organization.md",
+        "obsidian/dataview-plugin.md"
       ],
-      "top_score": 0.6784170866012573,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6784170866012573,
       "false_refusal": false,
       "split": "tune",
@@ -226,10 +226,10 @@
         "productivity/inbox-zero.md",
         "productivity/inbox-zero.md",
         "productivity/inbox-zero.md",
-        "productivity/inbox-zero.md",
-        "books/getting-things-done.md"
+        "books/getting-things-done.md",
+        "productivity/inbox-zero.md"
       ],
-      "top_score": 0.6787969470024109,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6787969470024109,
       "false_refusal": false,
       "split": "tune",
@@ -243,9 +243,9 @@
         "prompting/prompt-structure.md",
         "prompting/system-prompts.md",
         "prompting/system-prompts.md",
-        "prompting/system-prompts.md"
+        "prompting/few-shot-prompting.md"
       ],
-      "top_score": 0.7633498311042786,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.7633498311042786,
       "false_refusal": false,
       "split": "tune",
@@ -256,12 +256,12 @@
       "expect": "rag/embedding-models.md",
       "retrieved": [
         "rag/embedding-models.md",
+        "rag/embedding-models.md",
         "projects/decision-log.md",
-        "rag/embedding-models.md",
-        "rag/embedding-models.md",
-        "projects/project-rag-assistant.md"
+        "projects/project-rag-assistant.md",
+        "rag/embedding-models.md"
       ],
-      "top_score": 0.5485223531723022,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.5485223531723022,
       "false_refusal": false,
       "split": "tune",
@@ -271,13 +271,13 @@
       "hit": true,
       "expect": "rag/chunking-strategies.md",
       "retrieved": [
-        "rag/chunking-strategies.md",
-        "rag/chunking-strategies.md",
-        "rag/embedding-models.md",
         "projects/decision-log.md",
-        "rag/chunking-strategies.md"
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "projects/project-rag-assistant.md",
+        "obsidian/wikilinks-and-backlinks.md"
       ],
-      "top_score": 0.42128804326057434,
+      "top_score": 0.04464285714285714,
       "top_conf": 0.42128804326057434,
       "false_refusal": false,
       "split": "tune",
@@ -290,10 +290,10 @@
         "rag/chunking-strategies.md",
         "rag/chunking-strategies.md",
         "rag/chunking-strategies.md",
-        "projects/decision-log.md",
-        "rag/chunking-strategies.md"
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md"
       ],
-      "top_score": 0.5530630946159363,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.5530630946159363,
       "false_refusal": false,
       "split": "tune",
@@ -307,9 +307,9 @@
         "rag/hybrid-search-bm25.md",
         "rag/hybrid-search-bm25.md",
         "rag/hybrid-search-bm25.md",
-        "derived/what-is-reciprocal-rank-fusion.md"
+        "rag/vector-similarity-search.md"
       ],
-      "top_score": 0.6225946545600891,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.6225946545600891,
       "false_refusal": false,
       "split": "tune",
@@ -321,11 +321,11 @@
       "retrieved": [
         "rag/evaluating-rag-systems.md",
         "rag/evaluating-rag-systems.md",
-        "rag/what-is-rag.md",
         "rag/evaluating-rag-systems.md",
+        "rag/what-is-rag.md",
         "rag/evaluating-rag-systems.md"
       ],
-      "top_score": 0.6201412081718445,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6201412081718445,
       "false_refusal": false,
       "split": "tune",
@@ -338,10 +338,10 @@
         "obsidian/wikilinks-and-backlinks.md",
         "obsidian/wikilinks-and-backlinks.md",
         "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/obsidian-basics.md"
+        "obsidian/obsidian-basics.md",
+        "obsidian/zettelkasten.md"
       ],
-      "top_score": 0.6395919919013977,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.6395919919013977,
       "false_refusal": false,
       "split": "tune",
@@ -357,7 +357,7 @@
         "obsidian/dataview-plugin.md",
         "obsidian/obsidian-basics.md"
       ],
-      "top_score": 0.5166178345680237,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5166178345680237,
       "false_refusal": false,
       "split": "tune",
@@ -373,7 +373,7 @@
         "productivity/deep-work.md",
         "projects/reading-list.md"
       ],
-      "top_score": 0.5613459944725037,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5613459944725037,
       "false_refusal": false,
       "split": "tune",
@@ -384,12 +384,12 @@
       "expect": "books/thinking-fast-and-slow.md",
       "retrieved": [
         "books/thinking-fast-and-slow.md",
-        "books/getting-things-done.md",
         "books/thinking-fast-and-slow.md",
+        "prompting/system-prompts.md",
         "projects/reading-list.md",
-        "prompting/system-prompts.md"
+        "books/thinking-fast-and-slow.md"
       ],
-      "top_score": 0.5511821508407593,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5511821508407593,
       "false_refusal": false,
       "split": "tune",
@@ -402,10 +402,10 @@
         "prompting/prompt-structure.md",
         "prompting/system-prompts.md",
         "prompting/prompt-structure.md",
-        "prompting/prompt-structure.md",
-        "prompting/evals-for-prompts.md"
+        "prompting/system-prompts.md",
+        "prompting/prompt-structure.md"
       ],
-      "top_score": 0.6835892200469971,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6835892200469971,
       "false_refusal": false,
       "split": "tune",
@@ -416,12 +416,12 @@
       "expect": "prompting/few-shot-prompting.md",
       "retrieved": [
         "prompting/few-shot-prompting.md",
+        "prompting/few-shot-prompting.md",
         "prompting/prompt-structure.md",
         "prompting/few-shot-prompting.md",
-        "rag/hallucination-and-grounding.md",
         "prompting/prompt-structure.md"
       ],
-      "top_score": 0.4173101782798767,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.4173101782798767,
       "false_refusal": false,
       "split": "tune",
@@ -435,9 +435,9 @@
         "productivity/inbox-zero.md",
         "productivity/inbox-zero.md",
         "productivity/inbox-zero.md",
-        "obsidian/zettelkasten.md"
+        "prompting/system-prompts.md"
       ],
-      "top_score": 0.7900787591934204,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.7900787591934204,
       "false_refusal": false,
       "split": "tune",
@@ -448,12 +448,12 @@
       "expect": "productivity/weekly-review.md",
       "retrieved": [
         "productivity/weekly-review.md",
-        "productivity/weekly-review.md",
-        "books/getting-things-done.md",
         "productivity/para-method.md",
+        "books/getting-things-done.md",
+        "productivity/weekly-review.md",
         "projects/reading-list.md"
       ],
-      "top_score": 0.6404081583023071,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.6404081583023071,
       "false_refusal": false,
       "split": "tune",
@@ -463,13 +463,13 @@
       "hit": true,
       "expect": "obsidian/vault-organization.md",
       "retrieved": [
+        "obsidian/wikilinks-and-backlinks.md",
         "obsidian/vault-organization.md",
-        "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/zettelkasten.md"
+        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
+        "obsidian/obsidian-basics.md"
       ],
-      "top_score": 0.46559715270996094,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.46559715270996094,
       "false_refusal": false,
       "split": "tune",
@@ -483,9 +483,9 @@
         "rag/evaluating-rag-systems.md",
         "rag/what-is-rag.md",
         "rag/evaluating-rag-systems.md",
-        "projects/project-rag-assistant.md"
+        "rag/evaluating-rag-systems.md"
       ],
-      "top_score": 0.5254050493240356,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5254050493240356,
       "false_refusal": false,
       "split": "tune",
@@ -495,13 +495,13 @@
       "hit": true,
       "expect": "rag/hallucination-and-grounding.md",
       "retrieved": [
-        "rag/hallucination-and-grounding.md",
-        "rag/hallucination-and-grounding.md",
-        "prompting/system-prompts.md",
         "projects/reading-list.md",
-        "prompting/prompt-structure.md"
+        "rag/hallucination-and-grounding.md",
+        "rag/what-is-rag.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/what-is-rag.md"
       ],
-      "top_score": 0.30767661333084106,
+      "top_score": 0.04464285714285714,
       "top_conf": 0.30767661333084106,
       "false_refusal": false,
       "split": "tune",
@@ -513,11 +513,11 @@
       "retrieved": [
         "rag/citation-patterns.md",
         "projects/decision-log.md",
-        "rag/citation-patterns.md",
         "projects/project-rag-assistant.md",
-        "projects/project-rag-assistant.md"
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md"
       ],
-      "top_score": 0.5613023042678833,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5613023042678833,
       "false_refusal": false,
       "split": "tune",
@@ -530,10 +530,10 @@
         "projects/reading-list.md",
         "projects/reading-list.md",
         "projects/reading-list.md",
-        "productivity/weekly-review.md",
-        "rag/chunking-strategies.md"
+        "books/getting-things-done.md",
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.412462443113327,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.412462443113327,
       "false_refusal": false,
       "split": "tune",
@@ -543,14 +543,14 @@
       "hit": true,
       "expect": "projects/project-rag-assistant.md",
       "retrieved": [
-        "obsidian/vault-organization.md",
+        "projects/project-rag-assistant.md",
+        "projects/project-rag-assistant.md",
         "rag/evaluating-rag-systems.md",
-        "obsidian/vault-organization.md",
-        "projects/reading-list.md",
-        "projects/project-rag-assistant.md"
+        "productivity/para-method.md",
+        "prompting/evals-for-prompts.md"
       ],
-      "top_score": 0.5159363746643066,
-      "top_conf": 0.5159363746643066,
+      "top_score": 0.04380952380952381,
+      "top_conf": 0.49757614731788635,
       "false_refusal": false,
       "split": "tune",
       "kind": "standard"
@@ -562,10 +562,10 @@
         "prompting/evals-for-prompts.md",
         "prompting/evals-for-prompts.md",
         "prompting/evals-for-prompts.md",
-        "prompting/evals-for-prompts.md",
+        "prompting/system-prompts.md",
         "prompting/system-prompts.md"
       ],
-      "top_score": 0.6807312369346619,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.6807312369346619,
       "false_refusal": false,
       "split": "tune",
@@ -577,11 +577,11 @@
       "retrieved": [
         "books/how-to-take-smart-notes.md",
         "books/how-to-take-smart-notes.md",
+        "projects/reading-list.md",
         "books/how-to-take-smart-notes.md",
-        "books/how-to-take-smart-notes.md",
-        "projects/reading-list.md"
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.7648860812187195,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.7648860812187195,
       "false_refusal": false,
       "split": "tune",
@@ -594,10 +594,10 @@
         "obsidian/obsidian-basics.md",
         "obsidian/obsidian-basics.md",
         "obsidian/obsidian-basics.md",
-        "projects/reading-list.md",
-        "obsidian/wikilinks-and-backlinks.md"
+        "obsidian/vault-organization.md",
+        "obsidian/obsidian-basics.md"
       ],
-      "top_score": 0.49655479192733765,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.49655479192733765,
       "false_refusal": false,
       "split": "tune",
@@ -608,12 +608,12 @@
       "expect": "productivity/deep-work.md",
       "retrieved": [
         "productivity/deep-work.md",
-        "books/getting-things-done.md",
         "productivity/deep-work.md",
         "productivity/deep-work.md",
-        "productivity/deep-work.md"
+        "productivity/deep-work.md",
+        "productivity/weekly-review.md"
       ],
-      "top_score": 0.6668328046798706,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6668328046798706,
       "false_refusal": false,
       "split": "tune",
@@ -629,7 +629,7 @@
         "projects/decision-log.md",
         "rag/hallucination-and-grounding.md"
       ],
-      "top_score": 0.6099388003349304,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6099388003349304,
       "false_refusal": false,
       "split": "tune",
@@ -640,12 +640,12 @@
       "expect": "rag/vector-similarity-search.md",
       "retrieved": [
         "rag/vector-similarity-search.md",
-        "projects/reading-list.md",
         "projects/decision-log.md",
-        "rag/vector-similarity-search.md",
+        "projects/reading-list.md",
+        "projects/project-rag-assistant.md",
         "rag/vector-similarity-search.md"
       ],
-      "top_score": 0.661632776260376,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.661632776260376,
       "false_refusal": false,
       "split": "tune",
@@ -657,11 +657,11 @@
       "retrieved": [
         "obsidian/zettelkasten.md",
         "books/how-to-take-smart-notes.md",
-        "rag/chunking-strategies.md",
-        "books/how-to-take-smart-notes.md",
-        "obsidian/obsidian-basics.md"
+        "books/getting-things-done.md",
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.6802457571029663,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.6802457571029663,
       "false_refusal": false,
       "split": "tune",
@@ -672,12 +672,12 @@
       "expect": "rag/hallucination-and-grounding.md",
       "retrieved": [
         "projects/decision-log.md",
+        "rag/hallucination-and-grounding.md",
         "rag/what-is-rag.md",
         "rag/vector-similarity-search.md",
-        "rag/hallucination-and-grounding.md",
         "rag/vector-similarity-search.md"
       ],
-      "top_score": 0.5984046459197998,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5984046459197998,
       "false_refusal": false,
       "split": "tune",
@@ -688,12 +688,12 @@
       "expect": "rag/hallucination-and-grounding.md",
       "retrieved": [
         "rag/hallucination-and-grounding.md",
-        "prompting/system-prompts.md",
-        "prompting/few-shot-prompting.md",
-        "prompting/few-shot-prompting.md",
-        "rag/citation-patterns.md"
+        "rag/citation-patterns.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/citation-patterns.md",
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.4221752882003784,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.4221752882003784,
       "false_refusal": false,
       "split": "tune",
@@ -705,12 +705,12 @@
       "retrieved": [
         "books/getting-things-done.md",
         "books/getting-things-done.md",
-        "projects/reading-list.md",
         "productivity/deep-work.md",
-        "productivity/deep-work.md"
+        "productivity/deep-work.md",
+        "projects/reading-list.md"
       ],
-      "top_score": 0.3483414053916931,
-      "top_conf": 0.3483414053916931,
+      "top_score": 0.044466403162055336,
+      "top_conf": 0.32465946674346924,
       "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
@@ -719,14 +719,14 @@
       "hit": false,
       "expect": "obsidian/vault-organization.md",
       "retrieved": [
-        "projects/reading-list.md",
-        "rag/chunking-strategies.md",
-        "rag/vector-similarity-search.md",
         "projects/decision-log.md",
-        "obsidian/zettelkasten.md"
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md"
       ],
-      "top_score": 0.39522966742515564,
-      "top_conf": 0.39522966742515564,
+      "top_score": 0.042328042328042326,
+      "top_conf": 0.30855363607406616,
       "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
@@ -737,11 +737,11 @@
       "retrieved": [
         "books/thinking-fast-and-slow.md",
         "books/thinking-fast-and-slow.md",
-        "projects/reading-list.md",
-        "books/getting-things-done.md",
-        "productivity/deep-work.md"
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "books/thinking-fast-and-slow.md"
       ],
-      "top_score": 0.5079555511474609,
+      "top_score": 0.045454545454545456,
       "top_conf": 0.5079555511474609,
       "false_refusal": false,
       "split": "tune",
@@ -752,12 +752,12 @@
       "expect": "books/how-to-take-smart-notes.md",
       "retrieved": [
         "books/how-to-take-smart-notes.md",
-        "prompting/few-shot-prompting.md",
-        "rag/hallucination-and-grounding.md",
-        "projects/reading-list.md",
-        "books/thinking-fast-and-slow.md"
+        "obsidian/zettelkasten.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/obsidian-basics.md",
+        "prompting/prompt-structure.md"
       ],
-      "top_score": 0.4879336953163147,
+      "top_score": 0.03851540616246499,
       "top_conf": 0.4879336953163147,
       "false_refusal": false,
       "split": "tune",
@@ -768,12 +768,12 @@
       "expect": "books/getting-things-done.md",
       "retrieved": [
         "books/getting-things-done.md",
-        "projects/reading-list.md",
-        "books/thinking-fast-and-slow.md",
         "productivity/deep-work.md",
-        "books/how-to-take-smart-notes.md"
+        "books/thinking-fast-and-slow.md",
+        "projects/reading-list.md",
+        "productivity/deep-work.md"
       ],
-      "top_score": 0.6028417348861694,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6028417348861694,
       "false_refusal": false,
       "split": "tune",
@@ -784,12 +784,12 @@
       "expect": "obsidian/obsidian-basics.md",
       "retrieved": [
         "obsidian/obsidian-basics.md",
-        "projects/decision-log.md",
-        "obsidian/obsidian-basics.md",
         "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/zettelkasten.md"
+        "obsidian/obsidian-basics.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/wikilinks-and-backlinks.md"
       ],
-      "top_score": 0.5432053804397583,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5432053804397583,
       "false_refusal": false,
       "split": "tune",
@@ -800,12 +800,12 @@
       "expect": "productivity/deep-work.md",
       "retrieved": [
         "productivity/deep-work.md",
-        "projects/reading-list.md",
-        "books/getting-things-done.md",
+        "productivity/deep-work.md",
         "books/thinking-fast-and-slow.md",
-        "productivity/deep-work.md"
+        "productivity/deep-work.md",
+        "books/how-to-take-smart-notes.md"
       ],
-      "top_score": 0.37911415100097656,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.37911415100097656,
       "false_refusal": false,
       "split": "tune",
@@ -818,10 +818,10 @@
         "prompting/evals-for-prompts.md",
         "prompting/evals-for-prompts.md",
         "prompting/evals-for-prompts.md",
-        "prompting/prompt-structure.md",
-        "prompting/few-shot-prompting.md"
+        "prompting/system-prompts.md",
+        "rag/evaluating-rag-systems.md"
       ],
-      "top_score": 0.6078196167945862,
+      "top_score": 0.045454545454545456,
       "top_conf": 0.6078196167945862,
       "false_refusal": false,
       "split": "tune",
@@ -832,13 +832,13 @@
       "expect": "rag/chunking-strategies.md",
       "retrieved": [
         "rag/chunking-strategies.md",
-        "rag/embedding-models.md",
         "rag/what-is-rag.md",
-        "rag/chunking-strategies.md",
-        "rag/citation-patterns.md"
+        "rag/embedding-models.md",
+        "prompting/few-shot-prompting.md",
+        "rag/chunking-strategies.md"
       ],
-      "top_score": 0.4097527861595154,
-      "top_conf": 0.4097527861595154,
+      "top_score": 0.042328042328042326,
+      "top_conf": 0.39453184604644775,
       "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
@@ -851,9 +851,9 @@
         "prompting/few-shot-prompting.md",
         "prompting/few-shot-prompting.md",
         "prompting/few-shot-prompting.md",
-        "books/getting-things-done.md"
+        "prompting/prompt-structure.md"
       ],
-      "top_score": 0.5359808802604675,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5359808802604675,
       "false_refusal": false,
       "split": "tune",
@@ -863,13 +863,13 @@
       "hit": true,
       "expect": "rag/what-is-rag.md",
       "retrieved": [
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/what-is-rag.md",
         "rag/hybrid-search-bm25.md",
-        "rag/what-is-rag.md",
-        "projects/project-rag-assistant.md",
-        "rag/what-is-rag.md",
-        "rag/evaluating-rag-systems.md"
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.3122637867927551,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.3122637867927551,
       "false_refusal": false,
       "split": "tune",
@@ -882,10 +882,10 @@
         "productivity/weekly-review.md",
         "productivity/weekly-review.md",
         "productivity/weekly-review.md",
-        "productivity/deep-work.md",
-        "books/getting-things-done.md"
+        "books/getting-things-done.md",
+        "productivity/deep-work.md"
       ],
-      "top_score": 0.5228161215782166,
+      "top_score": 0.04173913043478261,
       "top_conf": 0.5228161215782166,
       "false_refusal": false,
       "split": "tune",
@@ -898,10 +898,10 @@
         "books/getting-things-done.md",
         "books/getting-things-done.md",
         "productivity/inbox-zero.md",
-        "productivity/inbox-zero.md",
+        "productivity/para-method.md",
         "productivity/weekly-review.md"
       ],
-      "top_score": 0.3971465826034546,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.3971465826034546,
       "false_refusal": false,
       "split": "tune",
@@ -911,14 +911,14 @@
       "hit": true,
       "expect": "rag/citation-patterns.md",
       "retrieved": [
-        "rag/hallucination-and-grounding.md",
         "rag/citation-patterns.md",
+        "rag/what-is-rag.md",
+        "rag/what-is-rag.md",
         "rag/citation-patterns.md",
-        "projects/project-rag-assistant.md",
-        "books/how-to-take-smart-notes.md"
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.4355570673942566,
-      "top_conf": 0.4355570673942566,
+      "top_score": 0.043478260869565216,
+      "top_conf": 0.3656429648399353,
       "false_refusal": false,
       "split": "tune",
       "kind": "paraphrase"
@@ -927,14 +927,14 @@
       "hit": false,
       "expect": "projects/decision-log.md",
       "retrieved": [
-        "rag/evaluating-rag-systems.md",
+        "projects/project-rag-assistant.md",
         "productivity/para-method.md",
-        "prompting/evals-for-prompts.md",
-        "obsidian/vault-organization.md",
-        "obsidian/vault-organization.md"
+        "obsidian/wikilinks-and-backlinks.md",
+        "projects/project-rag-assistant.md",
+        "books/thinking-fast-and-slow.md"
       ],
-      "top_score": 0.544263482093811,
-      "top_conf": 0.544263482093811,
+      "top_score": 0.04006410256410256,
+      "top_conf": 0.48118215799331665,
       "false_refusal": false,
       "split": "tune",
       "kind": "collision"
@@ -946,10 +946,10 @@
         "obsidian/zettelkasten.md",
         "books/how-to-take-smart-notes.md",
         "obsidian/zettelkasten.md",
-        "books/how-to-take-smart-notes.md",
-        "obsidian/zettelkasten.md"
+        "obsidian/zettelkasten.md",
+        "projects/reading-list.md"
       ],
-      "top_score": 0.6900241374969482,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6900241374969482,
       "false_refusal": false,
       "split": "tune",
@@ -961,27 +961,27 @@
       "retrieved": [
         "productivity/para-method.md",
         "obsidian/vault-organization.md",
-        "books/getting-things-done.md",
-        "books/getting-things-done.md",
+        "productivity/para-method.md",
+        "productivity/para-method.md",
         "productivity/para-method.md"
       ],
-      "top_score": 0.5356199145317078,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.5356199145317078,
       "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
     "Evaluating prompt changes versus evaluating RAG retrieval recall": {
-      "hit": false,
+      "hit": true,
       "expect": "prompting/evals-for-prompts.md",
       "retrieved": [
         "rag/evaluating-rag-systems.md",
         "rag/evaluating-rag-systems.md",
         "rag/evaluating-rag-systems.md",
-        "rag/what-is-rag.md",
-        "rag/what-is-rag.md"
+        "rag/evaluating-rag-systems.md",
+        "prompting/evals-for-prompts.md"
       ],
-      "top_score": 0.6974123120307922,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6974123120307922,
       "false_refusal": false,
       "split": "tune",
@@ -994,10 +994,10 @@
         "rag/hybrid-search-bm25.md",
         "rag/hybrid-search-bm25.md",
         "rag/vector-similarity-search.md",
-        "projects/project-rag-assistant.md",
-        "rag/vector-similarity-search.md"
+        "rag/vector-similarity-search.md",
+        "projects/project-rag-assistant.md"
       ],
-      "top_score": 0.6360341906547546,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6360341906547546,
       "false_refusal": false,
       "split": "tune",
@@ -1009,11 +1009,11 @@
       "retrieved": [
         "rag/vector-similarity-search.md",
         "projects/decision-log.md",
-        "projects/project-rag-assistant.md",
-        "projects/reading-list.md",
-        "rag/chunking-strategies.md"
+        "projects/decision-log.md",
+        "obsidian/vault-organization.md",
+        "projects/project-rag-assistant.md"
       ],
-      "top_score": 0.5333192348480225,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5333192348480225,
       "false_refusal": false,
       "split": "tune",
@@ -1025,11 +1025,11 @@
       "retrieved": [
         "obsidian/dataview-plugin.md",
         "obsidian/dataview-plugin.md",
+        "obsidian/vault-organization.md",
         "obsidian/dataview-plugin.md",
-        "books/getting-things-done.md",
-        "productivity/weekly-review.md"
+        "obsidian/dataview-plugin.md"
       ],
-      "top_score": 0.4734964966773987,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.4734964966773987,
       "false_refusal": false,
       "split": "tune",
@@ -1039,13 +1039,13 @@
       "hit": true,
       "expect": "books/how-to-take-smart-notes.md",
       "retrieved": [
-        "obsidian/zettelkasten.md",
-        "obsidian/vault-organization.md",
-        "productivity/deep-work.md",
         "books/how-to-take-smart-notes.md",
-        "productivity/para-method.md"
+        "obsidian/zettelkasten.md",
+        "obsidian/zettelkasten.md",
+        "projects/decision-log.md",
+        "obsidian/zettelkasten.md"
       ],
-      "top_score": 0.48219841718673706,
+      "top_score": 0.04464285714285714,
       "top_conf": 0.48219841718673706,
       "false_refusal": false,
       "split": "tune",
@@ -1055,14 +1055,14 @@
       "hit": true,
       "expect": "obsidian/vault-organization.md",
       "retrieved": [
-        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
         "obsidian/vault-organization.md",
         "obsidian/obsidian-basics.md",
-        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
         "obsidian/wikilinks-and-backlinks.md"
       ],
-      "top_score": 0.45322638750076294,
-      "top_conf": 0.45322638750076294,
+      "top_score": 0.04195804195804196,
+      "top_conf": 0.4337204098701477,
       "false_refusal": false,
       "split": "tune",
       "kind": "collision"
@@ -1073,11 +1073,11 @@
       "retrieved": [
         "obsidian/wikilinks-and-backlinks.md",
         "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/wikilinks-and-backlinks.md",
         "obsidian/vault-organization.md",
-        "obsidian/zettelkasten.md"
+        "obsidian/obsidian-basics.md",
+        "obsidian/wikilinks-and-backlinks.md"
       ],
-      "top_score": 0.5954538583755493,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5954538583755493,
       "false_refusal": false,
       "split": "tune",
@@ -1089,27 +1089,27 @@
       "retrieved": [
         "prompting/system-prompts.md",
         "prompting/system-prompts.md",
+        "prompting/few-shot-prompting.md",
         "prompting/prompt-structure.md",
-        "prompting/system-prompts.md",
         "prompting/system-prompts.md"
       ],
-      "top_score": 0.6657737493515015,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.6657737493515015,
       "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
     "Refusal threshold calibration for unanswerable questions in retrieval": {
-      "hit": false,
+      "hit": true,
       "expect": "rag/evaluating-rag-systems.md",
       "retrieved": [
         "projects/decision-log.md",
+        "rag/evaluating-rag-systems.md",
         "rag/hallucination-and-grounding.md",
         "rag/hallucination-and-grounding.md",
-        "rag/hybrid-search-bm25.md",
-        "rag/hallucination-and-grounding.md"
+        "projects/project-rag-assistant.md"
       ],
-      "top_score": 0.6440191864967346,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6440191864967346,
       "false_refusal": false,
       "split": "tune",
@@ -1125,7 +1125,7 @@
         "projects/project-rag-assistant.md",
         "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.6329529881477356,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.6329529881477356,
       "false_refusal": false,
       "split": "tune",
@@ -1136,12 +1136,12 @@
       "expect": "books/thinking-fast-and-slow.md",
       "retrieved": [
         "rag/hallucination-and-grounding.md",
+        "rag/hallucination-and-grounding.md",
         "books/thinking-fast-and-slow.md",
-        "books/thinking-fast-and-slow.md",
-        "books/getting-things-done.md",
+        "prompting/system-prompts.md",
         "rag/hallucination-and-grounding.md"
       ],
-      "top_score": 0.41723889112472534,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.41723889112472534,
       "false_refusal": false,
       "split": "tune",
@@ -1151,13 +1151,13 @@
       "hit": true,
       "expect": "prompting/prompt-structure.md",
       "retrieved": [
-        "prompting/evals-for-prompts.md",
         "prompting/prompt-structure.md",
         "prompting/evals-for-prompts.md",
-        "prompting/few-shot-prompting.md",
-        "prompting/evals-for-prompts.md"
+        "prompting/prompt-structure.md",
+        "prompting/system-prompts.md",
+        "prompting/few-shot-prompting.md"
       ],
-      "top_score": 0.5188171863555908,
+      "top_score": 0.045454545454545456,
       "top_conf": 0.5188171863555908,
       "false_refusal": false,
       "split": "tune",
@@ -1168,28 +1168,28 @@
       "expect": "rag/chunking-strategies.md",
       "retrieved": [
         "rag/chunking-strategies.md",
-        "rag/chunking-strategies.md",
-        "rag/chunking-strategies.md",
         "projects/decision-log.md",
-        "rag/embedding-models.md"
+        "rag/chunking-strategies.md",
+        "rag/embedding-models.md",
+        "rag/chunking-strategies.md"
       ],
-      "top_score": 0.6007962226867676,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.6007962226867676,
       "false_refusal": false,
       "split": "tune",
       "kind": "collision"
     },
     "17*24": {
-      "hit": false,
+      "hit": true,
       "expect": "books/thinking-fast-and-slow.md",
       "retrieved": [
+        "books/thinking-fast-and-slow.md",
         "productivity/weekly-review.md",
         "projects/decision-log.md",
         "projects/decision-log.md",
-        "obsidian/vault-organization.md",
-        "rag/hybrid-search-bm25.md"
+        "obsidian/vault-organization.md"
       ],
-      "top_score": 0.1428017020225525,
+      "top_score": 0.042328042328042326,
       "top_conf": 0.1428017020225525,
       "false_refusal": true,
       "split": "tune",
@@ -1201,11 +1201,11 @@
       "retrieved": [
         "rag/hybrid-search-bm25.md",
         "projects/decision-log.md",
-        "prompting/system-prompts.md",
-        "obsidian/dataview-plugin.md",
-        "prompting/few-shot-prompting.md"
+        "productivity/weekly-review.md",
+        "obsidian/zettelkasten.md",
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.5013233423233032,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5013233423233032,
       "false_refusal": false,
       "split": "tune",
@@ -1219,26 +1219,26 @@
         "projects/decision-log.md",
         "rag/embedding-models.md",
         "rag/embedding-models.md",
-        "rag/embedding-models.md"
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.5440068244934082,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.5440068244934082,
       "false_refusal": false,
       "split": "tune",
       "kind": "exact"
     },
     "bge-small-en-v1.5": {
-      "hit": false,
+      "hit": true,
       "expect": "rag/embedding-models.md",
       "retrieved": [
-        "rag/hybrid-search-bm25.md",
-        "rag/hybrid-search-bm25.md",
+        "projects/project-rag-assistant.md",
         "projects/decision-log.md",
-        "projects/decision-log.md",
-        "projects/project-rag-assistant.md"
+        "rag/embedding-models.md",
+        "rag/hybrid-search-bm25.md",
+        "obsidian/zettelkasten.md"
       ],
-      "top_score": 0.2761315703392029,
-      "top_conf": 0.2761315703392029,
+      "top_score": 0.04083333333333333,
+      "top_conf": 0.27183040976524353,
       "false_refusal": false,
       "split": "tune",
       "kind": "exact"
@@ -1253,7 +1253,7 @@
         "rag/embedding-models.md",
         "rag/chunking-strategies.md"
       ],
-      "top_score": 0.6069947481155396,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.6069947481155396,
       "false_refusal": false,
       "split": "tune",
@@ -1265,11 +1265,11 @@
       "retrieved": [
         "obsidian/dataview-plugin.md",
         "books/getting-things-done.md",
+        "books/getting-things-done.md",
         "productivity/weekly-review.md",
-        "productivity/para-method.md",
         "productivity/deep-work.md"
       ],
-      "top_score": 0.5267069339752197,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5267069339752197,
       "false_refusal": false,
       "split": "tune",
@@ -1282,10 +1282,10 @@
         "obsidian/zettelkasten.md",
         "books/how-to-take-smart-notes.md",
         "books/how-to-take-smart-notes.md",
-        "obsidian/zettelkasten.md",
-        "productivity/para-method.md"
+        "books/how-to-take-smart-notes.md",
+        "projects/reading-list.md"
       ],
-      "top_score": 0.4432889521121979,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.4432889521121979,
       "false_refusal": false,
       "split": "tune",
@@ -1295,14 +1295,14 @@
       "hit": true,
       "expect": "projects/decision-log.md",
       "retrieved": [
-        "productivity/weekly-review.md",
         "projects/decision-log.md",
-        "projects/reading-list.md",
-        "obsidian/vault-organization.md",
-        "productivity/inbox-zero.md"
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md"
       ],
-      "top_score": 0.15118122100830078,
-      "top_conf": 0.15118122100830078,
+      "top_score": 0.045454545454545456,
+      "top_conf": 0.11147882789373398,
       "false_refusal": true,
       "split": "tune",
       "kind": "exact"
@@ -1311,14 +1311,14 @@
       "hit": true,
       "expect": "projects/decision-log.md",
       "retrieved": [
-        "productivity/weekly-review.md",
-        "obsidian/dataview-plugin.md",
         "projects/decision-log.md",
-        "projects/reading-list.md",
-        "projects/project-rag-assistant.md"
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md"
       ],
-      "top_score": 0.14079350233078003,
-      "top_conf": 0.14079350233078003,
+      "top_score": 0.040257648953301126,
+      "top_conf": 0.10669814795255661,
       "false_refusal": true,
       "split": "tune",
       "kind": "exact"
@@ -1330,10 +1330,10 @@
         "productivity/inbox-zero.md",
         "productivity/inbox-zero.md",
         "books/getting-things-done.md",
-        "productivity/inbox-zero.md",
+        "productivity/weekly-review.md",
         "productivity/inbox-zero.md"
       ],
-      "top_score": 0.6556359529495239,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.6556359529495239,
       "false_refusal": false,
       "split": "tune",
@@ -1343,29 +1343,29 @@
       "hit": true,
       "expect": "books/getting-things-done.md",
       "retrieved": [
-        "projects/reading-list.md",
-        "rag/evaluating-rag-systems.md",
-        "projects/project-rag-assistant.md",
         "books/getting-things-done.md",
-        "projects/project-rag-assistant.md"
+        "projects/project-rag-assistant.md",
+        "projects/decision-log.md",
+        "projects/project-rag-assistant.md",
+        "projects/reading-list.md"
       ],
-      "top_score": 0.3184204697608948,
-      "top_conf": 0.3184204697608948,
-      "false_refusal": false,
+      "top_score": 0.04464285714285714,
+      "top_conf": 0.269346684217453,
+      "false_refusal": true,
       "split": "tune",
       "kind": "exact"
     },
     "System 1 silent substitution": {
-      "hit": false,
+      "hit": true,
       "expect": "books/thinking-fast-and-slow.md",
       "retrieved": [
+        "books/thinking-fast-and-slow.md",
         "prompting/system-prompts.md",
-        "prompting/few-shot-prompting.md",
-        "prompting/evals-for-prompts.md",
-        "prompting/evals-for-prompts.md",
+        "books/thinking-fast-and-slow.md",
+        "books/thinking-fast-and-slow.md",
         "prompting/prompt-structure.md"
       ],
-      "top_score": 0.31644153594970703,
+      "top_score": 0.03736413043478261,
       "top_conf": 0.31644153594970703,
       "false_refusal": false,
       "split": "tune",
@@ -1375,13 +1375,13 @@
       "hit": true,
       "expect": "books/how-to-take-smart-notes.md",
       "retrieved": [
-        "obsidian/zettelkasten.md",
         "books/how-to-take-smart-notes.md",
-        "obsidian/vault-organization.md",
         "obsidian/zettelkasten.md",
-        "productivity/para-method.md"
+        "obsidian/wikilinks-and-backlinks.md",
+        "books/how-to-take-smart-notes.md",
+        "projects/project-rag-assistant.md"
       ],
-      "top_score": 0.31003814935684204,
+      "top_score": 0.046536796536796536,
       "top_conf": 0.31003814935684204,
       "false_refusal": false,
       "split": "tune",
@@ -1391,13 +1391,13 @@
       "hit": true,
       "expect": "productivity/deep-work.md",
       "retrieved": [
-        "productivity/weekly-review.md",
-        "books/getting-things-done.md",
         "productivity/deep-work.md",
         "productivity/weekly-review.md",
-        "productivity/deep-work.md"
+        "productivity/weekly-review.md",
+        "productivity/deep-work.md",
+        "books/getting-things-done.md"
       ],
-      "top_score": 0.34763485193252563,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.34763485193252563,
       "false_refusal": false,
       "split": "tune",
@@ -1410,10 +1410,10 @@
         "projects/reading-list.md",
         "rag/vector-similarity-search.md",
         "rag/vector-similarity-search.md",
-        "rag/vector-similarity-search.md",
-        "rag/embedding-models.md"
+        "rag/embedding-models.md",
+        "obsidian/wikilinks-and-backlinks.md"
       ],
-      "top_score": 0.43125325441360474,
+      "top_score": 0.045548654244306416,
       "top_conf": 0.43125325441360474,
       "false_refusal": false,
       "split": "tune",
@@ -1423,14 +1423,14 @@
       "hit": true,
       "expect": "rag/hybrid-search-bm25.md",
       "retrieved": [
-        "derived/what-is-reciprocal-rank-fusion.md",
         "rag/hybrid-search-bm25.md",
         "rag/vector-similarity-search.md",
-        "rag/vector-similarity-search.md",
-        "projects/project-rag-assistant.md"
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/embedding-models.md"
       ],
-      "top_score": 0.44959527254104614,
-      "top_conf": 0.44959527254104614,
+      "top_score": 0.047619047619047616,
+      "top_conf": 0.43218863010406494,
       "false_refusal": false,
       "split": "tune",
       "kind": "exact"
@@ -1442,10 +1442,10 @@
         "rag/vector-similarity-search.md",
         "rag/embedding-models.md",
         "rag/vector-similarity-search.md",
-        "rag/embedding-models.md",
-        "rag/embedding-models.md"
+        "projects/reading-list.md",
+        "rag/hybrid-search-bm25.md"
       ],
-      "top_score": 0.5405168533325195,
+      "top_score": 0.047619047619047616,
       "top_conf": 0.5405168533325195,
       "false_refusal": false,
       "split": "tune",

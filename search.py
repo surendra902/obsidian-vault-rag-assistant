@@ -1,6 +1,7 @@
 """Hybrid search combining SQLite FTS5 BM25 lexical search with dense vector embeddings.
 
-Uses Reciprocal Rank Fusion (RRF) with k=60:
+Uses Reciprocal Rank Fusion (RRF); k is loaded from params.json (tuned, not
+hardcoded -- see tune.py):
     RRF(d) = sum_r 1 / (k + rank_r(d))
 
 Grounded Refusal:

@@ -32,10 +32,10 @@ import time
 
 import anthropic
 import openai
-from typing import Dict, List, Optional
+from typing import Annotated, Dict, List, Optional
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
-from pydantic import BaseModel
+from pydantic import BaseModel, Field, StringConstraints
 
 from rag import REFUSE_THRESHOLD, VaultIndex
 from search import HybridIndex
@@ -127,7 +127,11 @@ RETRY_STATUS = {429, 500, 502, 503, 504}
 
 
 class AskRequest(BaseModel):
-    question: str
+    # An empty/whitespace question returns no hits, trips the refusal gate, and
+    # enqueues an empty row into the frontier that the crawler can never resolve
+    # -- it sits 'pending' forever. Reject it at the boundary instead of cleaning
+    # it up later.
+    question: Annotated[str, StringConstraints(strip_whitespace=True, min_length=1)]
 
 
 def _sources(hits):
@@ -273,9 +277,20 @@ def feedback(req: FeedbackRequest):
             # Check if query had cited sources to write back verified memory
             q_info = event_logger.get_query_event(req.query_id)
             if q_info and not q_info.get("refused") and q_info.get("response_text"):
+                text = q_info["response_text"]
                 cited = [d["path"] for d in q_info.get("displayed", []) if d.get("cited")]
-                if cited:
-                    memory_mgr.save_derived_answer(q_info["query"], q_info["response_text"], cited)
+                # A derived doc is never a primary citation. The sole-citation
+                # guard only requires ONE primary source, so without this filter
+                # the loop cites its own earlier output and lineage points a
+                # derived chunk at another derived chunk.
+                cited = [p for p in cited if not p.startswith("derived/")]
+                # An extractive/fallback answer is vault excerpts wrapped in a
+                # boilerplate preamble, not verified knowledge -- persisting it
+                # stores the preamble itself as retrievable text. Only write back
+                # real generated answers.
+                is_fallback = text.lstrip().startswith(("(fallback mode:", "(extractive mode:"))
+                if cited and not is_fallback:
+                    memory_mgr.save_derived_answer(q_info["query"], text, cited)
         return {"status": "recorded" if ok else "not_found"}
     return {"status": "no_logger"}
 

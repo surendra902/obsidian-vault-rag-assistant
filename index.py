@@ -18,6 +18,7 @@ Safety (see demo_vault/projects/decision-log.md, 2026-08-26):
 """
 
 import argparse
+import contextlib
 import hashlib
 import json
 import re
@@ -110,11 +111,28 @@ def embed_text(chunk: dict) -> str:
     return _prefix(Path(chunk["path"]).stem.replace("-", " "), chunk["heading"]) + chunk["text"]
 
 
+@contextlib.contextmanager
+def _measure_tokens(tokenizer):
+    """Measure-only tokenization. _fit_words tokenizes overlong input precisely
+    to split it, so transformers' "will result in indexing errors" warning fires
+    here even though no overlong sequence ever reaches the model. The real guard
+    is the SystemExit in main() over the final chunks."""
+    import logging
+    log = logging.getLogger("transformers")
+    prior = log.level
+    log.setLevel(logging.ERROR)
+    try:
+        yield
+    finally:
+        log.setLevel(prior)
+
+
 def _fit_words(prefix: str, words: list, tokenizer):
     """Split words in half until prefix+body fits MAX_SEQ_TOKENS. Prefix is kept
     on every piece so each sub-chunk still knows its note identity."""
     text = prefix + " ".join(words)
-    ids = tokenizer(text)["input_ids"]
+    with _measure_tokens(tokenizer):
+        ids = tokenizer(text)["input_ids"]
     if len(ids) <= MAX_SEQ_TOKENS:
         return [text]
     if len(words) < 2:  # single unsplittable token blob
@@ -179,17 +197,6 @@ def main():
     if not chunks:
         raise SystemExit("no chunks produced -- empty vault?")
 
-    # Loud, not silent: MiniLM truncates past 256 tokens without warning. The
-    # _fit_words splitter above should make this unreachable; if it fires, the
-    # splitter has a bug -- crash here rather than silently truncate.
-    over = [i for i, c in enumerate(chunks) if len(tokenizer(embed_text(c))["input_ids"]) > MAX_SEQ_TOKENS]
-    if over:
-        c = chunks[over[0]]
-        raise SystemExit(
-            f"chunk {over[0]} ({c['path']} :: {c['heading']}) exceeds {MAX_SEQ_TOKENS} tokens -- "
-            f"this is a bug in _fit_words"
-        )
-
     vectors = model.encode(
         [embed_text(c) for c in chunks],
         normalize_embeddings=True,  # unit rows: query-time cosine == dot product
@@ -199,8 +206,66 @@ def main():
 
     out = args.out
     out.mkdir(parents=True, exist_ok=True)
-    np.savez(out / "vectors.npz", vectors=vectors)
-    (out / "chunks.jsonl").write_text(
+
+    # Preserve chunks with no file in the vault: ingested web pages and derived
+    # memory writes live only in chunks.jsonl. A rebuild from the vault walk
+    # would overwrite the file and silently delete them (vectors row i aligns
+    # with chunks line i -- ingest appends both in lockstep, so orphans keep
+    # their exact embedded vectors). Orphans written before the token-budget
+    # splitter existed are re-split here rather than kept -- their stored vector
+    # is a truncated-prefix embedding, and preserving it would keep the bug.
+    chunks_file = out / "chunks.jsonl"
+    vectors_file = out / "vectors.npz"
+    vault_paths = {c["path"] for c in chunks}
+    if chunks_file.is_file() and vectors_file.is_file():
+        try:
+            old = [json.loads(l) for l in chunks_file.read_text(encoding="utf-8").splitlines() if l.strip()]
+            old_vecs = np.load(vectors_file)["vectors"]
+            if len(old) == len(old_vecs):
+                keep = [i for i, c in enumerate(old) if c.get("path") not in vault_paths]
+                kept_vecs, resplit = [], []
+                for i in keep:
+                    c = old[i]
+                    with _measure_tokens(tokenizer):
+                        fits = len(tokenizer(embed_text(c))["input_ids"]) <= MAX_SEQ_TOKENS
+                    if fits:
+                        kept_vecs.append(old_vecs[i])
+                        chunks.append(c)
+                    else:
+                        stem = Path(c["path"]).stem.replace("-", " ")
+                        pieces = make_chunks(c["text"], c.get("tags", []), tokenizer, stem) or [c["text"]]
+                        for j, p in enumerate(pieces):
+                            rec = dict(c)
+                            rec["text"] = p["text"] if isinstance(p, dict) else p
+                            if len(pieces) > 1:
+                                rec["heading"] = f"{c['heading']} (part {j + 1}/{len(pieces)})"
+                            resplit.append(rec)
+                if resplit:
+                    vectors = np.vstack([vectors, model.encode(
+                        [embed_text(c) for c in resplit], normalize_embeddings=True,
+                        batch_size=64, show_progress_bar=False).astype(np.float32)])
+                    chunks.extend(resplit)
+                    print(f"re-split {len(resplit)} over-budget preserved chunk(s) into token-window pieces")
+                if kept_vecs:
+                    vectors = np.vstack([vectors, np.array(kept_vecs, dtype=np.float32)])
+                    print(f"preserved {len(kept_vecs)} ingested/derived chunk(s) with no vault file")
+        except Exception as e:
+            print(f"WARNING: could not preserve ingested chunks: {e}")
+
+    # Loud, not silent: MiniLM truncates past 256 tokens without warning. Runs
+    # after orphan preservation so stored overlong chunks are caught too, not
+    # just the ones split from this vault walk.
+    with _measure_tokens(tokenizer):
+        over = [i for i, c in enumerate(chunks) if len(tokenizer(embed_text(c))["input_ids"]) > MAX_SEQ_TOKENS]
+    if over:
+        c = chunks[over[0]]
+        raise SystemExit(
+            f"chunk {over[0]} ({c['path']} :: {c['heading']}) exceeds {MAX_SEQ_TOKENS} tokens -- "
+            f"this is a bug in _fit_words"
+        )
+
+    np.savez(vectors_file, vectors=vectors)
+    chunks_file.write_text(
         "\n".join(json.dumps(c, ensure_ascii=False) for c in chunks) + "\n", encoding="utf-8"
     )
     (out / "meta.json").write_text(
