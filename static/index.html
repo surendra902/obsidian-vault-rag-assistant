@@ -104,8 +104,9 @@ function setMode(m) {
 
 fetch("/healthz").then(r => r.json()).then(h => {
   const model = h.model ? " · " + h.model.replace(/:free$/, "") : "";
-  badge.textContent = h.mode + model + (h.api ? ` · api ${h.api}` : "");
-  badge.title = `provider: ${h.provider || "none"}` + (h.models ? `\nfallback chain: ${h.models.join(", ")}` : "");
+  const apiStatus = h.anthropic_api || h.api || "";
+  badge.textContent = h.mode + model + (apiStatus ? ` · api ${apiStatus}` : "");
+  badge.title = `provider: ${h.provider || "none"}` + (h.openrouter_models ? `\nfallback: openrouter (${h.openrouter_models.join(", ")})` : "");
   badge.className = h.mode === "live" ? "" : "extractive";
 }).catch(() => { badge.textContent = "offline"; badge.className = "refused"; });
 
