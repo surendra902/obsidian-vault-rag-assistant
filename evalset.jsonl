@@ -138,3 +138,4 @@
 {"q": "What was the comprehensive movie plot and ending explanation of Inception?", "unanswerable": true, "kind": "unanswerable"}
 {"q": "How do I register for VAT and file quarterly income taxes in Germany as an expat?", "unanswerable": true, "kind": "unanswerable"}
 {"q": "What is the exact speed of light in a vacuum in meters per second?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is the architecture of an asynchronous actor model in distributed systems?", "expect_note": "web/distributed-actor-model-architecture.md", "split": "tune", "source": "mined", "kind": "gap_closed", "mined_at": "2026-09-16T04:10:38.045947+00:00"}
