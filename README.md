@@ -1,3 +1,14 @@
+---
+title: Obsidian Vault RAG Assistant
+emoji: 🧠
+colorFrom: green
+colorTo: gray
+sdk: gradio
+sdk_version: 5.20.0
+app_file: app.py
+pinned: false
+---
+
 # Obsidian Vault RAG Knowledge Assistant
 
 Ask questions in natural language; get answers grounded in an Obsidian vault,

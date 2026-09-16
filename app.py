@@ -91,6 +91,10 @@ else:
 app = FastAPI(title="Vault RAG Assistant")
 
 try:
+    if not (Path("vectors/chunks.jsonl").exists() and Path("vectors/vectors.npz").exists()):
+        print("No index found. Building index from demo_vault...")
+        import subprocess, sys
+        subprocess.run([sys.executable, "index.py", "--vault", "./demo_vault", "--out", "./vectors"], check=True)
     index = HybridIndex("vectors")
     router = AdaptiveRouter(index)
     event_logger = EventLogger("vectors/events.db")
@@ -589,3 +593,18 @@ def healthz():
 @app.get("/")
 def root():
     return FileResponse("static/index.html")
+
+
+try:
+    import gradio as gr
+    with gr.Blocks(title="Vault RAG Assistant") as demo:
+        gr.Markdown("# Obsidian Vault RAG Assistant\nAccess the full native web UI at the root path: [/](/).")
+    app = gr.mount_gradio_app(app, demo, path="/gradio")
+except Exception as _ge:
+    pass
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 7860))
+    uvicorn.run(app, host="0.0.0.0", port=port)
+
