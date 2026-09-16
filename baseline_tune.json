@@ -1,11 +1,12 @@
 {
+  "mode": "dense",
   "split": "tune",
   "k": 5,
   "threshold": 0.27,
-  "recall": 0.8888888888888888,
+  "recall": 0.9222222222222223,
   "recall_ci": [
-    0.8074203653741283,
-    0.9385174702978976
+    0.8480596940416417,
+    0.9618156704022723
   ],
   "refusal_acc": 0.95,
   "queries": {
@@ -1045,31 +1046,31 @@
       "split": "tune",
       "kind": "exact"
     },
-    "Cormack SIGIR 2009": {
-      "hit": false,
+    "Which build fixed the cooldown bug in r45?": {
+      "hit": true,
       "expect": "rag/hybrid-search-bm25.md",
       "retrieved": [
-        "obsidian/zettelkasten.md",
-        "productivity/para-method.md",
+        "rag/hybrid-search-bm25.md",
         "projects/decision-log.md",
-        "rag/embedding-models.md",
-        "projects/project-rag-assistant.md"
+        "prompting/system-prompts.md",
+        "obsidian/dataview-plugin.md",
+        "prompting/few-shot-prompting.md"
       ],
-      "top_score": 0.2090778648853302,
+      "top_score": 0.5013233423233032,
       "split": "tune",
       "kind": "exact"
     },
-    "22M parameters": {
-      "hit": false,
+    "Which external embedding partner is recommended by Anthropic: Voyage AI?": {
+      "hit": true,
       "expect": "rag/embedding-models.md",
       "retrieved": [
-        "projects/project-rag-assistant.md",
-        "books/getting-things-done.md",
-        "rag/vector-similarity-search.md",
-        "rag/hybrid-search-bm25.md",
-        "productivity/deep-work.md"
+        "rag/embedding-models.md",
+        "projects/decision-log.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md"
       ],
-      "top_score": 0.2209886610507965,
+      "top_score": 0.5440068244934082,
       "split": "tune",
       "kind": "exact"
     },
@@ -1157,17 +1158,17 @@
       "split": "tune",
       "kind": "exact"
     },
-    "Merlin Mann 43 Folders": {
-      "hit": false,
+    "What are the five actions in Merlin Mann inbox zero pipeline: Delete, Delegate, Respond, Defer, Archive?": {
+      "hit": true,
       "expect": "productivity/inbox-zero.md",
       "retrieved": [
-        "projects/decision-log.md",
-        "productivity/para-method.md",
-        "obsidian/zettelkasten.md",
-        "obsidian/wikilinks-and-backlinks.md",
-        "obsidian/vault-organization.md"
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "books/getting-things-done.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md"
       ],
-      "top_score": 0.3682214021682739,
+      "top_score": 0.6556359529495239,
       "split": "tune",
       "kind": "exact"
     },

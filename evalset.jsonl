@@ -72,15 +72,15 @@
 {"q": "How to structure user input at the prompt boundary to prevent prompt injection", "expect_note": "prompting/prompt-structure.md", "split": "tune", "kind": "collision"}
 {"q": "Why wordpiece tokenization requires token budget headroom in chunk splitting", "expect_note": "rag/chunking-strategies.md", "split": "tune", "kind": "collision"}
 {"q": "17*24", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
-{"q": "Cormack SIGIR 2009", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
-{"q": "22M parameters", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "Which build fixed the cooldown bug in r45?", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
+{"q": "Which external embedding partner is recommended by Anthropic: Voyage AI?", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
 {"q": "bge-small-en-v1.5", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
 {"q": "text-embedding-3-small", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
 {"q": "TABLE status, due FROM projects WHERE status != done", "expect_note": "obsidian/dataview-plugin.md", "split": "tune", "kind": "exact"}
 {"q": "Niklas Luhmann 70 books and 400 papers", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "exact"}
 {"q": "2026-08-25", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
 {"q": "2026-08-26", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
-{"q": "Merlin Mann 43 Folders", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "exact"}
+{"q": "What are the five actions in Merlin Mann inbox zero pipeline: Delete, Delegate, Respond, Defer, Archive?", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "exact"}
 {"q": "David Allen open loops", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "exact"}
 {"q": "System 1 silent substitution", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
 {"q": "Sönke Ahrens slip-box deposit", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "exact"}
@@ -108,7 +108,7 @@
 {"q": "What information should be excluded from system prompts to protect cache reuse?", "expect_note": "prompting/system-prompts.md", "split": "holdout", "kind": "standard"}
 {"q": "Why is sliding window overlap critical when splitting continuous text into chunks?", "expect_note": "rag/chunking-strategies.md", "split": "holdout", "kind": "standard"}
 {"q": "How does the assistant verify that citations reference real chunks in the prompt?", "expect_note": "rag/citation-patterns.md", "split": "holdout", "kind": "standard"}
-{"q": "How many parameters does the all-MiniLM-L6-v2 model have?", "expect_note": "rag/embedding-models.md", "split": "holdout", "kind": "exact"}
+{"q": "What is the maximum input token limit for all-MiniLM-L6-v2: 256 wordpiece tokens?", "expect_note": "rag/embedding-models.md", "split": "holdout", "kind": "exact"}
 {"q": "What is the definition of recall at k in retrieval evaluation?", "expect_note": "rag/evaluating-rag-systems.md", "split": "holdout", "kind": "standard"}
 {"q": "Why does a calibrated refusal threshold prevent hallucinations on out-of-vault queries?", "expect_note": "rag/hallucination-and-grounding.md", "split": "holdout", "kind": "standard"}
 {"q": "Why are rare entity lookups and serial numbers better suited for BM25 than dense embeddings?", "expect_note": "rag/hybrid-search-bm25.md", "split": "holdout", "kind": "standard"}

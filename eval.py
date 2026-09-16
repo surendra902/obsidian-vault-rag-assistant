@@ -1,11 +1,11 @@
-"""Retrieval eval over evalset.jsonl with Wilson Confidence Intervals and Split support.
+"""Retrieval eval over evalset.jsonl with Wilson Confidence Intervals, Split support, and Hybrid search.
 
 Prints recall@k (answerable), refusal accuracy (unanswerable, by threshold),
 per-miss detail, and the top-hit score distributions with 95% Wilson CIs.
 
 Usage:
-    python eval.py [--k 5] [--threshold 0.27] [--split tune|holdout|all] [--exclude-derived]
-    python eval.py --compare baseline.json
+    python eval.py [--k 5] [--threshold 0.27] [--split tune|holdout|all] [--mode dense|bm25|hybrid] [--exclude-derived]
+    python eval.py --compare baseline_tune.json
 """
 
 import argparse
@@ -14,7 +14,8 @@ import math
 import sys
 from pathlib import Path
 
-from rag import REFUSE_THRESHOLD, VaultIndex
+from rag import REFUSE_THRESHOLD
+from search import HybridIndex
 
 
 def wilson_ci(hits: int, total: int, z: float = 1.96) -> tuple[float, float]:
@@ -31,12 +32,11 @@ def wilson_ci(hits: int, total: int, z: float = 1.96) -> tuple[float, float]:
 
 
 def mcnemar_test(b: int, c: int) -> float:
-    """Exact two-sided binomial test for McNemar's test when b + c is small."""
+    """Exact two-sided binomial test for McNemar's test."""
     n = b + c
     if n == 0:
         return 1.0
     k = min(b, c)
-    # two-tailed exact binomial test with p = 0.5
     prob = sum(math.comb(n, i) * (0.5 ** n) for i in range(k + 1))
     return min(1.0, 2.0 * prob)
 
@@ -47,6 +47,8 @@ def main():
     ap.add_argument("--threshold", type=float, default=REFUSE_THRESHOLD, help="Refusal similarity threshold")
     ap.add_argument("--split", choices=["tune", "holdout", "all"], default="tune",
                     help="Which split of evalset.jsonl to run on (default: tune)")
+    ap.add_argument("--mode", choices=["dense", "bm25", "hybrid"], default="dense",
+                    help="Retrieval mode: dense, bm25, or hybrid (default: dense)")
     ap.add_argument("--exclude-derived", action="store_true",
                     help="Exclude derived memory chunks (used to check eval contamination)")
     ap.add_argument("--save-run", type=str, default=None,
@@ -57,19 +59,18 @@ def main():
 
     all_cases = [json.loads(line) for line in open("evalset.jsonl", encoding="utf-8") if line.strip()]
 
-    # Filter by split if specified
+    # Filter by split
     if args.split == "all":
         cases = all_cases
     else:
         cases = [c for c in all_cases if c.get("split") == args.split or (c.get("unanswerable") and args.split != "holdout")]
-        # Also ensure unanswerables are included in holdout if needed or kept separate
         if args.split == "holdout":
             cases = [c for c in all_cases if c.get("split") == "holdout" or c.get("unanswerable")]
 
     answerable = [c for c in cases if not c.get("unanswerable")]
     unanswerable = [c for c in cases if c.get("unanswerable")]
 
-    idx = VaultIndex("vectors")
+    idx = HybridIndex("vectors")
 
     # --- recall@k on answerable cases ---
     misses, ans_scores = [], []
@@ -77,7 +78,7 @@ def main():
     query_results = {}
 
     for c in answerable:
-        hits = idx.search(c["q"], k=args.k, exclude_derived=args.exclude_derived)
+        hits = idx.search(c["q"], k=args.k, mode=args.mode, exclude_derived=args.exclude_derived)
         top_score = hits[0].score if hits else 0.0
         ans_scores.append(top_score)
         paths = [h.path for h in hits]
@@ -102,7 +103,7 @@ def main():
     # --- refusal accuracy on unanswerable cases ---
     refused, unans_scores = 0, []
     for c in unanswerable:
-        top_hits = idx.search(c["q"], k=1, exclude_derived=args.exclude_derived)
+        top_hits = idx.search(c["q"], k=1, mode=args.mode, exclude_derived=args.exclude_derived)
         top = top_hits[0] if top_hits else None
         score = top.score if top else 0.0
         unans_scores.append(score)
@@ -112,7 +113,7 @@ def main():
     refusal_acc = refused / len(unanswerable) if unanswerable else 1.0
     refusal_ci = wilson_ci(refused, len(unanswerable))
 
-    # --- false-refusal rate on answerable cases (top hit below threshold) ---
+    # --- false-refusal rate on answerable cases ---
     accepted = sum(1 for s in ans_scores if s >= args.threshold)
     false_refused_count = len(answerable) - accepted
     false_refusal = false_refused_count / len(answerable) if answerable else 0.0
@@ -121,7 +122,7 @@ def main():
     # --- threshold justification: score distributions ---
     dist = lambda xs: f"min={min(xs):.3f} median={sorted(xs)[len(xs)//2]:.3f} max={max(xs):.3f}" if xs else "N/A"
 
-    print(f"=== Retrieval Evaluation [Split: {args.split.upper()}] ===")
+    print(f"=== Retrieval Evaluation [Mode: {args.mode.upper()} | Split: {args.split.upper()}] ===")
     print(f"Cases: {len(answerable)} answerable, {len(unanswerable)} unanswerable, k={args.k}")
     print(f"recall@{args.k}:                        {recall:.3f} ({hits_count}/{len(answerable)}) [95% CI: {recall_ci[0]:.3f}, {recall_ci[1]:.3f}]")
     print(f"refusal accuracy @threshold {args.threshold}:   {refusal_acc:.3f} ({refused}/{len(unanswerable)}) [95% CI: {refusal_ci[0]:.3f}, {refusal_ci[1]:.3f}]")
@@ -157,6 +158,7 @@ def main():
     if args.save_run:
         save_path = Path(args.save_run)
         save_data = {
+            "mode": args.mode,
             "split": args.split,
             "k": args.k,
             "threshold": args.threshold,
@@ -168,8 +170,6 @@ def main():
         save_path.write_text(json.dumps(save_data, indent=2), encoding="utf-8")
         print(f"\nRun saved to: {save_path}")
 
-    # Exit code: on tune split, recall must be within headroom range [0.60, 0.90] or pass floor >= 0.60
-    # On holdout split, recall must not regress below floor
     floor_recall = 0.60 if args.split in ("tune", "holdout") else 0.70
     floor_refusal = 0.80
     ok = recall >= floor_recall and refusal_acc >= floor_refusal
