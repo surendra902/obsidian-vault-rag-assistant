@@ -29,12 +29,14 @@ import json
 import os
 import re
 import time
+from pathlib import Path
 
 import anthropic
 import openai
 from typing import Annotated, Dict, List, Optional
 from fastapi import FastAPI
 from fastapi.responses import FileResponse, JSONResponse
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel, Field, StringConstraints
 
 from rag import REFUSE_THRESHOLD, VaultIndex
@@ -590,21 +592,120 @@ def healthz():
     return out
 
 
-@app.get("/")
-def root():
-    return FileResponse("static/index.html")
-
+if Path("static").is_dir():
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 try:
     import gradio as gr
-    with gr.Blocks(title="Vault RAG Assistant") as demo:
-        gr.Markdown("# Obsidian Vault RAG Assistant\nAccess the full native web UI at the root path: [/](/).")
-    app = gr.mount_gradio_app(app, demo, path="/gradio")
+
+    def create_gradio_ui():
+        with gr.Blocks(title="Vault RAG Assistant") as demo:
+            gr.Markdown(
+                "# 🧠 Obsidian Vault RAG Assistant\n"
+                "Natural language retrieval and question answering grounded in your personal Obsidian vault.\n\n"
+                f"**Engine**: `{MODEL or 'Atria-Dawn-Preview'}` ({PROVIDER}) · **Fallback**: {('OpenRouter (' + ', '.join(LLM_MODELS[:2]) + ')') if oai else 'Local Extractive'}\n"
+                "*(Native HTML UI also available at [`/static/index.html`](/static/index.html))*"
+            )
+            with gr.Row():
+                mode_choice = gr.Radio(choices=["Ask (Direct RAG)", "Agent (Tool Use)"], value="Ask (Direct RAG)", label="Interaction Mode")
+
+            chatbot = gr.Chatbot(label="Conversation", height=450)
+            with gr.Row():
+                msg_input = gr.Textbox(placeholder="Ask your vault a question...", label="Question", scale=9)
+                submit_btn = gr.Button("Send", variant="primary", scale=1)
+
+            sources_box = gr.Markdown(value="*Retrieved document sources will appear here.*")
+
+            gr.Examples(
+                examples=[
+                    ["How does hybrid search combine BM25 and dense retrieval?"],
+                    ["What chunking strategies are documented in the vault?"],
+                    ["What is the formula for Reciprocal Rank Fusion?"],
+                    ["What are the rules for sleep tracking?"],
+                ],
+                inputs=msg_input,
+            )
+
+            def user_ask(question, history, mode):
+                if not (question and question.strip()):
+                    return "", history, "*Please enter a question.*"
+                history = history or []
+                if "Agent" in mode:
+                    tool_trace = []
+                    def search_v(query, k=5):
+                        hits = index.search(query, k=k) if index else []
+                        tool_trace.append(f"search_vault({query!r}, k={k}) -> {len(hits)} hits")
+                        return json.dumps([{"path": h.path, "heading": h.heading, "score": round(h.score, 3), "excerpt": h.text[:400]} for h in hits])
+                    def read_n(path):
+                        tool_trace.append(f"read_note({path!r})")
+                        return index.read_note(path) if index else ""
+                    def list_t(tag):
+                        notes = index.notes_by_tag(tag) if index else []
+                        tool_trace.append(f"list_by_tag({tag!r}) -> {len(notes)} notes")
+                        return json.dumps(notes)
+
+                    fn_map = {"search_vault": search_v, "read_note": read_n, "list_by_tag": list_t}
+                    def r_named(name, args):
+                        return fn_map[name](**args)
+                    tools = [
+                        {"name": "search_vault", "description": "Semantic search over vault notes.", "input_schema": {"type": "object", "properties": {"query": {"type": "string"}, "k": {"type": "integer", "default": 5}}, "required": ["query"], "additionalProperties": False}},
+                        {"name": "read_note", "description": "Read one full note by vault-relative path.", "input_schema": {"type": "object", "properties": {"path": {"type": "string"}}, "required": ["path"], "additionalProperties": False}},
+                        {"name": "list_by_tag", "description": "List note paths carrying a frontmatter tag.", "input_schema": {"type": "object", "properties": {"tag": {"type": "string"}}, "required": ["tag"], "additionalProperties": False}},
+                    ]
+                    try:
+                        ans, m = _anthropic_agent(question, tools, r_named)
+                    except Exception:
+                        ans, m = _openai_agent(question, tools, r_named)
+                    trace_md = "\n".join(f"- `{t}`" for t in tool_trace)
+                    history.append({"role": "user", "content": question})
+                    history.append({"role": "assistant", "content": ans})
+                    return "", history, f"### Tool Execution Trace ({m}):\n{trace_md}"
+                else:
+                    if router:
+                        hits, strat = router.route_and_search(question, k=5)
+                    elif index:
+                        hits = index.search(question, k=5)
+                        strat = "standard_hybrid"
+                    else:
+                        hits, strat = [], "none"
+                    refuse_thresh = getattr(index, "threshold", REFUSE_THRESHOLD) if index else REFUSE_THRESHOLD
+                    top_conf = max((getattr(h, "dense_score", h.score) for h in hits), default=0.0) if hits else 0.0
+                    is_exact = strat == "exact_bm25_heavy" and hits and getattr(hits[0], "bm25_score", 0.0) > 0.0
+                    if not hits or (top_conf < refuse_thresh and not is_exact):
+                        ans = "I couldn't find anything about that in this vault."
+                        history.append({"role": "user", "content": question})
+                        history.append({"role": "assistant", "content": ans})
+                        return "", history, "*Query tripped refusal threshold (0 hallucinations).* "
+                    try:
+                        ans, srcs, m = _live_answer(question, hits)
+                    except Exception:
+                        if oai:
+                            ans, srcs, m = _openai_answer(question, hits)
+                        else:
+                            excerpts = "\n\n---\n\n".join(f"[{h.path}{' :: ' + h.heading if h.heading else ''}]\n{h.text}" for h in hits[:3])
+                            ans = "(fallback mode: local extractive)\n\n" + excerpts
+                            srcs = _sources(hits)
+                            m = "local-extractive"
+                    src_lines = ["### Retrieved Citations:"]
+                    for s in (srcs or []):
+                        c_mark = " (Cited)" if s.get("cited") else ""
+                        src_lines.append(f"- **{s.get('path')}** :: *{s.get('heading', '')}* (Score: {s.get('score')}){c_mark}\n  > {s.get('excerpt', '')[:200]}...")
+                    history.append({"role": "user", "content": question})
+                    history.append({"role": "assistant", "content": ans})
+                    return "", history, "\n".join(src_lines)
+
+            submit_btn.click(user_ask, inputs=[msg_input, chatbot, mode_choice], outputs=[msg_input, chatbot, sources_box])
+            msg_input.submit(user_ask, inputs=[msg_input, chatbot, mode_choice], outputs=[msg_input, chatbot, sources_box])
+        return demo
+
+    demo = create_gradio_ui()
+    app = gr.mount_gradio_app(app, demo, path="/")
 except Exception as _ge:
-    pass
+    print(f"Gradio mounting skipped: {_ge}")
 
 if __name__ == "__main__":
     import uvicorn
     port = int(os.environ.get("PORT", 7860))
     uvicorn.run(app, host="0.0.0.0", port=port)
+
 
