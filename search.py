@@ -101,11 +101,24 @@ class FTSIndex:
 
 
 class HybridIndex:
-    def __init__(self, index_dir: str = "vectors", k_rrf: int = 60, alpha: float = 0.5):
+    def __init__(self, index_dir: str = "vectors", k_rrf: Optional[int] = None, alpha: Optional[float] = None, params_path: str = "params.json"):
         self.dense = VaultIndex(index_dir)
         self.bm25 = FTSIndex(db_path=f"{index_dir}/fts5.db", chunks_path=f"{index_dir}/chunks.jsonl")
-        self.k_rrf = k_rrf
-        self.alpha = alpha
+        
+        # Load tuned parameters if available
+        params = {}
+        p = Path(params_path)
+        if p.is_file():
+            try:
+                params = json.loads(p.read_text(encoding="utf-8"))
+            except Exception:
+                pass
+
+        self.alpha = alpha if alpha is not None else params.get("alpha", 0.8)
+        self.k_rrf = k_rrf if k_rrf is not None else params.get("k_rrf", 40)
+        self.threshold = params.get("threshold", REFUSE_THRESHOLD)
+        self.default_k = params.get("k", 5)
+        self.candidate_depth = params.get("candidate_depth", 50)
 
     def search(
         self,

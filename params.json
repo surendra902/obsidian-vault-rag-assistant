@@ -1,0 +1,7 @@
+{
+  "alpha": 0.8,
+  "k_rrf": 40,
+  "threshold": 0.27,
+  "k": 5,
+  "candidate_depth": 50
+}

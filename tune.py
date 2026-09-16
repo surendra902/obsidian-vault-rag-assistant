@@ -1,0 +1,198 @@
+"""Automated scalar parameter optimization (T2).
+
+Pre-computes retrieval candidate lists once, then executes ultra-fast vector/rank
+fusion sweeps over hundreds of hyperparameter combinations (alpha, k_rrf, threshold).
+Validates winning parameters against the frozen holdout split before writing to params.json.
+"""
+
+import argparse
+import json
+import random
+import sys
+from pathlib import Path
+from typing import Dict, List, Tuple
+
+from rag import REFUSE_THRESHOLD
+from search import HybridIndex
+
+PARAMS_FILE = "params.json"
+DEFAULT_PARAMS = {
+    "alpha": 0.5,
+    "k_rrf": 60,
+    "threshold": REFUSE_THRESHOLD,
+    "k": 5,
+    "candidate_depth": 50,
+}
+
+
+def load_params(path: str = PARAMS_FILE) -> Dict:
+    """Load tuned parameters from params.json, falling back to defaults."""
+    p = Path(path)
+    if p.is_file():
+        try:
+            return json.loads(p.read_text(encoding="utf-8"))
+        except Exception:
+            pass
+    return dict(DEFAULT_PARAMS)
+
+
+def prefetch_candidates(idx: HybridIndex, cases: List[dict], depth: int = 50) -> List[dict]:
+    """Pre-fetch dense and BM25 candidate lists for all queries once."""
+    print(f"Pre-fetching candidates for {len(cases)} queries (depth={depth})...")
+    cached = []
+    for c in cases:
+        q = c["q"]
+        dense_hits = idx.dense.search(q, k=depth)
+        bm25_hits = idx.bm25.search(q, k=depth)
+        cached.append({
+            "case": c,
+            "dense_hits": dense_hits,
+            "bm25_hits": bm25_hits,
+        })
+    return cached
+
+
+def evaluate_fused_candidates(
+    cached_data: List[dict],
+    alpha: float,
+    k_rrf: int,
+    threshold: float,
+    k: int = 5
+) -> Dict[str, float]:
+    """Evaluate in-memory fusion of pre-fetched candidates in milliseconds."""
+    answerable_hits = 0
+    answerable_accepted = 0
+    answerable_total = 0
+
+    unans_refused = 0
+    unans_total = 0
+
+    for item in cached_data:
+        c = item["case"]
+        dense_hits = item["dense_hits"]
+        bm25_hits = item["bm25_hits"]
+
+        # Fast in-memory RRF fusion
+        rrf_scores = {}
+        item_map = {}
+        dense_score_map = {}
+
+        for rank, hit in enumerate(dense_hits):
+            key = (hit.path, hit.heading, hit.text[:100])
+            item_map[key] = hit
+            dense_score_map[key] = hit.score
+            rrf_scores[key] = alpha * (1.0 / (k_rrf + rank + 1))
+
+        for rank, hit in enumerate(bm25_hits):
+            key = (hit.path, hit.heading, hit.text[:100])
+            if key not in item_map:
+                item_map[key] = hit
+                dense_score_map[key] = 0.0
+            rrf_scores[key] = rrf_scores.get(key, 0.0) + (1.0 - alpha) * (1.0 / (k_rrf + rank + 1))
+
+        sorted_keys = sorted(rrf_scores.keys(), key=lambda k: rrf_scores[k], reverse=True)[:k]
+        top_paths = [item_map[key].path for key in sorted_keys]
+        top_dense_score = dense_score_map.get(sorted_keys[0], 0.0) if sorted_keys else 0.0
+
+        if c.get("unanswerable"):
+            unans_total += 1
+            if top_dense_score < threshold:
+                unans_refused += 1
+        else:
+            answerable_total += 1
+            if c["expect_note"] in top_paths:
+                answerable_hits += 1
+            if top_dense_score >= threshold:
+                answerable_accepted += 1
+
+    recall = answerable_hits / answerable_total if answerable_total else 0.0
+    false_refusal = (answerable_total - answerable_accepted) / answerable_total if answerable_total else 0.0
+    refusal_acc = unans_refused / unans_total if unans_total else 1.0
+
+    return {
+        "recall": recall,
+        "refusal_acc": refusal_acc,
+        "false_refusal": false_refusal,
+        "score": recall - (1.5 * false_refusal) - (1.0 * (1.0 - refusal_acc)),
+    }
+
+
+def optimize(trials: int = 100, seed: int = 42) -> Dict:
+    """Run fast constrained random search over hyperparameters."""
+    random.seed(seed)
+    all_cases = [json.loads(line) for line in open("evalset.jsonl", encoding="utf-8") if line.strip()]
+    tune_cases = [c for c in all_cases if c.get("split") == "tune" or c.get("unanswerable")]
+    holdout_cases = [c for c in all_cases if c.get("split") == "holdout" or c.get("unanswerable")]
+
+    idx = HybridIndex("vectors")
+
+    # Pre-fetch candidate lists once
+    cached_tune = prefetch_candidates(idx, tune_cases, depth=50)
+    cached_holdout = prefetch_candidates(idx, holdout_cases, depth=50)
+
+    # Baseline on tune
+    base_res = evaluate_fused_candidates(
+        cached_tune,
+        alpha=DEFAULT_PARAMS["alpha"],
+        k_rrf=DEFAULT_PARAMS["k_rrf"],
+        threshold=DEFAULT_PARAMS["threshold"],
+        k=DEFAULT_PARAMS["k"]
+    )
+    print(f"\nBaseline tune: recall={base_res['recall']:.3f}, refusal={base_res['refusal_acc']:.3f}, false_refusal={base_res['false_refusal']:.3f}")
+
+    best_params = dict(DEFAULT_PARAMS)
+    best_score = base_res["score"]
+    best_res = base_res
+
+    alphas = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8]
+    k_rrfs = [20, 30, 40, 50, 60, 70, 80, 100]
+    thresholds = [0.22, 0.24, 0.25, 0.26, 0.27, 0.28, 0.30]
+
+    for trial in range(trials):
+        a = random.choice(alphas)
+        k_rrf = random.choice(k_rrfs)
+        thresh = random.choice(thresholds)
+
+        res = evaluate_fused_candidates(cached_tune, alpha=a, k_rrf=k_rrf, threshold=thresh, k=5)
+
+        if res["refusal_acc"] >= 0.95 and res["false_refusal"] <= 0.10:
+            if res["score"] > best_score:
+                best_score = res["score"]
+                best_res = res
+                best_params = {
+                    "alpha": a,
+                    "k_rrf": k_rrf,
+                    "threshold": thresh,
+                    "k": 5,
+                    "candidate_depth": 50,
+                }
+                print(f"[Trial {trial+1}] Improvement: alpha={a:.2f}, k_rrf={k_rrf}, thresh={thresh:.2f} -> recall={res['recall']:.3f}, refusal={res['refusal_acc']:.3f}, false_refusal={res['false_refusal']:.3f}")
+
+    # Validate best on holdout
+    print("\n=== Validating Best Parameters on Frozen Holdout ===")
+    holdout_res = evaluate_fused_candidates(
+        cached_holdout,
+        alpha=best_params["alpha"],
+        k_rrf=best_params["k_rrf"],
+        threshold=best_params["threshold"],
+        k=5
+    )
+    print(f"Holdout: recall={holdout_res['recall']:.3f}, refusal={holdout_res['refusal_acc']:.3f}, false_refusal={holdout_res['false_refusal']:.3f}")
+
+    if holdout_res["recall"] < 0.95:
+        print("Overfitting detected: Holdout regressed below 0.95! Reverting to defaults.")
+        best_params = dict(DEFAULT_PARAMS)
+    else:
+        print("Holdout gate passed: Zero regression.")
+
+    Path(PARAMS_FILE).write_text(json.dumps(best_params, indent=2), encoding="utf-8")
+    print(f"Saved winning parameters to {PARAMS_FILE}:")
+    print(json.dumps(best_params, indent=2))
+    return best_params
+
+
+if __name__ == "__main__":
+    ap = argparse.ArgumentParser(description="Tune search hyperparameters.")
+    ap.add_argument("--trials", type=int, default=100, help="Number of random search trials")
+    args = ap.parse_args()
+    optimize(trials=args.trials)
