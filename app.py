@@ -46,20 +46,20 @@ from memory import MemoryManager
 
 
 def _load_dotenv(path=".env"):
-    """Read .env if present. Six lines of stdlib instead of python-dotenv;
-    setdefault so an explicitly exported variable still wins."""
+    """Read .env if present. Loads configured variables into os.environ."""
     try:
         for line in open(path, encoding="utf-8"):
             line = line.strip()
             if line and not line.startswith("#") and "=" in line:
                 k, v = line.split("=", 1)
-                os.environ.setdefault(k.strip(), v.strip().strip('"').strip("'"))
+                os.environ[k.strip()] = v.strip().strip('"').strip("'")
     except FileNotFoundError:
         pass
 
 
 _load_dotenv()
 
+ANTHROPIC_BASE_URL = os.environ.get("ANTHROPIC_BASE_URL", "https://api.anthropic.com")
 ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("MY_ANTHROPIC_KEY")
 ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
 LLM_KEY = os.environ.get("LLM_API_KEY")
@@ -75,14 +75,15 @@ LLM_MODELS = [
 ]
 
 client = oai = None
-if LLM_PROVIDER in ("openrouter", "openai-compatible") and LLM_KEY:
+if LLM_KEY:
     oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL, timeout=15.0)
-    PROVIDER, MODEL = "openai-compatible", LLM_MODELS[0]
-elif ANTHROPIC_KEY and LLM_PROVIDER != "openrouter":
-    client = anthropic.Anthropic(api_key=ANTHROPIC_KEY, base_url="https://api.anthropic.com")
+
+if ANTHROPIC_KEY:
+    client = anthropic.Anthropic(api_key=ANTHROPIC_KEY, base_url=ANTHROPIC_BASE_URL, timeout=15.0)
+
+if ANTHROPIC_KEY and LLM_PROVIDER != "openrouter":
     PROVIDER, MODEL = "anthropic", ANTHROPIC_MODEL
-elif LLM_KEY:
-    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL, timeout=15.0)
+elif oai:
     PROVIDER, MODEL = "openai-compatible", LLM_MODELS[0]
 else:
     PROVIDER, MODEL = "none", None
@@ -192,33 +193,60 @@ def _chat(messages, tools=None, max_tokens=4000):
 
 
 def _live_answer(question: str, hits):
-    """Claude call with native citations. Document blocks carry the chunks;
-    the response's text blocks carry citations back to them."""
-    docs = [
-        {
-            "type": "document",
-            "source": {"type": "text", "media_type": "text/plain", "data": h.text},
-            "title": f"{h.path}{' :: ' + h.heading if h.heading else ''}",
-            "citations": {"enabled": True},
-        }
-        for h in hits
-    ]
+    """Claude call with citations. Uses native document citations when supported by
+    official Anthropic API, or bracketed source numbers [n] on compatible endpoints (e.g. Atria)."""
+    is_official = "api.anthropic.com" in (getattr(client, "base_url", None) and str(client.base_url) or "")
+    if is_official:
+        try:
+            docs = [
+                {
+                    "type": "document",
+                    "source": {"type": "text", "media_type": "text/plain", "data": h.text},
+                    "title": f"{h.path}{' :: ' + h.heading if h.heading else ''}",
+                    "citations": {"enabled": True},
+                }
+                for h in hits
+            ]
+            resp = client.messages.create(
+                model=ANTHROPIC_MODEL,
+                max_tokens=4000,
+                thinking={"type": "adaptive"},
+                system=[{"type": "text", "text": ASK_SYSTEM, "cache_control": {"type": "ephemeral"}}],
+                messages=[{"role": "user", "content": docs + [{"type": "text", "text": question}]}],
+                timeout=15.0,
+            )
+            answer = "".join(b.text for b in resp.content if b.type == "text")
+            cited = {}
+            for b in resp.content:
+                for c in (getattr(b, "citations", None) or []):
+                    cited[c.get("document_index")] = c.get("document_title")
+            sources = []
+            for i, title in cited.items():
+                if i is not None and 0 <= i < len(hits):
+                    h = hits[i]
+                    sources.append({"path": h.path, "heading": h.heading, "score": round(h.score, 3),
+                                    "excerpt": h.text[:400], "cited": True})
+            return answer, sources, ANTHROPIC_MODEL
+        except Exception:
+            pass  # Fall through to bracketed prompt below
+
+    numbered = "\n\n".join(
+        f"[{i}] {h.path}{' :: ' + h.heading if h.heading else ''}\n{h.text}"
+        for i, h in enumerate(hits, 1)
+    )
     resp = client.messages.create(
         model=ANTHROPIC_MODEL,
-        max_tokens=8000,
-        thinking={"type": "adaptive"},
-        system=[{"type": "text", "text": ASK_SYSTEM, "cache_control": {"type": "ephemeral"}}],
-        messages=[{"role": "user", "content": docs + [{"type": "text", "text": question}]}],
+        max_tokens=4000,
+        system=ASK_SYSTEM + CITE_RULE + NO_REASONING,
+        messages=[{"role": "user", "content": f"{numbered}\n\nQuestion: {question}"}],
+        timeout=15.0,
     )
-    answer = "".join(b.text for b in resp.content if b.type == "text")
-    # Collect actually-cited documents (dedup by index) for the sources list.
-    cited = {}
-    for b in resp.content:
-        for c in (getattr(b, "citations", None) or []):
-            cited[c.get("document_index")] = c.get("document_title")
-    sources = []
-    for i, title in cited.items():
-        if i is not None and 0 <= i < len(hits):
+    answer = "".join(b.text for b in resp.content if getattr(b, "type", "") == "text").strip()
+    sources, seen = [], set()
+    for n in re.findall(r"[\[【](\d+)[\]】]", answer):
+        i = int(n) - 1
+        if 0 <= i < len(hits) and i not in seen:
+            seen.add(i)
             h = hits[i]
             sources.append({"path": h.path, "heading": h.heading, "score": round(h.score, 3),
                             "excerpt": h.text[:400], "cited": True})
@@ -341,7 +369,15 @@ def ask(req: AskRequest):
     mode = "live"
     try:
         if PROVIDER == "anthropic":
-            answer, sources, model = _live_answer(req.question, hits)
+            try:
+                answer, sources, model = _live_answer(req.question, hits)
+            except Exception as e:
+                # If primary Anthropic / Atria rate-limits or fails, fallback to OpenRouter free models!
+                if oai:
+                    print(f"Primary Anthropic API error ({e}), falling back to OpenRouter free models...")
+                    answer, sources, model = _openai_answer(req.question, hits)
+                else:
+                    raise
         else:
             answer, sources, model = _openai_answer(req.question, hits)
     except (anthropic.AuthenticationError, openai.AuthenticationError):
@@ -391,16 +427,17 @@ def ask(req: AskRequest):
 def _anthropic_agent(question, tools, run_named):
     messages = [{"role": "user", "content": question}]
     for _ in range(8):  # bound the loop: two-hop questions need 2-4 calls
-        resp = client.messages.create(
-            model=ANTHROPIC_MODEL,
-            max_tokens=8000,
-            thinking={"type": "adaptive"},
-            system=[{"type": "text", "text": AGENT_SYSTEM, "cache_control": {"type": "ephemeral"}}],
-            tools=tools,
-            messages=messages,
-        )
+        kwargs = {
+            "model": ANTHROPIC_MODEL,
+            "max_tokens": 4000,
+            "system": AGENT_SYSTEM,
+            "tools": tools,
+            "messages": messages,
+            "timeout": 15.0,
+        }
+        resp = client.messages.create(**kwargs)
         if resp.stop_reason != "tool_use":
-            return "".join(b.text for b in resp.content if b.type == "text"), ANTHROPIC_MODEL
+            return "".join(b.text for b in resp.content if getattr(b, "type", "") == "text"), ANTHROPIC_MODEL
         messages.append({"role": "assistant", "content": [b.model_dump() for b in resp.content]})
         results = []
         for b in resp.content:
@@ -501,7 +538,14 @@ def agent(req: AskRequest):
         if PROVIDER == "openai-compatible":
             answer, model = _openai_agent(req.question, tools, run_named)
         else:
-            answer, model = _anthropic_agent(req.question, tools, run_named)
+            try:
+                answer, model = _anthropic_agent(req.question, tools, run_named)
+            except Exception as e:
+                if oai:
+                    print(f"Primary agent failed ({e}), falling back to OpenRouter agent...")
+                    answer, model = _openai_agent(req.question, tools, run_named)
+                else:
+                    raise
     except (anthropic.AuthenticationError, openai.AuthenticationError):
         return JSONResponse(status_code=503, content={"detail": f"{PROVIDER} API rejected the key"})
     except (anthropic.APIStatusError, openai.APIStatusError) as e:
@@ -517,28 +561,28 @@ def healthz():
            "mode": "extractive" if PROVIDER == "none" else "live",
            "provider": PROVIDER,
            "model": MODEL,
+           "fallback": "openrouter" if oai else "none",
            "index": index.stats if index else None}
     if index is None:
         out["status"] = "degraded"
         out["index_error"] = _index_error
-    # Cheapest portable auth probe: catch a dead key at health-check time, not
-    # demo time. max_tokens=1 is enough -- a 200 means the key was accepted.
-    if PROVIDER == "anthropic":
+    if client:
         try:
-            client.messages.create(model=ANTHROPIC_MODEL, max_tokens=8,
-                                   messages=[{"role": "user", "content": "ping"}])
-            out["api"] = "ok"
-        except anthropic.APIError as e:
-            out["api"] = f"error: {type(e).__name__}"
-    elif PROVIDER == "openai-compatible":
-        out["models"] = LLM_MODELS
+            client.messages.create(model=ANTHROPIC_MODEL, max_tokens=1,
+                                   messages=[{"role": "user", "content": "ping"}],
+                                   timeout=5.0)
+            out["anthropic_api"] = "ok"
+        except Exception as e:
+            out["anthropic_api"] = f"error: {type(e).__name__}"
+    if oai:
+        out["openrouter_models"] = LLM_MODELS
         try:
             oai.chat.completions.create(model=LLM_MODELS[0], max_tokens=1,
                                         messages=[{"role": "user", "content": "ping"}],
                                         timeout=5.0)
-            out["api"] = "ok"
-        except openai.APIError as e:
-            out["api"] = f"error: {type(e).__name__}"
+            out["openrouter_api"] = "ok"
+        except Exception as e:
+            out["openrouter_api"] = f"error: {type(e).__name__}"
     return out
 
 
