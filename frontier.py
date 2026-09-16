@@ -22,7 +22,7 @@ FRONTIER_DB_PATH = "vectors/frontier.db"
 def get_frontier_db(db_path: str = FRONTIER_DB_PATH) -> sqlite3.Connection:
     """Connect to and initialize the frontier queue database."""
     Path(db_path).parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     cur = conn.cursor()
     cur.execute(
         """

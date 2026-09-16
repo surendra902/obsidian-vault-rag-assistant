@@ -19,7 +19,7 @@ EVENTS_DB_PATH = "vectors/events.db"
 def get_events_db(db_path: str = EVENTS_DB_PATH) -> sqlite3.Connection:
     """Connect to and initialize the events database."""
     Path(db_path).parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(db_path)
+    conn = sqlite3.connect(db_path, check_same_thread=False)
     cur = conn.cursor()
     cur.execute(
         """

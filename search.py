@@ -36,7 +36,7 @@ class FTSIndex:
     def __init__(self, db_path: str = FTS_DB_PATH, chunks_path: str = "vectors/chunks.jsonl"):
         self.db_path = Path(db_path)
         self.chunks_path = Path(chunks_path)
-        self.conn = sqlite3.connect(str(self.db_path))
+        self.conn = sqlite3.connect(str(self.db_path), check_same_thread=False)
         self._ensure_index()
 
     def _ensure_index(self):
@@ -184,3 +184,20 @@ class HybridIndex:
             fused_hits.append(hit)
 
         return fused_hits
+
+    def read_note(self, path: str) -> str:
+        """Forward to dense VaultIndex read_note with traversal guards."""
+        return self.dense.read_note(path)
+
+    def notes_by_tag(self, tag: str) -> list:
+        """Forward to dense VaultIndex notes_by_tag."""
+        return self.dense.notes_by_tag(tag)
+
+    @property
+    def stats(self):
+        """Index statistics for health check."""
+        base_stats = dict(self.dense.stats)
+        base_stats["mode"] = "hybrid (FTS5 BM25 + dense)"
+        base_stats["alpha"] = self.alpha
+        base_stats["k_rrf"] = self.k_rrf
+        return base_stats

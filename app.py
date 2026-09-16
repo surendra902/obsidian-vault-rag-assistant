@@ -36,6 +36,10 @@ from fastapi.responses import FileResponse, JSONResponse
 from pydantic import BaseModel
 
 from rag import REFUSE_THRESHOLD, VaultIndex
+from search import HybridIndex
+from route import AdaptiveRouter
+from events import EventLogger
+from frontier import FrontierManager
 
 
 def _load_dotenv(path=".env"):
@@ -85,9 +89,15 @@ else:
 app = FastAPI(title="Vault RAG Assistant")
 
 try:
-    index = VaultIndex("vectors")
+    index = HybridIndex("vectors")
+    router = AdaptiveRouter(index)
+    event_logger = EventLogger("vectors/events.db")
+    frontier_mgr = FrontierManager("vectors/frontier.db")
 except Exception as e:  # no index built yet -- serve healthz, refuse the rest
     index = None
+    router = None
+    event_logger = None
+    frontier_mgr = None
     _index_error = str(e)
 
 ASK_SYSTEM = """You answer questions about a personal Obsidian vault.
@@ -230,24 +240,55 @@ def _openai_answer(question: str, hits):
     return answer, sources, model
 
 
+class FeedbackRequest(BaseModel):
+    query_id: str
+    feedback: int  # +1 for up, -1 for down
+
+
+@app.post("/feedback")
+def feedback(req: FeedbackRequest):
+    if event_logger:
+        ok = event_logger.record_feedback(req.query_id, req.feedback)
+        return {"status": "recorded" if ok else "not_found"}
+    return {"status": "no_logger"}
+
+
 @app.post("/ask")
 def ask(req: AskRequest):
     if index is None:
         return JSONResponse(status_code=503, content={"detail": f"index not built: {_index_error}"})
-    hits = index.search(req.question, k=5)
-    if not hits or hits[0].score < REFUSE_THRESHOLD:
+
+    # Adaptive routing
+    if router:
+        hits, strategy_id = router.route_and_search(req.question, k=getattr(index, "default_k", 5))
+    else:
+        hits = index.search(req.question, k=5)
+        strategy_id = "standard_hybrid"
+
+    refuse_thresh = getattr(index, "threshold", REFUSE_THRESHOLD)
+    if not hits or hits[0].score < refuse_thresh:
+        if frontier_mgr:
+            frontier_mgr.enqueue_gap(req.question)
+        qid = event_logger.log_query_event(req.question, hits, strategy_id=strategy_id, refused=True) if event_logger else None
         return {"answer": "I couldn't find anything about that in this vault.",
-                "sources": [], "mode": "refused"}
+                "sources": [], "mode": "refused", "strategy": strategy_id, "query_id": qid}
+
     if PROVIDER == "none":
         excerpts = "\n\n---\n\n".join(
             f"[{h.path}{' :: ' + h.heading if h.heading else ''}]\n{h.text}" for h in hits[:3]
         )
+        answer = ("(extractive mode: set MY_ANTHROPIC_KEY or LLM_API_KEY for "
+                  "generated answers)\n\n" + excerpts)
+        sources = _sources(hits)
+        qid = event_logger.log_query_event(req.question, hits, strategy_id=strategy_id, refused=False, response_text=answer) if event_logger else None
         return {
-            "answer": "(extractive mode: set MY_ANTHROPIC_KEY or LLM_API_KEY for "
-                      "generated answers)\n\n" + excerpts,
-            "sources": _sources(hits),
+            "answer": answer,
+            "sources": sources,
             "mode": "extractive",
+            "strategy": strategy_id,
+            "query_id": qid,
         }
+
     try:
         if PROVIDER == "anthropic":
             answer, sources, model = _live_answer(req.question, hits)
@@ -259,7 +300,24 @@ def ask(req: AskRequest):
         return JSONResponse(status_code=502, content={"detail": f"{PROVIDER} API error {e.status_code}"})
     except RuntimeError as e:  # whole fallback chain exhausted
         return JSONResponse(status_code=502, content={"detail": str(e)})
-    return {"answer": answer, "sources": sources or _sources(hits), "mode": "live", "model": model}
+
+    qid = event_logger.log_query_event(
+        req.question,
+        hits,
+        strategy_id=strategy_id,
+        refused=False,
+        response_text=answer,
+        cited_paths=[s["path"] for s in (sources or [])]
+    ) if event_logger else None
+
+    return {
+        "answer": answer,
+        "sources": sources or _sources(hits),
+        "mode": "live",
+        "model": model,
+        "strategy": strategy_id,
+        "query_id": qid,
+    }
 
 
 def _anthropic_agent(question, tools, run_named):
