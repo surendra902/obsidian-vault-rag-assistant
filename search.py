@@ -102,7 +102,7 @@ class FTSIndex:
             # invert or normalize for reporting
             score = -float(bm25_score)
             tags = tags_str.split() if tags_str else []
-            hits.append(Hit(path=path, heading=heading, text=text, tags=tags, score=score))
+            hits.append(Hit(path=path, heading=heading, text=text, tags=tags, score=score, bm25_score=score))
         return hits
 
     def close(self):
@@ -161,6 +161,7 @@ class HybridIndex:
         rrf_scores = {}
         item_map = {}
         dense_score_map = {}
+        bm25_score_map = {}
 
         # Dense ranks
         for rank, hit in enumerate(dense_hits):
@@ -168,6 +169,7 @@ class HybridIndex:
             key = (hit.path, hit.heading, text_hash)
             item_map[key] = hit
             dense_score_map[key] = getattr(hit, "dense_score", hit.score)
+            bm25_score_map[key] = getattr(hit, "bm25_score", 0.0)
             rrf_scores[key] = effective_alpha * (1.0 / (self.k_rrf + rank + 1))
 
         # BM25 ranks
@@ -177,6 +179,7 @@ class HybridIndex:
             if key not in item_map:
                 item_map[key] = hit
                 dense_score_map[key] = 0.0
+            bm25_score_map[key] = getattr(hit, "bm25_score", hit.score)
             rrf_scores[key] = rrf_scores.get(key, 0.0) + (1.0 - effective_alpha) * (1.0 / (self.k_rrf + rank + 1))
 
         # Sort by fused score descending
@@ -187,6 +190,7 @@ class HybridIndex:
             base_hit = item_map[key]
             fused_score = rrf_scores[key]
             preserved_dense = dense_score_map.get(key, 0.0)
+            preserved_bm25 = bm25_score_map.get(key, 0.0)
             hit = Hit(
                 path=base_hit.path,
                 heading=base_hit.heading,
@@ -194,7 +198,7 @@ class HybridIndex:
                 tags=base_hit.tags,
                 score=fused_score,
                 dense_score=preserved_dense,
-                bm25_score=getattr(base_hit, "bm25_score", 0.0),
+                bm25_score=preserved_bm25,
                 source_url=getattr(base_hit, "source_url", ""),
                 provenance=getattr(base_hit, "provenance", "primary"),
                 ingested_at=getattr(base_hit, "ingested_at", ""),

@@ -28,6 +28,7 @@ hits. An out-of-range marker is dropped: a source is never fabricated.
 import json
 import os
 import re
+import time
 
 import anthropic
 import openai
@@ -172,6 +173,7 @@ def _chat(messages, tools=None, max_tokens=4000):
         except openai.APIStatusError as e:
             if e.status_code in RETRY_STATUS:
                 last = f"{model}: HTTP {e.status_code}"
+                time.sleep(0.5)
                 continue
             raise
         bad = _unusable(choice.message, choice.finish_reason)
