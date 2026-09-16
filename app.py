@@ -63,17 +63,21 @@ ANTHROPIC_KEY = os.environ.get("ANTHROPIC_API_KEY") or os.environ.get("MY_ANTHRO
 ANTHROPIC_MODEL = os.environ.get("ANTHROPIC_MODEL", "claude-haiku-4-5-20251001")
 LLM_KEY = os.environ.get("LLM_API_KEY")
 LLM_BASE_URL = os.environ.get("LLM_BASE_URL", "https://openrouter.ai/api/v1")
+LLM_PROVIDER = os.environ.get("LLM_PROVIDER", "").lower().strip()
 LLM_MODELS = [
     m.strip()
     for m in os.environ.get(
         "LLM_MODELS",
-        "anthropic/claude-haiku-4-5-20251001,deepseek/deepseek-chat,meta-llama/llama-3.3-70b-instruct",
+        "nex-agi/nex-n2.5-pro:free,nvidia/nemotron-3-super-120b-a12b:free,nvidia/nemotron-3.5-lightning:free,google/gemma-4-31b-it:free",
     ).split(",")
     if m.strip()
 ]
 
 client = oai = None
-if ANTHROPIC_KEY:
+if LLM_PROVIDER in ("openrouter", "openai-compatible") and LLM_KEY:
+    oai = openai.OpenAI(api_key=LLM_KEY, base_url=LLM_BASE_URL)
+    PROVIDER, MODEL = "openai-compatible", LLM_MODELS[0]
+elif ANTHROPIC_KEY and LLM_PROVIDER != "openrouter":
     client = anthropic.Anthropic(api_key=ANTHROPIC_KEY, base_url="https://api.anthropic.com")
     PROVIDER, MODEL = "anthropic", ANTHROPIC_MODEL
 elif LLM_KEY:
@@ -328,9 +332,21 @@ def ask(req: AskRequest):
         model = "local-extractive"
         mode = "extractive"
     except (anthropic.APIStatusError, openai.APIStatusError) as e:
-        return JSONResponse(status_code=502, content={"detail": f"{PROVIDER} API error {e.status_code}"})
-    except RuntimeError as e:  # whole fallback chain exhausted
-        return JSONResponse(status_code=502, content={"detail": str(e)})
+        excerpts = "\n\n---\n\n".join(
+            f"[{h.path}{' :: ' + h.heading if h.heading else ''}]\n{h.text}" for h in hits[:3]
+        )
+        answer = (f"(fallback mode: remote API error {e.status_code})\n\n" + excerpts)
+        sources = _sources(hits)
+        model = "local-extractive"
+        mode = "extractive"
+    except RuntimeError as e:  # whole fallback chain exhausted -> graceful extractive fallback
+        excerpts = "\n\n---\n\n".join(
+            f"[{h.path}{' :: ' + h.heading if h.heading else ''}]\n{h.text}" for h in hits[:3]
+        )
+        answer = (f"(fallback mode: remote LLM chain exhausted - {e})\n\n" + excerpts)
+        sources = _sources(hits)
+        model = "local-extractive"
+        mode = "extractive"
 
     qid = event_logger.log_query_event(
         req.question,
