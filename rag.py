@@ -40,6 +40,10 @@ class Hit:
     text: str
     tags: list
     score: float
+    source_url: str = ""
+    provenance: str = "primary"
+    ingested_at: str = ""
+    derived_from_hashes: dict = None
 
 
 class VaultIndex:
@@ -67,7 +71,18 @@ class VaultIndex:
             chunk = self.chunks[i]
             if exclude_derived and chunk.get("provenance") == "derived":
                 continue
-            hits.append(Hit(**chunk, score=float(scores[i])))
+            hit = Hit(
+                path=chunk.get("path", ""),
+                heading=chunk.get("heading", ""),
+                text=chunk.get("text", ""),
+                tags=chunk.get("tags", []),
+                score=float(scores[i]),
+                source_url=chunk.get("source_url", ""),
+                provenance=chunk.get("provenance", "primary"),
+                ingested_at=chunk.get("ingested_at", ""),
+                derived_from_hashes=chunk.get("derived_from_hashes")
+            )
+            hits.append(hit)
             if len(hits) == k:
                 break
         return hits
