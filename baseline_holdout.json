@@ -1,0 +1,433 @@
+{
+  "split": "holdout",
+  "k": 5,
+  "threshold": 0.27,
+  "recall": 0.9666666666666667,
+  "recall_ci": [
+    0.8332924860304112,
+    0.9940915620051425
+  ],
+  "refusal_acc": 0.95,
+  "queries": {
+    "How does the slip-box method make writing an emergent property of note-taking?": {
+      "hit": true,
+      "expect": "books/how-to-take-smart-notes.md",
+      "retrieved": [
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/zettelkasten.md",
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md"
+      ],
+      "top_score": 0.6564730405807495,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What is the difference between an active project and an ongoing area in PARA?": {
+      "hit": true,
+      "expect": "productivity/para-method.md",
+      "retrieved": [
+        "productivity/para-method.md",
+        "books/getting-things-done.md",
+        "obsidian/vault-organization.md",
+        "productivity/para-method.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.5412944555282593,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why does Kahneman describe System 2 as lazy?": {
+      "hit": true,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "books/thinking-fast-and-slow.md",
+        "projects/reading-list.md",
+        "books/thinking-fast-and-slow.md",
+        "rag/what-is-rag.md",
+        "books/thinking-fast-and-slow.md"
+      ],
+      "top_score": 0.554250180721283,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "How do wikilinks turn a plain directory of markdown into a dynamic graph?": {
+      "hit": true,
+      "expect": "obsidian/wikilinks-and-backlinks.md",
+      "retrieved": [
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.6894165277481079,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What is the purpose of archiving completed projects in personal knowledge management?": {
+      "hit": true,
+      "expect": "productivity/para-method.md",
+      "retrieved": [
+        "productivity/para-method.md",
+        "obsidian/vault-organization.md",
+        "obsidian/vault-organization.md",
+        "obsidian/obsidian-basics.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.4980262815952301,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What are the rules for managing action lists by context in GTD?": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "productivity/para-method.md",
+        "prompting/prompt-structure.md",
+        "productivity/weekly-review.md"
+      ],
+      "top_score": 0.4316342771053314,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What is the cognitive cost of unclosed open loops according to David Allen?": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "books/thinking-fast-and-slow.md",
+        "productivity/deep-work.md",
+        "books/thinking-fast-and-slow.md",
+        "rag/evaluating-rag-systems.md"
+      ],
+      "top_score": 0.3756934106349945,
+      "split": "holdout",
+      "kind": "paraphrase"
+    },
+    "Why should permanent notes be written self-contained for an unfamiliar reader?": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md"
+      ],
+      "top_score": 0.6508874893188477,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What routines help maintain 90-minute blocks of uninterrupted concentration?": {
+      "hit": true,
+      "expect": "productivity/deep-work.md",
+      "retrieved": [
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "projects/reading-list.md",
+        "productivity/deep-work.md",
+        "books/getting-things-done.md"
+      ],
+      "top_score": 0.5404890775680542,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "How to handle non-actionable reference material in inbox processing?": {
+      "hit": true,
+      "expect": "productivity/inbox-zero.md",
+      "retrieved": [
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "books/getting-things-done.md",
+        "productivity/inbox-zero.md"
+      ],
+      "top_score": 0.5866125822067261,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What failure mode occurs when a weekly review is abandoned for multiple cycles?": {
+      "hit": true,
+      "expect": "productivity/weekly-review.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "productivity/para-method.md",
+        "productivity/weekly-review.md",
+        "productivity/weekly-review.md",
+        "books/getting-things-done.md"
+      ],
+      "top_score": 0.6484559774398804,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why was a local numpy matrix multiplication chosen over external vector databases?": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "projects/reading-list.md",
+        "projects/decision-log.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.4982079863548279,
+      "split": "holdout",
+      "kind": "exact"
+    },
+    "What endpoints are exposed by the FastAPI server in the vault assistant?": {
+      "hit": true,
+      "expect": "projects/project-rag-assistant.md",
+      "retrieved": [
+        "obsidian/vault-organization.md",
+        "projects/project-rag-assistant.md",
+        "productivity/para-method.md",
+        "projects/decision-log.md",
+        "obsidian/vault-organization.md"
+      ],
+      "top_score": 0.458002507686615,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What reading materials are currently listed as finished with notes?": {
+      "hit": true,
+      "expect": "projects/reading-list.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "projects/reading-list.md",
+        "obsidian/obsidian-basics.md"
+      ],
+      "top_score": 0.5544798374176025,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "How do assertion checks establish hard regression floors in prompt evaluations?": {
+      "hit": true,
+      "expect": "prompting/evals-for-prompts.md",
+      "retrieved": [
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/evaluating-rag-systems.md",
+        "prompting/prompt-structure.md"
+      ],
+      "top_score": 0.4906691014766693,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why does demonstration order affect classification bias in few-shot prompting?": {
+      "hit": true,
+      "expect": "prompting/few-shot-prompting.md",
+      "retrieved": [
+        "prompting/few-shot-prompting.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/prompt-structure.md",
+        "rag/hallucination-and-grounding.md"
+      ],
+      "top_score": 0.4701896905899048,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Where should formatting instructions and JSON schemas be positioned in a prompt?": {
+      "hit": true,
+      "expect": "prompting/prompt-structure.md",
+      "retrieved": [
+        "prompting/prompt-structure.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md"
+      ],
+      "top_score": 0.5084713697433472,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What information should be excluded from system prompts to protect cache reuse?": {
+      "hit": true,
+      "expect": "prompting/system-prompts.md",
+      "retrieved": [
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md"
+      ],
+      "top_score": 0.5607351064682007,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why is sliding window overlap critical when splitting continuous text into chunks?": {
+      "hit": true,
+      "expect": "rag/chunking-strategies.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.4726782441139221,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "How does the assistant verify that citations reference real chunks in the prompt?": {
+      "hit": true,
+      "expect": "rag/citation-patterns.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md"
+      ],
+      "top_score": 0.5475645065307617,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "How many parameters does the all-MiniLM-L6-v2 model have?": {
+      "hit": false,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "projects/project-rag-assistant.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/prompt-structure.md",
+        "rag/hybrid-search-bm25.md",
+        "projects/decision-log.md"
+      ],
+      "top_score": 0.3828091621398926,
+      "split": "holdout",
+      "kind": "exact"
+    },
+    "What is the definition of recall at k in retrieval evaluation?": {
+      "hit": true,
+      "expect": "rag/evaluating-rag-systems.md",
+      "retrieved": [
+        "rag/evaluating-rag-systems.md",
+        "projects/decision-log.md",
+        "rag/what-is-rag.md",
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md"
+      ],
+      "top_score": 0.5751646161079407,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why does a calibrated refusal threshold prevent hallucinations on out-of-vault queries?": {
+      "hit": true,
+      "expect": "rag/hallucination-and-grounding.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "rag/hallucination-and-grounding.md",
+        "projects/decision-log.md",
+        "rag/hallucination-and-grounding.md",
+        "books/thinking-fast-and-slow.md"
+      ],
+      "top_score": 0.5480434894561768,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why are rare entity lookups and serial numbers better suited for BM25 than dense embeddings?": {
+      "hit": true,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/embedding-models.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.5037717819213867,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What is the mathematical definition of cosine similarity between two vectors?": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md",
+        "projects/reading-list.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.5433178544044495,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why is naive context window expansion insufficient compared to targeted retrieval?": {
+      "hit": true,
+      "expect": "rag/what-is-rag.md",
+      "retrieved": [
+        "rag/what-is-rag.md",
+        "projects/decision-log.md",
+        "rag/what-is-rag.md",
+        "prompting/system-prompts.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.4549625813961029,
+      "split": "holdout",
+      "kind": "paraphrase"
+    },
+    "How does Obsidian compute backlinks on the fly from note text?": {
+      "hit": true,
+      "expect": "obsidian/wikilinks-and-backlinks.md",
+      "retrieved": [
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/wikilinks-and-backlinks.md"
+      ],
+      "top_score": 0.6690415143966675,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "Why should folders only answer 'where does this live' rather than topical tags?": {
+      "hit": true,
+      "expect": "obsidian/vault-organization.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
+        "obsidian/vault-organization.md",
+        "projects/decision-log.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.43428969383239746,
+      "split": "holdout",
+      "kind": "standard"
+    },
+    "What query language is used by Dataview inside fenced markdown code blocks?": {
+      "hit": true,
+      "expect": "obsidian/dataview-plugin.md",
+      "retrieved": [
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/vault-organization.md",
+        "obsidian/dataview-plugin.md"
+      ],
+      "top_score": 0.5368669033050537,
+      "split": "holdout",
+      "kind": "exact"
+    },
+    "Why local-first plain text storage guarantees software independence for personal vaults": {
+      "hit": true,
+      "expect": "obsidian/obsidian-basics.md",
+      "retrieved": [
+        "obsidian/obsidian-basics.md",
+        "projects/decision-log.md",
+        "obsidian/vault-organization.md",
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md"
+      ],
+      "top_score": 0.5292834043502808,
+      "split": "holdout",
+      "kind": "paraphrase"
+    }
+  }
+}

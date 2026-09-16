@@ -1,30 +1,140 @@
-{"q": "How large should my chunks be and how much overlap?", "expect_note": "rag/chunking-strategies.md", "expect_contains": ["200", "overlap"]}
-{"q": "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?", "expect_note": "rag/embedding-models.md", "expect_contains": ["384"]}
-{"q": "What does PARA stand for?", "expect_note": "productivity/para-method.md", "expect_contains": ["Projects", "Areas", "Resources", "Archives"]}
-{"q": "What is the two-minute rule from GTD?", "expect_note": "books/getting-things-done.md", "expect_contains": ["two minutes"]}
-{"q": "How do BM25 and dense retrieval combine in hybrid search?", "expect_note": "rag/hybrid-search-bm25.md", "expect_contains": ["reciprocal rank"]}
-{"q": "What are the three kinds of notes in the Zettelkasten method?", "expect_note": "obsidian/zettelkasten.md", "expect_contains": ["fleeting", "literature", "permanent"]}
-{"q": "Which metrics should I use to evaluate a RAG system?", "expect_note": "rag/evaluating-rag-systems.md", "expect_contains": ["recall"]}
-{"q": "What is the difference between cosine similarity and dot product?", "expect_note": "rag/vector-similarity-search.md", "expect_contains": ["normalized"]}
-{"q": "How do backlinks work in Obsidian?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "expect_contains": ["backlinks"]}
-{"q": "What does the Dataview plugin do?", "expect_note": "obsidian/dataview-plugin.md", "expect_contains": ["query"]}
-{"q": "Who coined the term deep work and how long is a useful block?", "expect_note": "productivity/deep-work.md", "expect_contains": ["Newport"]}
-{"q": "What is the difference between System 1 and System 2 thinking?", "expect_note": "books/thinking-fast-and-slow.md", "expect_contains": ["System 1"]}
-{"q": "In what order should the parts of a prompt go?", "expect_note": "prompting/prompt-structure.md", "expect_contains": ["role"]}
-{"q": "Why should the system prompt come first for caching?", "expect_note": "prompting/system-prompts.md", "expect_contains": ["prefix"]}
-{"q": "What is the main risk of few-shot prompting?", "expect_note": "prompting/few-shot-prompting.md", "expect_contains": ["leak"]}
-{"q": "What is inbox zero actually about?", "expect_note": "productivity/inbox-zero.md", "expect_contains": ["undecided"]}
-{"q": "What are the four steps of my weekly review?", "expect_note": "productivity/weekly-review.md", "expect_contains": ["inbox"]}
-{"q": "How should I divide work between folders, tags and links?", "expect_note": "obsidian/vault-organization.md", "expect_contains": ["folders"]}
-{"q": "What is retrieval augmented generation?", "expect_note": "rag/what-is-rag.md", "expect_contains": ["retrieval"]}
-{"q": "How do I stop an LLM from making things up?", "expect_note": "rag/hallucination-and-grounding.md", "expect_contains": ["grounding"]}
-{"q": "Which decisions were made on the vault RAG assistant project?", "expect_note": "projects/decision-log.md", "expect_contains": ["MiniLM"]}
-{"q": "How do native citations work in the Claude API?", "expect_note": "rag/citation-patterns.md", "expect_contains": ["document"]}
-{"q": "What books are on my reading list to read next?", "expect_note": "projects/reading-list.md", "expect_contains": ["Timeless"]}
-{"q": "What is the architecture of the vault RAG assistant?", "expect_note": "projects/project-rag-assistant.md", "expect_contains": ["FastAPI"]}
-{"q": "How should I evaluate changes to a prompt?", "expect_note": "prompting/evals-for-prompts.md", "expect_contains": ["regression"]}
-{"q": "What is the recipe for banana bread?", "unanswerable": true}
-{"q": "When did the Roman Empire fall?", "unanswerable": true}
-{"q": "What is the melting point of aluminum?", "unanswerable": true}
-{"q": "How do I change a car's engine oil?", "unanswerable": true}
-{"q": "What is my WiFi password?", "unanswerable": true}
+{"q": "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "What was the decision on 2026-08-25 regarding vector databases?", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
+{"q": "What chunk size and overlap were chosen on 2026-08-26?", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
+{"q": "What is the hard sequence token limit MAX_SEQ_TOKENS for MiniLM?", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
+{"q": "What is the formula and standard constant k in Reciprocal Rank Fusion?", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
+{"q": "What mathematical operation makes dot product equal to cosine similarity?", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "exact"}
+{"q": "What does PARA stand for in Tiago Forte's method?", "expect_note": "productivity/para-method.md", "split": "tune", "kind": "exact"}
+{"q": "What are the five steps of the workflow in David Allen's GTD?", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "exact"}
+{"q": "What is the two-minute rule from Getting Things Done?", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "exact"}
+{"q": "What are the three kinds of notes in Luhmann's Zettelkasten?", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "exact"}
+{"q": "How many books did Niklas Luhmann produce using his slip-box method?", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "exact"}
+{"q": "What is Kahneman's 17*24 multiplication example illustrating?", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
+{"q": "What is an example of a real Dataview query: TABLE status, due?", "expect_note": "obsidian/dataview-plugin.md", "split": "tune", "kind": "exact"}
+{"q": "What is the five-action pipeline in Inbox Zero: Delete, Delegate, Respond, Defer, Do?", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "exact"}
+{"q": "Why does the Anthropic API prompt cache require the system prompt first?", "expect_note": "prompting/system-prompts.md", "split": "tune", "kind": "exact"}
+{"q": "What are the two embedding models compared alongside all-MiniLM-L6-v2?", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "What are the 180 words and 30 word overlap settings used for?", "expect_note": "rag/chunking-strategies.md", "split": "tune", "kind": "exact"}
+{"q": "How large should my chunks be and how much overlap?", "expect_note": "rag/chunking-strategies.md", "split": "tune", "kind": "standard"}
+{"q": "How do BM25 and dense retrieval combine in hybrid search?", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "standard"}
+{"q": "Which metrics should I use to evaluate a RAG system?", "expect_note": "rag/evaluating-rag-systems.md", "split": "tune", "kind": "standard"}
+{"q": "How do backlinks work in Obsidian?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "split": "tune", "kind": "standard"}
+{"q": "What does the Dataview plugin do?", "expect_note": "obsidian/dataview-plugin.md", "split": "tune", "kind": "standard"}
+{"q": "Who coined the term deep work and how long is a useful block?", "expect_note": "productivity/deep-work.md", "split": "tune", "kind": "standard"}
+{"q": "What is the difference between System 1 and System 2 thinking?", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "standard"}
+{"q": "In what order should the parts of a prompt go?", "expect_note": "prompting/prompt-structure.md", "split": "tune", "kind": "standard"}
+{"q": "What is the main risk of few-shot prompting?", "expect_note": "prompting/few-shot-prompting.md", "split": "tune", "kind": "standard"}
+{"q": "What is inbox zero actually about?", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "standard"}
+{"q": "What are the four steps of my weekly review?", "expect_note": "productivity/weekly-review.md", "split": "tune", "kind": "standard"}
+{"q": "How should I divide work between folders, tags and links?", "expect_note": "obsidian/vault-organization.md", "split": "tune", "kind": "standard"}
+{"q": "What is retrieval augmented generation?", "expect_note": "rag/what-is-rag.md", "split": "tune", "kind": "standard"}
+{"q": "How do I stop an LLM from making things up?", "expect_note": "rag/hallucination-and-grounding.md", "split": "tune", "kind": "standard"}
+{"q": "How do native citations work in the Claude API?", "expect_note": "rag/citation-patterns.md", "split": "tune", "kind": "standard"}
+{"q": "What books are on my reading list to read next?", "expect_note": "projects/reading-list.md", "split": "tune", "kind": "standard"}
+{"q": "What is the architecture of the vault RAG assistant?", "expect_note": "projects/project-rag-assistant.md", "split": "tune", "kind": "standard"}
+{"q": "How should I evaluate changes to a prompt?", "expect_note": "prompting/evals-for-prompts.md", "split": "tune", "kind": "standard"}
+{"q": "What is the core argument of How to Take Smart Notes?", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "standard"}
+{"q": "What are the core concepts and setup of Obsidian basics?", "expect_note": "obsidian/obsidian-basics.md", "split": "tune", "kind": "standard"}
+{"q": "What is the shutdown ritual in deep work productivity?", "expect_note": "productivity/deep-work.md", "split": "tune", "kind": "standard"}
+{"q": "What does the bracketed fallback pattern do when citations are unavailable?", "expect_note": "rag/citation-patterns.md", "split": "tune", "kind": "standard"}
+{"q": "How does vector similarity search scale with brute force numpy arrays?", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "standard"}
+{"q": "What is the role of fleeting notes in note-taking?", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "standard"}
+{"q": "What happens when an unanswerable question has a similarity below the threshold?", "expect_note": "rag/hallucination-and-grounding.md", "split": "tune", "kind": "standard"}
+{"q": "Preventing the language engine from fabricating claims without textual backing", "expect_note": "rag/hallucination-and-grounding.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Technique for decomposing long-term ambitions into immediate next physical steps", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Why should you avoid storing multiple orthogonal dimensions in directory trees?", "expect_note": "obsidian/vault-organization.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Unconscious heuristic substituting an effortless cognitive task for an arduous judgment", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Treating sentences as thoughts rather than post-hoc documentation of reasoning", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Externalizing all cognitive commitments to achieve frictionless mental clarity", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Why plain markdown files stored locally insulate knowledge from tool obsolescence", "expect_note": "obsidian/obsidian-basics.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Protecting uninterrupted cognitive bandwidth through deliberate end-of-day closure", "expect_note": "productivity/deep-work.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Measuring automated regression detection across prompt iterations without manual review", "expect_note": "prompting/evals-for-prompts.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Injecting contextual prefixes into passage slices to preserve semantic orientation", "expect_note": "rag/chunking-strategies.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Avoiding token waste and format overfitting when demonstrating task patterns to models", "expect_note": "prompting/few-shot-prompting.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Why fine-tuning foundation weights fails to replace dynamic reference injection", "expect_note": "rag/what-is-rag.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Restoring confidence in task queues by pruning stale obligations each weekend", "expect_note": "productivity/weekly-review.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Eliminating decision latency by filing communications into finite action bins", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Verifying text references directly with verifiable document range spans", "expect_note": "rag/citation-patterns.md", "split": "tune", "kind": "paraphrase"}
+{"q": "Which decisions were made on the vault RAG assistant project?", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "collision"}
+{"q": "Difference between fleeting notes, literature notes, and permanent atomic cards", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "collision"}
+{"q": "How does PARA separate ongoing operational areas from finite projects?", "expect_note": "productivity/para-method.md", "split": "tune", "kind": "collision"}
+{"q": "Evaluating prompt changes versus evaluating RAG retrieval recall", "expect_note": "prompting/evals-for-prompts.md", "split": "tune", "kind": "collision"}
+{"q": "Comparing BM25 keyword matching with vector semantic search strengths", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "collision"}
+{"q": "Why not use an approximate nearest neighbor index like HNSW for small vaults?", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "collision"}
+{"q": "Managing project deadlines in Dataview queries versus PARA folders", "expect_note": "obsidian/dataview-plugin.md", "split": "tune", "kind": "collision"}
+{"q": "How does the slip-box methodology compare to hierarchical folder filing?", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "collision"}
+{"q": "What happens when you use tags for storage instead of folders?", "expect_note": "obsidian/vault-organization.md", "split": "tune", "kind": "collision"}
+{"q": "How do unresolved links act as thinking triggers across the vault?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "split": "tune", "kind": "collision"}
+{"q": "How does the system prompt prefix enable Anthropic prompt caching discount?", "expect_note": "prompting/system-prompts.md", "split": "tune", "kind": "collision"}
+{"q": "Refusal threshold calibration for unanswerable questions in retrieval", "expect_note": "rag/evaluating-rag-systems.md", "split": "tune", "kind": "collision"}
+{"q": "Choosing all-MiniLM-L6-v2 over hosted embedding APIs in project architecture", "expect_note": "projects/project-rag-assistant.md", "split": "tune", "kind": "collision"}
+{"q": "Differences between System 1 cognitive illusions and LLM hallucinations", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "collision"}
+{"q": "How to structure user input at the prompt boundary to prevent prompt injection", "expect_note": "prompting/prompt-structure.md", "split": "tune", "kind": "collision"}
+{"q": "Why wordpiece tokenization requires token budget headroom in chunk splitting", "expect_note": "rag/chunking-strategies.md", "split": "tune", "kind": "collision"}
+{"q": "17*24", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
+{"q": "Cormack SIGIR 2009", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
+{"q": "22M parameters", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "bge-small-en-v1.5", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "text-embedding-3-small", "expect_note": "rag/embedding-models.md", "split": "tune", "kind": "exact"}
+{"q": "TABLE status, due FROM projects WHERE status != done", "expect_note": "obsidian/dataview-plugin.md", "split": "tune", "kind": "exact"}
+{"q": "Niklas Luhmann 70 books and 400 papers", "expect_note": "obsidian/zettelkasten.md", "split": "tune", "kind": "exact"}
+{"q": "2026-08-25", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
+{"q": "2026-08-26", "expect_note": "projects/decision-log.md", "split": "tune", "kind": "exact"}
+{"q": "Merlin Mann 43 Folders", "expect_note": "productivity/inbox-zero.md", "split": "tune", "kind": "exact"}
+{"q": "David Allen open loops", "expect_note": "books/getting-things-done.md", "split": "tune", "kind": "exact"}
+{"q": "System 1 silent substitution", "expect_note": "books/thinking-fast-and-slow.md", "split": "tune", "kind": "exact"}
+{"q": "Sönke Ahrens slip-box deposit", "expect_note": "books/how-to-take-smart-notes.md", "split": "tune", "kind": "exact"}
+{"q": "Cal Newport fixed-schedule productivity", "expect_note": "productivity/deep-work.md", "split": "tune", "kind": "exact"}
+{"q": "HNSW graph indexing versus flat numpy dot product", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "exact"}
+{"q": "Reciprocal rank fusion constant k=60", "expect_note": "rag/hybrid-search-bm25.md", "split": "tune", "kind": "exact"}
+{"q": "L2 normalized unit vectors cosine equivalence", "expect_note": "rag/vector-similarity-search.md", "split": "tune", "kind": "exact"}
+{"q": "How does the slip-box method make writing an emergent property of note-taking?", "expect_note": "books/how-to-take-smart-notes.md", "split": "holdout", "kind": "standard"}
+{"q": "What is the difference between an active project and an ongoing area in PARA?", "expect_note": "productivity/para-method.md", "split": "holdout", "kind": "standard"}
+{"q": "Why does Kahneman describe System 2 as lazy?", "expect_note": "books/thinking-fast-and-slow.md", "split": "holdout", "kind": "standard"}
+{"q": "How do wikilinks turn a plain directory of markdown into a dynamic graph?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "split": "holdout", "kind": "standard"}
+{"q": "What is the purpose of archiving completed projects in personal knowledge management?", "expect_note": "productivity/para-method.md", "split": "holdout", "kind": "standard"}
+{"q": "What are the rules for managing action lists by context in GTD?", "expect_note": "books/getting-things-done.md", "split": "holdout", "kind": "standard"}
+{"q": "What is the cognitive cost of unclosed open loops according to David Allen?", "expect_note": "books/getting-things-done.md", "split": "holdout", "kind": "paraphrase"}
+{"q": "Why should permanent notes be written self-contained for an unfamiliar reader?", "expect_note": "obsidian/zettelkasten.md", "split": "holdout", "kind": "standard"}
+{"q": "What routines help maintain 90-minute blocks of uninterrupted concentration?", "expect_note": "productivity/deep-work.md", "split": "holdout", "kind": "standard"}
+{"q": "How to handle non-actionable reference material in inbox processing?", "expect_note": "productivity/inbox-zero.md", "split": "holdout", "kind": "standard"}
+{"q": "What failure mode occurs when a weekly review is abandoned for multiple cycles?", "expect_note": "productivity/weekly-review.md", "split": "holdout", "kind": "standard"}
+{"q": "Why was a local numpy matrix multiplication chosen over external vector databases?", "expect_note": "projects/decision-log.md", "split": "holdout", "kind": "exact"}
+{"q": "What endpoints are exposed by the FastAPI server in the vault assistant?", "expect_note": "projects/project-rag-assistant.md", "split": "holdout", "kind": "standard"}
+{"q": "What reading materials are currently listed as finished with notes?", "expect_note": "projects/reading-list.md", "split": "holdout", "kind": "standard"}
+{"q": "How do assertion checks establish hard regression floors in prompt evaluations?", "expect_note": "prompting/evals-for-prompts.md", "split": "holdout", "kind": "standard"}
+{"q": "Why does demonstration order affect classification bias in few-shot prompting?", "expect_note": "prompting/few-shot-prompting.md", "split": "holdout", "kind": "standard"}
+{"q": "Where should formatting instructions and JSON schemas be positioned in a prompt?", "expect_note": "prompting/prompt-structure.md", "split": "holdout", "kind": "standard"}
+{"q": "What information should be excluded from system prompts to protect cache reuse?", "expect_note": "prompting/system-prompts.md", "split": "holdout", "kind": "standard"}
+{"q": "Why is sliding window overlap critical when splitting continuous text into chunks?", "expect_note": "rag/chunking-strategies.md", "split": "holdout", "kind": "standard"}
+{"q": "How does the assistant verify that citations reference real chunks in the prompt?", "expect_note": "rag/citation-patterns.md", "split": "holdout", "kind": "standard"}
+{"q": "How many parameters does the all-MiniLM-L6-v2 model have?", "expect_note": "rag/embedding-models.md", "split": "holdout", "kind": "exact"}
+{"q": "What is the definition of recall at k in retrieval evaluation?", "expect_note": "rag/evaluating-rag-systems.md", "split": "holdout", "kind": "standard"}
+{"q": "Why does a calibrated refusal threshold prevent hallucinations on out-of-vault queries?", "expect_note": "rag/hallucination-and-grounding.md", "split": "holdout", "kind": "standard"}
+{"q": "Why are rare entity lookups and serial numbers better suited for BM25 than dense embeddings?", "expect_note": "rag/hybrid-search-bm25.md", "split": "holdout", "kind": "standard"}
+{"q": "What is the mathematical definition of cosine similarity between two vectors?", "expect_note": "rag/vector-similarity-search.md", "split": "holdout", "kind": "standard"}
+{"q": "Why is naive context window expansion insufficient compared to targeted retrieval?", "expect_note": "rag/what-is-rag.md", "split": "holdout", "kind": "paraphrase"}
+{"q": "How does Obsidian compute backlinks on the fly from note text?", "expect_note": "obsidian/wikilinks-and-backlinks.md", "split": "holdout", "kind": "standard"}
+{"q": "Why should folders only answer 'where does this live' rather than topical tags?", "expect_note": "obsidian/vault-organization.md", "split": "holdout", "kind": "standard"}
+{"q": "What query language is used by Dataview inside fenced markdown code blocks?", "expect_note": "obsidian/dataview-plugin.md", "split": "holdout", "kind": "exact"}
+{"q": "Why local-first plain text storage guarantees software independence for personal vaults", "expect_note": "obsidian/obsidian-basics.md", "split": "holdout", "kind": "paraphrase"}
+{"q": "What is the recipe for banana bread?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "When did the Roman Empire fall?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is the melting point of aluminum?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do I change a car's engine oil?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is my WiFi password?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do I train a transformer model on 8 H100 GPUs using Megatron-LM?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is the current stock price of Apple?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "Who won the 2022 FIFA World Cup final in Qatar?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do I make sourdough bread from scratch with active starter?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is the capital city of Madagascar?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How to configure a Kubernetes ingress controller using Traefik and cert-manager?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What are the common medical symptoms of acute appendicitis?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do you replace front disc brake pads on a 2018 Honda Civic?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How does Shor's quantum algorithm factor large integers in polynomial time?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What are the secret chemical ingredients in Coca-Cola syrup?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What was the official census population of Tokyo in 2024?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do I finger and strum a D minor seventh chord on guitar?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What was the comprehensive movie plot and ending explanation of Inception?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "How do I register for VAT and file quarterly income taxes in Germany as an expat?", "unanswerable": true, "kind": "unanswerable"}
+{"q": "What is the exact speed of light in a vacuum in meters per second?", "unanswerable": true, "kind": "unanswerable"}

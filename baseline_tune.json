@@ -1,0 +1,1273 @@
+{
+  "split": "tune",
+  "k": 5,
+  "threshold": 0.27,
+  "recall": 0.8888888888888888,
+  "recall_ci": [
+    0.8074203653741283,
+    0.9385174702978976
+  ],
+  "refusal_acc": 0.95,
+  "queries": {
+    "What are the dimensions of the all-MiniLM-L6-v2 embedding vectors?": {
+      "hit": true,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "rag/embedding-models.md",
+        "projects/project-rag-assistant.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.49300456047058105,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What was the decision on 2026-08-25 regarding vector databases?": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "projects/reading-list.md",
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.4815908670425415,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What chunk size and overlap were chosen on 2026-08-26?": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md",
+        "rag/evaluating-rag-systems.md",
+        "projects/decision-log.md"
+      ],
+      "top_score": 0.3831632137298584,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is the hard sequence token limit MAX_SEQ_TOKENS for MiniLM?": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md"
+      ],
+      "top_score": 0.4447259306907654,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is the formula and standard constant k in Reciprocal Rank Fusion?": {
+      "hit": true,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "rag/hybrid-search-bm25.md",
+        "projects/reading-list.md"
+      ],
+      "top_score": 0.407390296459198,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What mathematical operation makes dot product equal to cosine similarity?": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md",
+        "projects/reading-list.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.5544231534004211,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What does PARA stand for in Tiago Forte's method?": {
+      "hit": true,
+      "expect": "productivity/para-method.md",
+      "retrieved": [
+        "productivity/para-method.md",
+        "books/getting-things-done.md",
+        "prompting/few-shot-prompting.md",
+        "productivity/para-method.md",
+        "prompting/few-shot-prompting.md"
+      ],
+      "top_score": 0.5087120532989502,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What are the five steps of the workflow in David Allen's GTD?": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "productivity/para-method.md",
+        "productivity/weekly-review.md"
+      ],
+      "top_score": 0.49726030230522156,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is the two-minute rule from Getting Things Done?": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "projects/reading-list.md",
+        "productivity/weekly-review.md",
+        "productivity/weekly-review.md",
+        "books/thinking-fast-and-slow.md"
+      ],
+      "top_score": 0.592968225479126,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What are the three kinds of notes in Luhmann's Zettelkasten?": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.662146806716919,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "How many books did Niklas Luhmann produce using his slip-box method?": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "projects/reading-list.md"
+      ],
+      "top_score": 0.5899838805198669,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is Kahneman's 17*24 multiplication example illustrating?": {
+      "hit": true,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "books/thinking-fast-and-slow.md",
+        "projects/reading-list.md",
+        "projects/reading-list.md",
+        "prompting/few-shot-prompting.md",
+        "books/how-to-take-smart-notes.md"
+      ],
+      "top_score": 0.3201902508735657,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is an example of a real Dataview query: TABLE status, due?": {
+      "hit": true,
+      "expect": "obsidian/dataview-plugin.md",
+      "retrieved": [
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "productivity/weekly-review.md"
+      ],
+      "top_score": 0.6784170866012573,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What is the five-action pipeline in Inbox Zero: Delete, Delegate, Respond, Defer, Do?": {
+      "hit": true,
+      "expect": "productivity/inbox-zero.md",
+      "retrieved": [
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "books/getting-things-done.md"
+      ],
+      "top_score": 0.6787969470024109,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Why does the Anthropic API prompt cache require the system prompt first?": {
+      "hit": true,
+      "expect": "prompting/system-prompts.md",
+      "retrieved": [
+        "prompting/system-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md"
+      ],
+      "top_score": 0.7633498311042786,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What are the two embedding models compared alongside all-MiniLM-L6-v2?": {
+      "hit": true,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "rag/embedding-models.md",
+        "projects/decision-log.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.5485223531723022,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "What are the 180 words and 30 word overlap settings used for?": {
+      "hit": true,
+      "expect": "rag/chunking-strategies.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "rag/embedding-models.md",
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.42128804326057434,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "How large should my chunks be and how much overlap?": {
+      "hit": true,
+      "expect": "rag/chunking-strategies.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.5530630946159363,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How do BM25 and dense retrieval combine in hybrid search?": {
+      "hit": true,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.6225946545600891,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "Which metrics should I use to evaluate a RAG system?": {
+      "hit": true,
+      "expect": "rag/evaluating-rag-systems.md",
+      "retrieved": [
+        "rag/evaluating-rag-systems.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/evaluating-rag-systems.md"
+      ],
+      "top_score": 0.6201412081718445,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How do backlinks work in Obsidian?": {
+      "hit": true,
+      "expect": "obsidian/wikilinks-and-backlinks.md",
+      "retrieved": [
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/obsidian-basics.md"
+      ],
+      "top_score": 0.6395919919013977,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What does the Dataview plugin do?": {
+      "hit": true,
+      "expect": "obsidian/dataview-plugin.md",
+      "retrieved": [
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/obsidian-basics.md"
+      ],
+      "top_score": 0.5166178345680237,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "Who coined the term deep work and how long is a useful block?": {
+      "hit": true,
+      "expect": "productivity/deep-work.md",
+      "retrieved": [
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "projects/reading-list.md"
+      ],
+      "top_score": 0.5613459944725037,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the difference between System 1 and System 2 thinking?": {
+      "hit": true,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "books/thinking-fast-and-slow.md",
+        "books/getting-things-done.md",
+        "books/thinking-fast-and-slow.md",
+        "projects/reading-list.md",
+        "prompting/system-prompts.md"
+      ],
+      "top_score": 0.5511821508407593,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "In what order should the parts of a prompt go?": {
+      "hit": true,
+      "expect": "prompting/prompt-structure.md",
+      "retrieved": [
+        "prompting/prompt-structure.md",
+        "prompting/system-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/prompt-structure.md",
+        "prompting/evals-for-prompts.md"
+      ],
+      "top_score": 0.6835892200469971,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the main risk of few-shot prompting?": {
+      "hit": true,
+      "expect": "prompting/few-shot-prompting.md",
+      "retrieved": [
+        "prompting/few-shot-prompting.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md",
+        "rag/hallucination-and-grounding.md",
+        "prompting/prompt-structure.md"
+      ],
+      "top_score": 0.4173101782798767,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is inbox zero actually about?": {
+      "hit": true,
+      "expect": "productivity/inbox-zero.md",
+      "retrieved": [
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.7900787591934204,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What are the four steps of my weekly review?": {
+      "hit": true,
+      "expect": "productivity/weekly-review.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "productivity/weekly-review.md",
+        "books/getting-things-done.md",
+        "productivity/para-method.md",
+        "projects/reading-list.md"
+      ],
+      "top_score": 0.6404081583023071,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How should I divide work between folders, tags and links?": {
+      "hit": true,
+      "expect": "obsidian/vault-organization.md",
+      "retrieved": [
+        "obsidian/vault-organization.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.46559715270996094,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is retrieval augmented generation?": {
+      "hit": true,
+      "expect": "rag/what-is-rag.md",
+      "retrieved": [
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.5254050493240356,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How do I stop an LLM from making things up?": {
+      "hit": true,
+      "expect": "rag/hallucination-and-grounding.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "rag/hallucination-and-grounding.md",
+        "prompting/system-prompts.md",
+        "projects/reading-list.md",
+        "prompting/prompt-structure.md"
+      ],
+      "top_score": 0.30767661333084106,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How do native citations work in the Claude API?": {
+      "hit": true,
+      "expect": "rag/citation-patterns.md",
+      "retrieved": [
+        "rag/citation-patterns.md",
+        "projects/decision-log.md",
+        "rag/citation-patterns.md",
+        "projects/project-rag-assistant.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.5613023042678833,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What books are on my reading list to read next?": {
+      "hit": true,
+      "expect": "projects/reading-list.md",
+      "retrieved": [
+        "projects/reading-list.md",
+        "projects/reading-list.md",
+        "projects/reading-list.md",
+        "productivity/weekly-review.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.412462443113327,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the architecture of the vault RAG assistant?": {
+      "hit": true,
+      "expect": "projects/project-rag-assistant.md",
+      "retrieved": [
+        "obsidian/vault-organization.md",
+        "rag/evaluating-rag-systems.md",
+        "obsidian/vault-organization.md",
+        "projects/reading-list.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.5159363746643066,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How should I evaluate changes to a prompt?": {
+      "hit": true,
+      "expect": "prompting/evals-for-prompts.md",
+      "retrieved": [
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/system-prompts.md"
+      ],
+      "top_score": 0.6807312369346619,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the core argument of How to Take Smart Notes?": {
+      "hit": true,
+      "expect": "books/how-to-take-smart-notes.md",
+      "retrieved": [
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "projects/reading-list.md"
+      ],
+      "top_score": 0.7648860812187195,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What are the core concepts and setup of Obsidian basics?": {
+      "hit": true,
+      "expect": "obsidian/obsidian-basics.md",
+      "retrieved": [
+        "obsidian/obsidian-basics.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/obsidian-basics.md",
+        "projects/reading-list.md",
+        "obsidian/wikilinks-and-backlinks.md"
+      ],
+      "top_score": 0.49655479192733765,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the shutdown ritual in deep work productivity?": {
+      "hit": true,
+      "expect": "productivity/deep-work.md",
+      "retrieved": [
+        "productivity/deep-work.md",
+        "books/getting-things-done.md",
+        "productivity/deep-work.md",
+        "productivity/deep-work.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.6668328046798706,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What does the bracketed fallback pattern do when citations are unavailable?": {
+      "hit": true,
+      "expect": "rag/citation-patterns.md",
+      "retrieved": [
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md",
+        "projects/decision-log.md",
+        "rag/hallucination-and-grounding.md"
+      ],
+      "top_score": 0.6099388003349304,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "How does vector similarity search scale with brute force numpy arrays?": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "rag/vector-similarity-search.md",
+        "projects/reading-list.md",
+        "projects/decision-log.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.661632776260376,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What is the role of fleeting notes in note-taking?": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "rag/chunking-strategies.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/obsidian-basics.md"
+      ],
+      "top_score": 0.6802457571029663,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "What happens when an unanswerable question has a similarity below the threshold?": {
+      "hit": true,
+      "expect": "rag/hallucination-and-grounding.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "rag/what-is-rag.md",
+        "rag/vector-similarity-search.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.5984046459197998,
+      "split": "tune",
+      "kind": "standard"
+    },
+    "Preventing the language engine from fabricating claims without textual backing": {
+      "hit": true,
+      "expect": "rag/hallucination-and-grounding.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "prompting/system-prompts.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/few-shot-prompting.md",
+        "rag/citation-patterns.md"
+      ],
+      "top_score": 0.4221752882003784,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Technique for decomposing long-term ambitions into immediate next physical steps": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "projects/reading-list.md",
+        "productivity/deep-work.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.3483414053916931,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Why should you avoid storing multiple orthogonal dimensions in directory trees?": {
+      "hit": false,
+      "expect": "obsidian/vault-organization.md",
+      "retrieved": [
+        "projects/reading-list.md",
+        "rag/chunking-strategies.md",
+        "rag/vector-similarity-search.md",
+        "projects/decision-log.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.39522966742515564,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Unconscious heuristic substituting an effortless cognitive task for an arduous judgment": {
+      "hit": true,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "books/thinking-fast-and-slow.md",
+        "books/thinking-fast-and-slow.md",
+        "projects/reading-list.md",
+        "books/getting-things-done.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.5079555511474609,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Treating sentences as thoughts rather than post-hoc documentation of reasoning": {
+      "hit": true,
+      "expect": "books/how-to-take-smart-notes.md",
+      "retrieved": [
+        "books/how-to-take-smart-notes.md",
+        "prompting/few-shot-prompting.md",
+        "rag/hallucination-and-grounding.md",
+        "projects/reading-list.md",
+        "books/thinking-fast-and-slow.md"
+      ],
+      "top_score": 0.4879336953163147,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Externalizing all cognitive commitments to achieve frictionless mental clarity": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "projects/reading-list.md",
+        "books/thinking-fast-and-slow.md",
+        "productivity/deep-work.md",
+        "books/how-to-take-smart-notes.md"
+      ],
+      "top_score": 0.6028417348861694,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Why plain markdown files stored locally insulate knowledge from tool obsolescence": {
+      "hit": true,
+      "expect": "obsidian/obsidian-basics.md",
+      "retrieved": [
+        "obsidian/obsidian-basics.md",
+        "projects/decision-log.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.5432053804397583,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Protecting uninterrupted cognitive bandwidth through deliberate end-of-day closure": {
+      "hit": true,
+      "expect": "productivity/deep-work.md",
+      "retrieved": [
+        "productivity/deep-work.md",
+        "projects/reading-list.md",
+        "books/getting-things-done.md",
+        "books/thinking-fast-and-slow.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.37911415100097656,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Measuring automated regression detection across prompt iterations without manual review": {
+      "hit": true,
+      "expect": "prompting/evals-for-prompts.md",
+      "retrieved": [
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md"
+      ],
+      "top_score": 0.6078196167945862,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Injecting contextual prefixes into passage slices to preserve semantic orientation": {
+      "hit": true,
+      "expect": "rag/chunking-strategies.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "rag/embedding-models.md",
+        "rag/what-is-rag.md",
+        "rag/chunking-strategies.md",
+        "rag/citation-patterns.md"
+      ],
+      "top_score": 0.4097527861595154,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Avoiding token waste and format overfitting when demonstrating task patterns to models": {
+      "hit": true,
+      "expect": "prompting/few-shot-prompting.md",
+      "retrieved": [
+        "prompting/prompt-structure.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/few-shot-prompting.md",
+        "books/getting-things-done.md"
+      ],
+      "top_score": 0.5359808802604675,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Why fine-tuning foundation weights fails to replace dynamic reference injection": {
+      "hit": true,
+      "expect": "rag/what-is-rag.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/what-is-rag.md",
+        "projects/project-rag-assistant.md",
+        "rag/what-is-rag.md",
+        "rag/evaluating-rag-systems.md"
+      ],
+      "top_score": 0.3122637867927551,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Restoring confidence in task queues by pruning stale obligations each weekend": {
+      "hit": true,
+      "expect": "productivity/weekly-review.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "productivity/weekly-review.md",
+        "productivity/weekly-review.md",
+        "productivity/deep-work.md",
+        "books/getting-things-done.md"
+      ],
+      "top_score": 0.5228161215782166,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Eliminating decision latency by filing communications into finite action bins": {
+      "hit": true,
+      "expect": "productivity/inbox-zero.md",
+      "retrieved": [
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "productivity/inbox-zero.md",
+        "productivity/inbox-zero.md",
+        "productivity/weekly-review.md"
+      ],
+      "top_score": 0.3971465826034546,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Verifying text references directly with verifiable document range spans": {
+      "hit": true,
+      "expect": "rag/citation-patterns.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "rag/citation-patterns.md",
+        "rag/citation-patterns.md",
+        "projects/project-rag-assistant.md",
+        "books/how-to-take-smart-notes.md"
+      ],
+      "top_score": 0.4355570673942566,
+      "split": "tune",
+      "kind": "paraphrase"
+    },
+    "Which decisions were made on the vault RAG assistant project?": {
+      "hit": false,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "rag/evaluating-rag-systems.md",
+        "productivity/para-method.md",
+        "prompting/evals-for-prompts.md",
+        "obsidian/vault-organization.md",
+        "obsidian/vault-organization.md"
+      ],
+      "top_score": 0.544263482093811,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Difference between fleeting notes, literature notes, and permanent atomic cards": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.6900241374969482,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "How does PARA separate ongoing operational areas from finite projects?": {
+      "hit": true,
+      "expect": "productivity/para-method.md",
+      "retrieved": [
+        "productivity/para-method.md",
+        "obsidian/vault-organization.md",
+        "books/getting-things-done.md",
+        "books/getting-things-done.md",
+        "productivity/para-method.md"
+      ],
+      "top_score": 0.5356199145317078,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Evaluating prompt changes versus evaluating RAG retrieval recall": {
+      "hit": false,
+      "expect": "prompting/evals-for-prompts.md",
+      "retrieved": [
+        "rag/evaluating-rag-systems.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/evaluating-rag-systems.md",
+        "rag/what-is-rag.md",
+        "rag/what-is-rag.md"
+      ],
+      "top_score": 0.6974123120307922,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Comparing BM25 keyword matching with vector semantic search strengths": {
+      "hit": true,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/vector-similarity-search.md",
+        "projects/project-rag-assistant.md",
+        "rag/vector-similarity-search.md"
+      ],
+      "top_score": 0.6360341906547546,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Why not use an approximate nearest neighbor index like HNSW for small vaults?": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "rag/vector-similarity-search.md",
+        "projects/decision-log.md",
+        "projects/project-rag-assistant.md",
+        "projects/reading-list.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.5333192348480225,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Managing project deadlines in Dataview queries versus PARA folders": {
+      "hit": true,
+      "expect": "obsidian/dataview-plugin.md",
+      "retrieved": [
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "obsidian/dataview-plugin.md",
+        "books/getting-things-done.md",
+        "productivity/weekly-review.md"
+      ],
+      "top_score": 0.4734964966773987,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "How does the slip-box methodology compare to hierarchical folder filing?": {
+      "hit": true,
+      "expect": "books/how-to-take-smart-notes.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
+        "productivity/deep-work.md",
+        "books/how-to-take-smart-notes.md",
+        "productivity/para-method.md"
+      ],
+      "top_score": 0.48219841718673706,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "What happens when you use tags for storage instead of folders?": {
+      "hit": true,
+      "expect": "obsidian/vault-organization.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "obsidian/vault-organization.md",
+        "obsidian/obsidian-basics.md",
+        "obsidian/zettelkasten.md",
+        "obsidian/wikilinks-and-backlinks.md"
+      ],
+      "top_score": 0.45322638750076294,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "How do unresolved links act as thinking triggers across the vault?": {
+      "hit": true,
+      "expect": "obsidian/wikilinks-and-backlinks.md",
+      "retrieved": [
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/vault-organization.md",
+        "obsidian/zettelkasten.md"
+      ],
+      "top_score": 0.5954538583755493,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "How does the system prompt prefix enable Anthropic prompt caching discount?": {
+      "hit": true,
+      "expect": "prompting/system-prompts.md",
+      "retrieved": [
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/system-prompts.md",
+        "prompting/system-prompts.md"
+      ],
+      "top_score": 0.6657737493515015,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Refusal threshold calibration for unanswerable questions in retrieval": {
+      "hit": false,
+      "expect": "rag/evaluating-rag-systems.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/hallucination-and-grounding.md",
+        "rag/hybrid-search-bm25.md",
+        "rag/hallucination-and-grounding.md"
+      ],
+      "top_score": 0.6440191864967346,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Choosing all-MiniLM-L6-v2 over hosted embedding APIs in project architecture": {
+      "hit": true,
+      "expect": "projects/project-rag-assistant.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "projects/project-rag-assistant.md",
+        "rag/hybrid-search-bm25.md"
+      ],
+      "top_score": 0.6329529881477356,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Differences between System 1 cognitive illusions and LLM hallucinations": {
+      "hit": true,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "rag/hallucination-and-grounding.md",
+        "books/thinking-fast-and-slow.md",
+        "books/thinking-fast-and-slow.md",
+        "books/getting-things-done.md",
+        "rag/hallucination-and-grounding.md"
+      ],
+      "top_score": 0.41723889112472534,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "How to structure user input at the prompt boundary to prevent prompt injection": {
+      "hit": true,
+      "expect": "prompting/prompt-structure.md",
+      "retrieved": [
+        "prompting/evals-for-prompts.md",
+        "prompting/prompt-structure.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/evals-for-prompts.md"
+      ],
+      "top_score": 0.5188171863555908,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "Why wordpiece tokenization requires token budget headroom in chunk splitting": {
+      "hit": true,
+      "expect": "rag/chunking-strategies.md",
+      "retrieved": [
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "rag/chunking-strategies.md",
+        "projects/decision-log.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.6007962226867676,
+      "split": "tune",
+      "kind": "collision"
+    },
+    "17*24": {
+      "hit": false,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "obsidian/vault-organization.md",
+        "rag/hybrid-search-bm25.md"
+      ],
+      "top_score": 0.1428017020225525,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Cormack SIGIR 2009": {
+      "hit": false,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "productivity/para-method.md",
+        "projects/decision-log.md",
+        "rag/embedding-models.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.2090778648853302,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "22M parameters": {
+      "hit": false,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "projects/project-rag-assistant.md",
+        "books/getting-things-done.md",
+        "rag/vector-similarity-search.md",
+        "rag/hybrid-search-bm25.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.2209886610507965,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "bge-small-en-v1.5": {
+      "hit": false,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/hybrid-search-bm25.md",
+        "projects/decision-log.md",
+        "projects/decision-log.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.2761315703392029,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "text-embedding-3-small": {
+      "hit": true,
+      "expect": "rag/embedding-models.md",
+      "retrieved": [
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md",
+        "rag/chunking-strategies.md"
+      ],
+      "top_score": 0.6069947481155396,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "TABLE status, due FROM projects WHERE status != done": {
+      "hit": true,
+      "expect": "obsidian/dataview-plugin.md",
+      "retrieved": [
+        "obsidian/dataview-plugin.md",
+        "books/getting-things-done.md",
+        "productivity/weekly-review.md",
+        "productivity/para-method.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.5267069339752197,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Niklas Luhmann 70 books and 400 papers": {
+      "hit": true,
+      "expect": "obsidian/zettelkasten.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/zettelkasten.md",
+        "productivity/para-method.md"
+      ],
+      "top_score": 0.4432889521121979,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "2026-08-25": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "projects/decision-log.md",
+        "projects/reading-list.md",
+        "obsidian/vault-organization.md",
+        "productivity/inbox-zero.md"
+      ],
+      "top_score": 0.15118122100830078,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "2026-08-26": {
+      "hit": true,
+      "expect": "projects/decision-log.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "obsidian/dataview-plugin.md",
+        "projects/decision-log.md",
+        "projects/reading-list.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.14079350233078003,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Merlin Mann 43 Folders": {
+      "hit": false,
+      "expect": "productivity/inbox-zero.md",
+      "retrieved": [
+        "projects/decision-log.md",
+        "productivity/para-method.md",
+        "obsidian/zettelkasten.md",
+        "obsidian/wikilinks-and-backlinks.md",
+        "obsidian/vault-organization.md"
+      ],
+      "top_score": 0.3682214021682739,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "David Allen open loops": {
+      "hit": true,
+      "expect": "books/getting-things-done.md",
+      "retrieved": [
+        "projects/reading-list.md",
+        "rag/evaluating-rag-systems.md",
+        "projects/project-rag-assistant.md",
+        "books/getting-things-done.md",
+        "projects/project-rag-assistant.md"
+      ],
+      "top_score": 0.3184204697608948,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "System 1 silent substitution": {
+      "hit": false,
+      "expect": "books/thinking-fast-and-slow.md",
+      "retrieved": [
+        "prompting/system-prompts.md",
+        "prompting/few-shot-prompting.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/evals-for-prompts.md",
+        "prompting/prompt-structure.md"
+      ],
+      "top_score": 0.31644153594970703,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "S\u00f6nke Ahrens slip-box deposit": {
+      "hit": true,
+      "expect": "books/how-to-take-smart-notes.md",
+      "retrieved": [
+        "obsidian/zettelkasten.md",
+        "books/how-to-take-smart-notes.md",
+        "obsidian/vault-organization.md",
+        "obsidian/zettelkasten.md",
+        "productivity/para-method.md"
+      ],
+      "top_score": 0.31003814935684204,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Cal Newport fixed-schedule productivity": {
+      "hit": true,
+      "expect": "productivity/deep-work.md",
+      "retrieved": [
+        "productivity/weekly-review.md",
+        "books/getting-things-done.md",
+        "productivity/deep-work.md",
+        "productivity/weekly-review.md",
+        "productivity/deep-work.md"
+      ],
+      "top_score": 0.34763485193252563,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "HNSW graph indexing versus flat numpy dot product": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "projects/reading-list.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.43125325441360474,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "Reciprocal rank fusion constant k=60": {
+      "hit": true,
+      "expect": "rag/hybrid-search-bm25.md",
+      "retrieved": [
+        "rag/hybrid-search-bm25.md",
+        "rag/vector-similarity-search.md",
+        "rag/vector-similarity-search.md",
+        "projects/project-rag-assistant.md",
+        "projects/decision-log.md"
+      ],
+      "top_score": 0.43218863010406494,
+      "split": "tune",
+      "kind": "exact"
+    },
+    "L2 normalized unit vectors cosine equivalence": {
+      "hit": true,
+      "expect": "rag/vector-similarity-search.md",
+      "retrieved": [
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md",
+        "rag/vector-similarity-search.md",
+        "rag/embedding-models.md",
+        "rag/embedding-models.md"
+      ],
+      "top_score": 0.5405168533325195,
+      "split": "tune",
+      "kind": "exact"
+    }
+  }
+}

@@ -57,12 +57,20 @@ class VaultIndex:
             self._model = load_model()
         return self._model
 
-    def search(self, query: str, k: int = 5) -> list:
+    def search(self, query: str, k: int = 5, exclude_derived: bool = False) -> list:
         """Cosine top-k. Rows and query are unit-normalized, so dot product == cosine."""
         qv = self.model.encode([query], normalize_embeddings=True, show_progress_bar=False)[0].astype(np.float32)
         scores = self.vectors @ qv  # (N,)
-        top = np.argsort(scores)[::-1][:k]
-        return [Hit(**self.chunks[i], score=float(scores[i])) for i in top]
+        top = np.argsort(scores)[::-1]
+        hits = []
+        for i in top:
+            chunk = self.chunks[i]
+            if exclude_derived and chunk.get("provenance") == "derived":
+                continue
+            hits.append(Hit(**chunk, score=float(scores[i])))
+            if len(hits) == k:
+                break
+        return hits
 
     def read_note(self, path: str) -> str:
         """Read one note by vault-relative path. Path traversal is a trust boundary here:
